@@ -1,0 +1,8 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^adotapet.org$ [NC,OR] 
+RewriteCond %{HTTP_HOST} ^www.adotapet.org$
+RewriteCond %{REQUEST_URI} !build/
+RewriteRule (.*) /pasta/$1 [L]
+
+## Troque o nome "seu-dominio.com" pelo nome do seu domínio ##
+## Troque o nome "pasta" pelo nome da pasta que vai ser a raiz do seu site ##
