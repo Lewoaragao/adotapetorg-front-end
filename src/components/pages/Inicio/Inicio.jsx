@@ -13,7 +13,7 @@ export function Inicio({ logo }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Github •
+          Github
         </a>
         <a
           className="App-link"
