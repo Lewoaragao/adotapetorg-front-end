@@ -1,21 +1,19 @@
-import logo from './logo.jpg';
-import './App.css';
-
-function App() {
+export function Inicio({ logo }) {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        <p className="mt-3">
           Em desenvolvimento...
         </p>
+        <p>
         <a
           className="App-link"
           href="https://github.com/adotapetorg"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Github
+          Github •
         </a>
         <a
           className="App-link"
@@ -33,9 +31,10 @@ function App() {
         >
           Youtube
         </a>
+        </p>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default Inicio
