@@ -3,3 +3,8 @@ RewriteCond %{HTTP_HOST} ^adotapet.org$ [NC,OR]
 RewriteCond %{HTTP_HOST} ^www.adotapet.org$
 RewriteCond %{REQUEST_URI} !build/
 RewriteRule (.*) /build/$1 [L]
+
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]

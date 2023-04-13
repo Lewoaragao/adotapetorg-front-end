@@ -10,7 +10,7 @@ import UsuarioEntrar from './components/pages/Usuario/UsuarioEntrar';
 
 function App() {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
       <Header logo={logo}/>
       <Container>
         <Routes>
