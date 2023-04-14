@@ -1,6 +1,13 @@
 {
+  "default_locale": "pt-br",
   "short_name": "Adota Pet Org",
   "name": "Adota Pet Organização",
+  "description": "Sistema para adoção de Pets",
+  "author": "Leonardo Costa Aragão",
+  "developer": {
+    "name": "Leonardo Costa Aragão",
+    "url": "https://github.com/lewoaragao"
+  },
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,16 +15,18 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "/images/logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "/images/logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
+  "version": "1.0 ",
+  "version_name": "1.0 beta",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
