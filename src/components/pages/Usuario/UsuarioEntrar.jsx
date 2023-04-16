@@ -22,6 +22,8 @@ function UsuarioEntrar() {
       setMsg("Preencha a campo senha")
       return false
     }
+    
+    return true
   }
 
   function limpaCampos() {
@@ -59,12 +61,13 @@ function UsuarioEntrar() {
       <Button variant="primary" type="submit"
         onClick={(e) => {
           e.preventDefault()
-          validaCampos()
-          limpaCampos()
+          if (validaCampos()) {
+            limpaCampos()
+          }
           // enviar dados para API
         }}>
-          Entrar
-        </Button>
+        Entrar
+      </Button>
     </Form>
   );
 }

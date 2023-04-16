@@ -45,6 +45,8 @@ function UsuarioCadastrar() {
       setMsg("As senhas estão diferentes")
       return false
     }
+
+    return true
   }
 
   function limpaCampos() {
@@ -105,8 +107,9 @@ function UsuarioCadastrar() {
       <Button variant="primary" type="submit"
         onClick={(e) => {
           e.preventDefault()
-          validaCampos()
-          limpaCampos()
+          if (validaCampos()) {
+            limpaCampos()
+          }
           // enviar dados para API
         }}>
         Cadastrar
