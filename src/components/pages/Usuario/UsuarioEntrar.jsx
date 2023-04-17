@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Mensagem from './../../mensagem/Mensagem';
+import Mensagem from '../../mensagem/Mensagem';
 import { useNavigate } from "react-router-dom";
 
 function UsuarioEntrar() {
@@ -31,11 +31,14 @@ function UsuarioEntrar() {
     setSenha("")
     setMsg("")
     setMsgTipo("")
+  }
+  
+  function redirecionaTela() {
     navigate("/")
   }
 
   return (
-    <Form>
+    <Form className="container col-md-6 mt-3">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
       <Form.Group className="mb-3">
@@ -63,6 +66,7 @@ function UsuarioEntrar() {
           e.preventDefault()
           if (validaCampos()) {
             limpaCampos()
+            redirecionaTela()
           }
           // enviar dados para API
         }}>

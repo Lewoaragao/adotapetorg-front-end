@@ -57,11 +57,14 @@ function UsuarioCadastrar() {
     setSenhaRepetida("")
     setMsg("")
     setMsgTipo("")
+  }
+  
+  function redirecionaTela() {
     navigate("/usuario/entrar")
   }
 
   return (
-    <Form>
+    <Form className="container col-md-6 mt-3">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
       <Form.Group className="mb-3">
@@ -82,7 +85,7 @@ function UsuarioCadastrar() {
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="email">E-mail</Form.Label>
-        <Form.Control id="email" type="email" placeholder="Enter email" value={email} required
+        <Form.Control id="email" type="email" placeholder="Digite seu e-mail" value={email} required
           onChange={(e) => {
             setEmail(e.target.value)
           }} />
@@ -90,7 +93,7 @@ function UsuarioCadastrar() {
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="senha">Senha</Form.Label>
-        <Form.Control id="senha" type="password" placeholder="Password" value={senha} required
+        <Form.Control id="senha" type="password" placeholder="Digite sua senha" value={senha} required
           onChange={(e) => {
             setSenha(e.target.value)
           }} />
@@ -98,7 +101,7 @@ function UsuarioCadastrar() {
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="senhaRepetida">Repetir senha</Form.Label>
-        <Form.Control id="senhaRepetida" type="password" placeholder="Password" value={senhaRepetida} required
+        <Form.Control id="senhaRepetida" type="password" placeholder="Repita a senha" value={senhaRepetida} required
           onChange={(e) => {
             setSenhaRepetida(e.target.value)
           }} />
@@ -109,6 +112,7 @@ function UsuarioCadastrar() {
           e.preventDefault()
           if (validaCampos()) {
             limpaCampos()
+            redirecionaTela()
           }
           // enviar dados para API
         }}>
