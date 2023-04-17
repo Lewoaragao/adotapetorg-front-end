@@ -3,3 +3,5 @@ RewriteCond %{HTTP_HOST} ^adotapet.org$ [NC,OR]
 RewriteCond %{HTTP_HOST} ^www.adotapet.org$
 RewriteCond %{REQUEST_URI} !build/
 RewriteRule (.*) /build/$1 [L]
+
+# aponta para index.html da pasta build
