@@ -52,9 +52,10 @@ function UsuarioCadastrar() {
 
   function cadastrarUsuario() {
     api.post("users", {
-      name: nome,
+      nome: nome,
+      sobrenome: sobrenome,
       email: email,
-      password: senha
+      senha: senha
     }).then(() => {
       limpaCampos()
       redirecionaTela()
