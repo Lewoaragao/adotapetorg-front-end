@@ -3,7 +3,7 @@ import Mensagem from '../../mensagem/Mensagem'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from '../../../services/api';
 
 function UsuarioCadastrar() {
   const navigate = useNavigate()
@@ -51,15 +51,16 @@ function UsuarioCadastrar() {
   }
 
   function cadastrarUsuario() {
-    axios
-      .post(`${process.env.REACT_APP_API_URL}users`, {
-        name: nome,
-        email: email,
-        password: senha
-      })
-      .then((response) => {
-        console.log(response);
-      });
+    api.post("users", {
+      name: nome,
+      email: email,
+      password: senha
+    }).then(() => {
+      limpaCampos()
+      redirecionaTela()
+    }).catch(({ response }) => {
+      setMsg(response.data.erro)
+    })
   }
 
   function limpaCampos() {
@@ -71,7 +72,7 @@ function UsuarioCadastrar() {
     setMsg("")
     setMsgTipo("")
   }
-  
+
   function redirecionaTela() {
     navigate("/usuario/entrar")
   }
@@ -124,9 +125,7 @@ function UsuarioCadastrar() {
         onClick={(e) => {
           e.preventDefault()
           if (validaCampos()) {
-            cadastrarUsuario() // enviar dados para API
-            limpaCampos()
-            redirecionaTela()
+            cadastrarUsuario()
           }
         }}>
         Cadastrar
