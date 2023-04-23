@@ -3,7 +3,7 @@ function Inicio({ logo }) {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p className="mt-3">
+        <p id="textoDesenv" className="mt-3">
           Em desenvolvimento...
         </p>
         <p>

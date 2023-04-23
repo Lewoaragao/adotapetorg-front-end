@@ -9,7 +9,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-opacity 10s linear;
+    animation: App-logo-opacity 3s linear;
     border-radius: 50%;
   }
 }
@@ -37,11 +37,29 @@
   text-decoration: underline;
 }
 
+#textoDesenv {
+  animation: Text-desenv-color 3s infinite;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
 @keyframes App-logo-opacity {
   0% {
     opacity: 0;
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes Text-desenv-color {
+  0% {
+    color: #61dafb;
+  }
+  50% {
+    color: #4092a8;
+  }
+  100% {
+    color: #61dafb;
   }
 }
