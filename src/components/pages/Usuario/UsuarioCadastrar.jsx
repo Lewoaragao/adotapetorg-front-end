@@ -51,17 +51,19 @@ function UsuarioCadastrar() {
   }
 
   function cadastrarUsuario() {
-    api.post("users", {
-      nome: nome,
-      sobrenome: sobrenome,
-      email: email,
-      senha: senha
-    }).then(() => {
-      limpaCampos()
-      redirecionaTela()
-    }).catch(({ response }) => {
-      setMsg(response.data.erro)
-    })
+    if (validaCampos()) {
+      api.post("users", {
+        nome: nome,
+        sobrenome: sobrenome,
+        email: email,
+        senha: senha
+      }).then(() => {
+        limpaCampos()
+        redirecionaTela()
+      }).catch(({ response }) => {
+        setMsg(response.data.erro)
+      })
+    }
   }
 
   function limpaCampos() {
@@ -125,9 +127,7 @@ function UsuarioCadastrar() {
       <Button variant="primary" type="submit"
         onClick={(e) => {
           e.preventDefault()
-          if (validaCampos()) {
-            cadastrarUsuario()
-          }
+          cadastrarUsuario()
         }}>
         Cadastrar
       </Button>

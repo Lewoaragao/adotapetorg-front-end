@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Mensagem from '../../mensagem/Mensagem';
 import { useNavigate } from "react-router-dom";
+import api from '../../../services/api';
 
 function UsuarioEntrar() {
   const navigate = useNavigate()
@@ -37,6 +38,20 @@ function UsuarioEntrar() {
     navigate("/")
   }
 
+  function entrarUsuario() {
+    if (validaCampos()) {
+      api.post("login", {
+        email: email,
+        senha: senha
+      }).then(() => {
+        limpaCampos()
+        redirecionaTela()
+      }).catch(({ response }) => {
+        setMsg(response.data.erro)
+      })
+    }
+  }
+
   return (
     <Form className="container col-md-6 mt-3">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
@@ -64,11 +79,7 @@ function UsuarioEntrar() {
       <Button variant="primary" type="submit"
         onClick={(e) => {
           e.preventDefault()
-          if (validaCampos()) {
-            limpaCampos()
-            redirecionaTela()
-          }
-          // enviar dados para API
+          entrarUsuario()
         }}>
         Entrar
       </Button>
