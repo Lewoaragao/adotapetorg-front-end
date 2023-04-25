@@ -61,7 +61,7 @@ function UsuarioCadastrar() {
         limpaCampos()
         redirecionaTela()
       }).catch(({ response }) => {
-        setMsg(response.data.erro)
+        setMsg(response.data.message)
       })
     }
   }

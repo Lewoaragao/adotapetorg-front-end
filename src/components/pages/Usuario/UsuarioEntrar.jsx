@@ -43,11 +43,12 @@ function UsuarioEntrar() {
       api.post("login", {
         email: email,
         senha: senha
-      }).then(() => {
+      }).then(({ data }) => {
+        localStorage.setItem('token', data.token);
         limpaCampos()
         redirecionaTela()
       }).catch(({ response }) => {
-        setMsg(response.data.erro)
+        setMsg(response.data.message)
       })
     }
   }
