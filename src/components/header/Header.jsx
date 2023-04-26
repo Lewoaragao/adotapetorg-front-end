@@ -7,7 +7,7 @@ function Header({ logo }) {
     return (
         <Navbar sticky="top" bg="light">
             <Container>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href="/">
                     <img
                         src={logo}
                         width="40"
@@ -22,6 +22,7 @@ function Header({ logo }) {
                         <Nav.Link href="/sobre">Sobre</Nav.Link>
                         <Nav.Link href="/usuario/cadastrar">Cadastrar</Nav.Link>
                         <Nav.Link href="/usuario/entrar">Entrar</Nav.Link>
+                        <Nav.Link href="/usuario/sair">Sair</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
