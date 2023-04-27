@@ -39,15 +39,13 @@ function Footer({ logo }) {
 
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Links úteis</h6>
-                            <p><a href="/" className="text-reset text-decoration-none disabled">Início</a></p>
-                            <p><a href="/usuario/entrar" className="text-reset text-decoration-none disabled">Entrar</a></p>
-                            <p><a href="/usuario/cadastrar" className="text-reset text-decoration-none disabled">Cadastrar</a></p>
-                            <p><a href="/sobre" className="text-reset text-decoration-none disabled">Sobre</a></p>
+                            <p><a href="/" className="text-reset text-decoration-none">Início</a></p>
+                            <p><a href="/sobre" className="text-reset text-decoration-none">Sobre</a></p>
                         </div>
 
                         <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Contato</h6>
-                            <p><FaHome /> Brasil, Ceará, Fortaleza</p>
+                            <p><FaHome /> Fortaleza, Ceará, Brasil</p>
                             <p><FaEnvelope /> <a target="_blank" rel="noreferrer" className="text-reset text-decoration-none" href="mailto:contato@adotapet.org">contato@adotapet.org</a></p>
                             <p><FaWhatsapp /> <a target="_blank" rel="noreferrer" className="text-reset text-decoration-none" href="https://api.whatsapp.com/send/?phone=5585997972854&text=Ol%C3%A1&type=phone_number&app_absent=0">+55 (85) 9 9797-2854</a></p>
                         </div>
