@@ -8,12 +8,13 @@ import logo from './images/logo.jpg';
 import UsuarioCadastrar from './components/pages/usuario/UsuarioCadastrar';
 import UsuarioEntrar from './components/pages/usuario/UsuarioEntrar';
 import BtnVoltarTopo from './components/buttons/BtnVoltarTopo';
+import Footer from './components/template/footer/Footer';
 
 function App() {
   return (
     <BrowserRouter>
       <Header logo={logo} />
-      <Container id="container">
+      <Container className="vh-100">
         <Routes>
           <Route path="/" element={<Inicio logo={logo} />} />
           <Route path="/sobre" element={<Sobre />} />
@@ -22,8 +23,9 @@ function App() {
         </Routes>
         <BtnVoltarTopo />
       </Container>
+      <Footer logo={logo} />
     </BrowserRouter>
   )
 }
 
-export default App;
+export default App
