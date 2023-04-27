@@ -12,7 +12,7 @@ function Header({ logo }) {
                         src={logo}
                         width="40"
                         height="40"
-                        className="d-inline-block align-top"
+                        className="d-inline-block align-top rounded"
                         alt="Adota Pet Org logo"
                     />
                 </Navbar.Brand>
