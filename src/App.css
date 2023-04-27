@@ -47,6 +47,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -56,10 +57,17 @@
   0% {
     color: #61dafb;
   }
+
   50% {
     color: #4092a8;
   }
+
   100% {
     color: #61dafb;
   }
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
 }
