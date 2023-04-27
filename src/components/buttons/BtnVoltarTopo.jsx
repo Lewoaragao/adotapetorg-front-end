@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 
 function BtnVoltarTopo() {
+
     const [pageYPosition, setPageYPosition] = useState(0);
 
     function getPageYAfterScroll() {
@@ -15,15 +16,9 @@ function BtnVoltarTopo() {
     window.addEventListener("scroll", getPageYAfterScroll);
 
     return (
-        <>
-            {pageYPosition > 600 &&
-                <FaArrowAltCircleUp
-                    onClick={voltarProTopo}
-                    style={{ position: "fixed", bottom: "20px", right: "20px", height: "40px", width: "40px", cursor: "pointer" }}
-                    className="text-primary"
-                    id="btnVoltarTopo" />
-            }
-        </>
+        <div>
+            {pageYPosition > 600 && <FaArrowAltCircleUp onClick={voltarProTopo} className="btn btn-secondary fs-1 p-2 fixed-bottom ms-3 mb-3" />}
+        </div>
     )
 }
 
