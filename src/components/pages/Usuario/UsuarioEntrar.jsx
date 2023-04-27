@@ -23,7 +23,7 @@ function UsuarioEntrar() {
       setMsg("Preencha a campo senha")
       return false
     }
-    
+
     return true
   }
 
@@ -33,7 +33,7 @@ function UsuarioEntrar() {
     setMsg("")
     setMsgTipo("")
   }
-  
+
   function redirecionaTela() {
     navigate("/")
   }
@@ -54,7 +54,7 @@ function UsuarioEntrar() {
   }
 
   return (
-    <Form className="container col-md-6 mt-3">
+    <Form className="container col-md-6 my-5">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
       <Form.Group className="mb-3">
