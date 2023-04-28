@@ -54,7 +54,7 @@ function UsuarioEntrar() {
   }
 
   return (
-    <Form className="container col-md-6 my-5">
+    <Form className="container col-md-6">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
       <Form.Group className="mb-3">

@@ -81,7 +81,7 @@ function UsuarioCadastrar() {
   }
 
   return (
-    <Form className="container col-md-6 mt-3">
+    <Form className="container col-md-6">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
       <Form.Group className="mb-3">
