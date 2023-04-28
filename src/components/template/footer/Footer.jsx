@@ -55,7 +55,7 @@ function Footer({ logo }) {
 
             <div className="text-center p-4">
                 <span>© 2023 Copyright:</span>
-                <a className="ms-1 text-reset text-decoration-none text-decoration-none fw-bold" href={process.env.REACT_APP_GITHUB_ORGANIZATION_URL}>Adota Pet Org</a>
+                <a target="_blank" rel="noreferrer" className="ms-1 text-reset text-decoration-none text-decoration-none fw-bold" href={process.env.REACT_APP_GITHUB_ORGANIZATION_URL}>Adota Pet Org</a>
             </div>
         </footer>
     )
