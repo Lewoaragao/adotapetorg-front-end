@@ -14,7 +14,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header logo={logo} />
-      <Container className="vh-100">
+      <Container className="vh-100 my-5">
         <Routes>
           <Route path="/" element={<Inicio logo={logo} />} />
           <Route path="/sobre" element={<Sobre />} />
