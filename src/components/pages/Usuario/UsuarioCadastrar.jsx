@@ -3,7 +3,7 @@ import Mensagem from '../../mensagem/Mensagem'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from "react-router-dom";
-import api from '../../../services/api';
+import Api from '../../../services/Api';
 
 function UsuarioCadastrar() {
   const navigate = useNavigate()
@@ -52,7 +52,7 @@ function UsuarioCadastrar() {
 
   function cadastrarUsuario() {
     if (validaCampos()) {
-      api.post("users", {
+      Api.post("users", {
         nome: nome,
         sobrenome: sobrenome,
         email: email,

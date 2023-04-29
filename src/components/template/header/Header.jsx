@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Nav } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import api from '../../../services/api';
+import Api from '../../../services/Api';
 import { useNavigate } from 'react-router-dom';
 import Mensagem from './../../mensagem/Mensagem';
 
@@ -15,7 +15,7 @@ function Header({ logo }) {
     const token = localStorage.getItem('token')
 
     function logout() {
-        api.get("logout", {
+        Api.get("logout", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
