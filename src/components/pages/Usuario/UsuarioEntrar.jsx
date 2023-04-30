@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Mensagem from '../../mensagem/Mensagem';
 import { useNavigate } from "react-router-dom";
 import Api from '../../../services/Api';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 function UsuarioEntrar() {
   const navigate = useNavigate()
@@ -12,6 +13,7 @@ function UsuarioEntrar() {
   const [senha, setSenha] = useState("")
   const [msg, setMsg] = useState("")
   const [msgTipo, setMsgTipo] = useState("warning")
+  const { setarIsUsuarioLogado, setarUsuarioLogado } = useContext(AuthContext)
 
   function validaCampos() {
     if (email === "" || email === null) {
@@ -27,17 +29,6 @@ function UsuarioEntrar() {
     return true
   }
 
-  function limpaCampos() {
-    setEmail("")
-    setSenha("")
-    setMsg("")
-    setMsgTipo("")
-  }
-
-  function redirecionaTela() {
-    navigate("/")
-  }
-
   function entrarUsuario() {
     if (validaCampos()) {
       Api.post("login", {
@@ -45,8 +36,9 @@ function UsuarioEntrar() {
         senha: senha
       }).then(({ data }) => {
         localStorage.setItem('token', data.token);
-        limpaCampos()
-        redirecionaTela()
+        setarIsUsuarioLogado(true)
+        setarUsuarioLogado(data.usuario)
+        navigate("/")
       }).catch(({ response }) => {
         setMsg(response.data.message)
       })
@@ -78,10 +70,12 @@ function UsuarioEntrar() {
       </Form.Group>
 
       <Button variant="primary" type="submit"
-        onClick={(e) => {
-          e.preventDefault()
-          entrarUsuario()
-        }}>
+        onClick={
+          (e) => {
+            e.preventDefault()
+            entrarUsuario()
+          }
+        }>
         Entrar
       </Button>
     </Form>

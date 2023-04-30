@@ -14,7 +14,7 @@ function UsuarioCadastrar() {
   const [senha, setSenha] = useState("")
   const [senhaRepetida, setSenhaRepetida] = useState("")
   const [msg, setMsg] = useState("")
-  const [msgTipo, setMsgTipo] = useState("warning")
+  const [msgTipo] = useState("warning")
 
   function validaCampos() {
     if (nome === "" || nome === null) {
@@ -58,26 +58,11 @@ function UsuarioCadastrar() {
         email: email,
         senha: senha
       }).then(() => {
-        limpaCampos()
-        redirecionaTela()
+        navigate("/usuario/entrar")
       }).catch(({ response }) => {
         setMsg(response.data.message)
       })
     }
-  }
-
-  function limpaCampos() {
-    setNome("")
-    setSobrenome("")
-    setEmail("")
-    setSenha("")
-    setSenhaRepetida("")
-    setMsg("")
-    setMsgTipo("")
-  }
-
-  function redirecionaTela() {
-    navigate("/usuario/entrar")
   }
 
   return (

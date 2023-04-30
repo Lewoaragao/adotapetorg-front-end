@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Nav } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Api from '../../../services/Api';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Mensagem from './../../mensagem/Mensagem';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 function Header({ logo }) {
     const navigate = useNavigate()
@@ -14,13 +15,17 @@ function Header({ logo }) {
 
     const token = localStorage.getItem('token')
 
+    const { isUsuarioLogado, setarIsUsuarioLogado, usuarioLogado, setarUsuarioLogado } = useContext(AuthContext)
+
     function logout() {
         Api.get("logout", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }).then(() => {
-            localStorage.removeItem('token');
+            localStorage.removeItem('token')
+            setarIsUsuarioLogado(false)
+            setarUsuarioLogado({})
             limpaCampos()
             redirecionaTela()
         }).catch(({ response }) => {
@@ -52,11 +57,20 @@ function Header({ logo }) {
                     </Navbar.Brand>
                     <Navbar.Collapse className="justify-content-end">
                         <Nav>
-                            <Nav.Link href="/">Início</Nav.Link>
-                            <Nav.Link href="/sobre">Sobre</Nav.Link>
-                            <Nav.Link href="/usuario/cadastrar">Cadastrar</Nav.Link>
-                            <Nav.Link href="/usuario/entrar">Entrar</Nav.Link>
-                            <button className="nav-link" onClick={logout}>Sair</button>
+                            <NavLink className="nav nav-link text-secondary" to="/">Início</NavLink>
+                            <NavLink className="nav nav-link text-secondary" to="/sobre">Sobre</NavLink>
+                            {isUsuarioLogado
+                                ?
+                                <>
+                                    <p className="nav nav-link text-primary fw-bold">Olá, {usuarioLogado.nome}</p>
+                                    <button className="nav nav-link text-secondary" onClick={logout}>Sair</button>
+                                </>
+                                :
+                                <>
+                                    <NavLink className="nav nav-link text-secondary" to="/usuario/cadastrar">Cadastrar</NavLink>
+                                    <NavLink className="nav nav-link text-primary fw-bold" to="/usuario/entrar">Entrar</NavLink>
+                                </>
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
