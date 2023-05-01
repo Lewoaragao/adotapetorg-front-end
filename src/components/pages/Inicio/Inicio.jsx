@@ -3,12 +3,13 @@ function Inicio({ logo }) {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p id="textoDesenv" className="mt-3">
+        <h1 className="fw-bold mt-3">Início</h1>
+        <p id="textoDesenv" className="mt-2">
           Em desenvolvimento...
         </p>
         <p>
           <a
-            className="App-link"
+            className="nav-link d-inline mx-2 text-decoration-underline"
             href="https://github.com/adotapetorg"
             target="_blank"
             rel="noopener noreferrer"
@@ -16,7 +17,7 @@ function Inicio({ logo }) {
             Github
           </a>
           <a
-            className="App-link"
+            className="nav-link d-inline mx-2 text-decoration-underline"
             href="https://instagram.com/adotapetorg"
             target="_blank"
             rel="noopener noreferrer"
@@ -24,7 +25,7 @@ function Inicio({ logo }) {
             Instagram
           </a>
           <a
-            className="App-link"
+            className="nav-link d-inline mx-2 text-decoration-underline"
             href="https://youtube.com/@adotapetorg"
             target="_blank"
             rel="noopener noreferrer"

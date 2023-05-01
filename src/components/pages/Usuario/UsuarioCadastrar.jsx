@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from "react-router-dom";
 import Api from '../../../services/Api';
+import { NavLink } from 'react-bootstrap';
 
 function UsuarioCadastrar() {
   const navigate = useNavigate()
@@ -69,9 +70,11 @@ function UsuarioCadastrar() {
     <Form className="container col-md-6">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
+      <h1 className="fw-bold">Cadastrar</h1>
+
       <Form.Group className="mb-3">
         <Form.Label htmlFor="nome">Nome</Form.Label>
-        <Form.Control id="nome" type="text" placeholder="Digite seu nome" value={nome} required autoFocus
+        <Form.Control id="nome" type="text" placeholder="Digite seu primeiro nome" value={nome} required autoFocus
           onChange={(e) => {
             setNome(e.target.value)
           }} />
@@ -79,7 +82,7 @@ function UsuarioCadastrar() {
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="sobrenome">Sobrenome</Form.Label>
-        <Form.Control id="sobrenome" type="text" placeholder="Digite seu sobrenome" value={sobrenome} required
+        <Form.Control id="sobrenome" type="text" placeholder="Digite o restante do seu nome" value={sobrenome} required
           onChange={(e) => {
             setSobrenome(e.target.value)
           }} />
@@ -87,7 +90,7 @@ function UsuarioCadastrar() {
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="email">E-mail</Form.Label>
-        <Form.Control id="email" type="email" placeholder="Digite seu e-mail" value={email} required
+        <Form.Control id="email" type="email" placeholder="Digite seu melhor e-mail" value={email} required
           onChange={(e) => {
             setEmail(e.target.value)
           }} />
@@ -116,6 +119,8 @@ function UsuarioCadastrar() {
         }}>
         Cadastrar
       </Button>
+
+      <p className="mt-3">Já possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/entrar">Entrar</NavLink></p>
     </Form>
   );
 }

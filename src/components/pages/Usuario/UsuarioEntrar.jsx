@@ -11,9 +11,10 @@ function UsuarioEntrar() {
 
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
+  const [lembreMe, setLembreMe] = useState(false)
   const [msg, setMsg] = useState("")
-  const [msgTipo, setMsgTipo] = useState("warning")
-  const { setarIsUsuarioLogado, setarUsuarioLogado } = useContext(AuthContext)
+  const [msgTipo] = useState("warning")
+  const { setarUsuarioLogado } = useContext(AuthContext)
 
   function validaCampos() {
     if (email === "" || email === null) {
@@ -35,9 +36,10 @@ function UsuarioEntrar() {
         email: email,
         senha: senha
       }).then(({ data }) => {
-        localStorage.setItem('token', data.token);
-        setarIsUsuarioLogado(true)
-        setarUsuarioLogado(data.usuario)
+        if (lembreMe) {
+          localStorage.setItem('token', data.token)
+        }
+        setarUsuarioLogado(data.usuario, data.token, true)
         navigate("/")
       }).catch(({ response }) => {
         setMsg(response.data.message)
@@ -48,6 +50,8 @@ function UsuarioEntrar() {
   return (
     <Form className="container col-md-6">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
+
+      <h1 className="fw-bold">Entrar</h1>
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="email">E-mail</Form.Label>
@@ -66,7 +70,10 @@ function UsuarioEntrar() {
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Lembre-me" />
+        <Form.Check type="checkbox" label="Lembre-me"
+          onChange={(e) => {
+            setLembreMe(e.target.value)
+          }} />
       </Form.Group>
 
       <Button variant="primary" type="submit"

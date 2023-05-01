@@ -1,21 +1,16 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Nav } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Api from '../../../services/Api';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Mensagem from './../../mensagem/Mensagem';
 import { AuthContext } from '../../../contexts/AuthContext';
+import NavBarUsuarioLogado from './NavBarUsuarioLogado';
+import NavBarUsuarioNaoLogado from './NavBarUsuarioNaoLogado';
 
-function Header({ logo }) {
+function Header({ logo, usuarioLogadoVerificado }) {
     const navigate = useNavigate()
-
-    const [msg, setMsg] = useState("")
-    const [msgTipo, setMsgTipo] = useState("danger")
-
-    const token = localStorage.getItem('token')
-
-    const { isUsuarioLogado, setarIsUsuarioLogado, usuarioLogado, setarUsuarioLogado } = useContext(AuthContext)
+    const { isUsuarioLogado, usuarioLogado, setarUsuarioLogado, token } = useContext(AuthContext)
 
     function logout() {
         Api.get("logout", {
@@ -24,29 +19,18 @@ function Header({ logo }) {
             }
         }).then(() => {
             localStorage.removeItem('token')
-            setarIsUsuarioLogado(false)
-            setarUsuarioLogado({})
-            limpaCampos()
-            redirecionaTela()
+            setarUsuarioLogado({}, null, false)
+            navigate("/")
         }).catch(({ response }) => {
-            setMsg(response.data.message)
+            console.log(response.data.message)
         })
-    }
-
-    function limpaCampos() {
-        setMsg("")
-        setMsgTipo("")
-    }
-
-    function redirecionaTela() {
-        navigate("/")
     }
 
     return (
         <>
             <Navbar sticky="top" bg="light">
                 <Container>
-                    <Navbar.Brand href="/">
+                    <NavLink to="/">
                         <img
                             src={logo}
                             width="40"
@@ -54,31 +38,22 @@ function Header({ logo }) {
                             className="d-inline-block align-top rounded"
                             alt="Adota Pet Org logo"
                         />
-                    </Navbar.Brand>
+                    </NavLink>
                     <Navbar.Collapse className="justify-content-end">
                         <Nav>
                             <NavLink className="nav nav-link text-secondary" to="/">Início</NavLink>
                             <NavLink className="nav nav-link text-secondary" to="/sobre">Sobre</NavLink>
+
                             {isUsuarioLogado
                                 ?
-                                <>
-                                    <p className="nav nav-link text-primary fw-bold">Olá, {usuarioLogado.nome}</p>
-                                    <button className="nav nav-link text-secondary" onClick={logout}>Sair</button>
-                                </>
+                                <NavBarUsuarioLogado usuarioLogado={usuarioLogado} logout={logout} />
                                 :
-                                <>
-                                    <NavLink className="nav nav-link text-secondary" to="/usuario/cadastrar">Cadastrar</NavLink>
-                                    <NavLink className="nav nav-link text-primary fw-bold" to="/usuario/entrar">Entrar</NavLink>
-                                </>
+                                <NavBarUsuarioNaoLogado />
                             }
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-
-            <Container className="mt-3">
-                <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-            </Container>
         </>
     )
 }
