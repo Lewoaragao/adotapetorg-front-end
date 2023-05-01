@@ -9,6 +9,7 @@ import logo from './images/logo.jpg'
 import { AuthProvider } from './contexts/AuthContext';
 import UsuarioCadastrar from './components/pages/usuario/UsuarioCadastrar';
 import UsuarioEntrar from './components/pages/usuario/UsuarioEntrar';
+import Error404 from './components/pages/error/Error404';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "/sobre", element: <Sobre /> },
       { path: "/usuario/cadastrar", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
+      { path: "/*", element: <Error404 /> },
     ]
   }
 ])
