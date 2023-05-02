@@ -67,7 +67,16 @@
   }
 }
 
+/* PERSONALIZADOS */
 a.disabled {
   pointer-events: none;
   cursor: default;
+}
+
+.text-underline-hover {
+  text-decoration: none;
+}
+
+.text-underline-hover:hover {
+  text-decoration: underline;
 }

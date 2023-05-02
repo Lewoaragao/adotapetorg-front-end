@@ -1,6 +1,20 @@
+import { useEffect, useState } from 'react';
 import { /*FaFacebook, FaGoogle,*/ FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaHome, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 
 function Footer({ logo }) {
+
+    const [aposAnoInicio, setAposAnoInicio] = useState(false)
+
+    const anoInicio = 2023
+    const data = new Date()
+    const anoAtual = data.getFullYear()
+
+    useEffect(() => {
+        if (anoAtual > anoInicio) {
+            setAposAnoInicio(true)
+        }
+    }, [anoInicio, anoAtual]);
+
     return (
         <footer className="text-center text-lg-start bg-light text-muted">
             <section className="d-flex justify-content-center justify-content-lg-end align-items-center p-4 border-bottom container">
@@ -31,32 +45,38 @@ function Footer({ logo }) {
 
                         <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Serviços</h6>
-                            <p><a href="#!" className="text-reset text-decoration-none disabled">Adotar Pet</a></p>
-                            <p><a href="#!" className="text-reset text-decoration-none disabled">Cadastrar Pet</a></p>
-                            <p><a href="#!" className="text-reset text-decoration-none disabled">Encontrar Pet</a></p>
-                            <p><a href="#!" className="text-reset text-decoration-none disabled">Listar Pet</a></p>
+                            <p><a href="#!" className="text-reset text-underline-hover disabled">Adotar Pet</a></p>
+                            <p><a href="#!" className="text-reset text-underline-hover disabled">Cadastrar Pet</a></p>
+                            <p><a href="#!" className="text-reset text-underline-hover disabled">Encontrar Pet</a></p>
                         </div>
 
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Links úteis</h6>
-                            <p><a href="/" className="text-reset text-decoration-none">Início</a></p>
-                            <p><a href="/sobre" className="text-reset text-decoration-none">Sobre</a></p>
+                            <p><a href="/" className="text-reset text-underline-hover">Início</a></p>
+                            <p><a href="/sobre" className="text-reset text-underline-hover">Sobre</a></p>
                         </div>
 
                         <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Contato</h6>
                             <p><FaHome /> Fortaleza, Ceará, Brasil</p>
-                            <p><FaEnvelope /> <a target="_blank" rel="noreferrer" className="text-reset text-decoration-none" href="mailto:contato@adotapet.org">contato@adotapet.org</a></p>
-                            <p><FaWhatsapp /> <a target="_blank" rel="noreferrer" className="text-reset text-decoration-none" href="https://api.whatsapp.com/send/?phone=5585997972854&text=Ol%C3%A1&type=phone_number&app_absent=0">+55 (85) 9 9797-2854</a></p>
+                            <p><FaEnvelope /> <a target="_blank" rel="noreferrer" className="text-reset text-underline-hover" href="mailto:contato@adotapet.org">contato@adotapet.org</a></p>
+                            <p><FaWhatsapp /> <a target="_blank" rel="noreferrer" className="text-reset text-underline-hover" href="https://api.whatsapp.com/send/?phone=5585997972854&text=Ol%C3%A1&type=phone_number&app_absent=0">+55 (85) 9 9797-2854</a></p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <div className="text-center p-4">
-                <span>© 2023 Copyright:</span>
-                <a target="_blank" rel="noreferrer" className="ms-1 text-reset text-decoration-none text-decoration-none fw-bold" href={process.env.REACT_APP_GITHUB_ORGANIZATION_URL}>Adota Pet Org</a>
-            </div>
+            <section className="text-center p-4 d-flex justify-content-between align-items-center flex-wrap gap-4 container">
+                <div>
+                    <span>Copyright {anoInicio} {aposAnoInicio && `- ${anoAtual}`} <span className="fw-bold">©</span> Todos os direitos reservados </span>
+                    <a target="_blank" rel="noreferrer" className="text-reset text-underline-hover fw-bold" href={process.env.REACT_APP_GITHUB_ORGANIZATION_URL}>Adota Pet Org</a>
+                </div>
+
+                <div>
+                    <span>Desenvolvido por </span>
+                    <a target="_blank" rel="noreferrer" className="text-reset text-underline-hover fw-bold" href="https://github.com/lewoaragao">Leonardo Aragão</a>
+                </div>
+            </section>
         </footer>
     )
 }
