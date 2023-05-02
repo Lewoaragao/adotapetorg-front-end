@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Inicio from './components/pages/inicio/Inicio';
-import Sobre from './components/pages/sobre/Sobre';
 import logo from './images/logo.jpg'
 import { AuthProvider } from './contexts/AuthContext';
-import UsuarioCadastrar from './components/pages/usuario/UsuarioCadastrar';
-import UsuarioEntrar from './components/pages/usuario/UsuarioEntrar';
-import Error404 from './components/pages/error/Error404';
+import Inicio from './pages/inicio/Inicio';
+import Sobre from './pages/sobre/Sobre';
+import UsuarioCadastrar from './pages/usuario/UsuarioCadastrar';
+import UsuarioEntrar from './pages/usuario/UsuarioEntrar';
+import Error404 from './pages/error/Error404';
 
 const router = createBrowserRouter([
   {

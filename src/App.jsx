@@ -1,12 +1,13 @@
 import './App.css';
 import { Container } from 'react-bootstrap';
 import logo from './images/logo.jpg';
-import Header from './components/template/header/Header';
 import { Outlet } from 'react-router-dom';
 import BtnVoltarTopo from './components/buttons/BtnVoltarTopo';
-import Footer from './components/template/footer/Footer';
 import { useContext, useState } from 'react';
 import { AuthContext } from './contexts/AuthContext';
+import Header from './pages/template/header/Header'
+import Footer from './pages/template/footer/Footer';
+
 function App() {
 
   const { verificaUsuarioLogado } = useContext(AuthContext)

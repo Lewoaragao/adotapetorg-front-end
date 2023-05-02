@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Mensagem from '../../mensagem/Mensagem';
 import { useNavigate } from "react-router-dom";
-import Api from '../../../services/Api';
-import { AuthContext } from '../../../contexts/AuthContext';
+import Mensagem from '../../components/mensagem/Mensagem';
+import Api from '../../services/Api';
+import { AuthContext } from '../../contexts/AuthContext';
 
 function UsuarioEntrar() {
   const navigate = useNavigate()

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { /*FaFacebook, FaGoogle,*/ FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaHome, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
+import { /* FaFacebook */ FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaHome, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 
 function Footer({ logo }) {
 
@@ -23,12 +23,11 @@ function Footer({ logo }) {
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center">
-                    {/* <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://facebok.com/adotapetorg"><FaFacebook /></a> */}
-                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://twitter.com/adotapetorg"><FaTwitter /></a>
-                    {/* <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://"><FaGoogle /></a> */}
                     <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://instagram.com/adotapetorg"><FaInstagram /></a>
-                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://linkedin.com/company/adotapetorg"><FaLinkedin /></a>
                     <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://github.com/adotapetorg"><FaGithub /></a>
+                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://linkedin.com/company/adotapetorg"><FaLinkedin /></a>
+                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://twitter.com/adotapetorg"><FaTwitter /></a>
+                    {/* <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://facebok.com/adotapetorg"><FaFacebook /></a> */}
                 </div>
             </section>
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Mensagem from '../../mensagem/Mensagem'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { useNavigate } from "react-router-dom";
-import Api from '../../../services/Api';
 import { NavLink } from 'react-bootstrap';
+import Mensagem from './../../components/mensagem/Mensagem';
+import Api from '../../services/Api';
 
 function UsuarioCadastrar() {
   const navigate = useNavigate()
