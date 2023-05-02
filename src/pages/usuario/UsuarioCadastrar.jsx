@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { useNavigate } from "react-router-dom";
-import { NavLink } from 'react-bootstrap';
+import { useNavigate, NavLink } from "react-router-dom";
 import Mensagem from './../../components/mensagem/Mensagem';
 import Api from '../../services/Api';
 
