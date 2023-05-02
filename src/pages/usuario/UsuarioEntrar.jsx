@@ -1,10 +1,13 @@
 import { useContext, useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Mensagem from '../../components/mensagem/Mensagem';
 import Api from '../../services/Api';
 import { AuthContext } from '../../contexts/AuthContext';
+import { InputGroup } from 'react-bootstrap';
+import { HiOutlineMail } from 'react-icons/hi';
+import { RiLockPasswordFill } from 'react-icons/ri';
 
 function UsuarioEntrar() {
   const navigate = useNavigate()
@@ -53,21 +56,21 @@ function UsuarioEntrar() {
 
       <h1 className="fw-bold">Entrar</h1>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="email">E-mail</Form.Label>
-        <Form.Control id="email" type="email" placeholder="Enter email" value={email} required
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="email"><HiOutlineMail /></InputGroup.Text>
+        <Form.Control id="email" type="email" placeholder="E-mail" value={email} required
           onChange={(e) => {
             setEmail(e.target.value)
           }} />
-      </Form.Group>
+      </InputGroup>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="senha">Senha</Form.Label>
-        <Form.Control id="senha" type="password" placeholder="Password" value={senha} required
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="senha"><RiLockPasswordFill /></InputGroup.Text>
+        <Form.Control id="senha" type="password" placeholder="Senha" value={senha} required
           onChange={(e) => {
             setSenha(e.target.value)
           }} />
-      </Form.Group>
+      </InputGroup>
 
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Lembre-me"
@@ -85,6 +88,8 @@ function UsuarioEntrar() {
         }>
         Entrar
       </Button>
+
+      <p className="mt-3">Não possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/cadastrar">Cadastrar</NavLink></p>
     </Form>
   );
 }
