@@ -36,7 +36,7 @@ function Header({ logo, usuarioLogadoVerificado }) {
                             width="40"
                             height="40"
                             className="d-inline-block align-top rounded"
-                            alt="Adota Pet Org logo"
+                            alt="logo adota pet org"
                         />
                     </NavLink>
                     <Navbar.Collapse className="justify-content-end">

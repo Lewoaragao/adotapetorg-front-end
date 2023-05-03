@@ -23,11 +23,11 @@ function Footer({ logo }) {
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center">
-                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://instagram.com/adotapetorg"><FaInstagram /></a>
-                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://github.com/adotapetorg"><FaGithub /></a>
-                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://linkedin.com/company/adotapetorg"><FaLinkedin /></a>
-                    <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://twitter.com/adotapetorg"><FaTwitter /></a>
-                    {/* <a className="btn btn-primary mx-1" target="_blank" rel="noreferrer" href="https://facebok.com/adotapetorg"><FaFacebook /></a> */}
+                    <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://instagram.com/adotapetorg"><FaInstagram /></a>
+                    <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://github.com/adotapetorg"><FaGithub /></a>
+                    <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://linkedin.com/company/adotapetorg"><FaLinkedin /></a>
+                    <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://twitter.com/adotapetorg"><FaTwitter /></a>
+                    {/* <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://facebok.com/adotapetorg"><FaFacebook /></a> */}
                 </div>
             </section>
 
@@ -36,7 +36,7 @@ function Footer({ logo }) {
                     <div className="row mt-3">
                         <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-3">
-                                <img className="rounded me-3" src={logo} alt="Adota Pet Org logo" width="40px" height="40px" />
+                                <img className="rounded me-3" src={logo} alt="logo adota pet org" width="40px" height="40px" />
                                 {process.env.REACT_APP_SITE_TITLE}
                             </h6>
                             <p>{process.env.REACT_APP_SITE_DESCRIPTION}</p>

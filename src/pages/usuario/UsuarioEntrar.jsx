@@ -9,6 +9,7 @@ import { InputGroup } from 'react-bootstrap';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import TituloPagina from './../../components/TituloPagina';
+import Carregamento from '../../components/Carregamento';
 
 function UsuarioEntrar() {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ function UsuarioEntrar() {
   const [msg, setMsg] = useState("")
   const [msgTipo] = useState("warning")
   const { setarUsuarioLogado } = useContext(AuthContext)
+  const [isLoading, setIsLoading] = useState(false)
 
   function validaCampos() {
     if (email === "" || email === null) {
@@ -36,6 +38,7 @@ function UsuarioEntrar() {
 
   function entrarUsuario() {
     if (validaCampos()) {
+      setIsLoading(true)
       Api.post("login", {
         email: email,
         senha: senha
@@ -47,51 +50,60 @@ function UsuarioEntrar() {
         navigate("/")
       }).catch(({ response }) => {
         setMsg(response.data.message)
+      }).finally(() => {
+        setIsLoading(false)
       })
     }
   }
 
   return (
-    <Form className="container col-md-6">
-      <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-      
-      <TituloPagina titulo="Entrar"/>
+    <>
+      {isLoading
+        ?
+        <Carregamento />
+        :
+        <Form className="container col-md-6">
+          <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-      <InputGroup className="mb-3">
-        <InputGroup.Text id="email"><HiOutlineMail /></InputGroup.Text>
-        <Form.Control id="email" type="email" placeholder="E-mail" value={email} required
-          onChange={(e) => {
-            setEmail(e.target.value)
-          }} />
-      </InputGroup>
+          <TituloPagina titulo="Entrar" />
 
-      <InputGroup className="mb-3">
-        <InputGroup.Text id="senha"><RiLockPasswordFill /></InputGroup.Text>
-        <Form.Control id="senha" type="password" placeholder="Senha" value={senha} required
-          onChange={(e) => {
-            setSenha(e.target.value)
-          }} />
-      </InputGroup>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="email"><HiOutlineMail /></InputGroup.Text>
+            <Form.Control id="email" type="email" placeholder="E-mail" value={email} required
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }} />
+          </InputGroup>
 
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Lembre-me"
-          onChange={(e) => {
-            setLembreMe(e.target.value)
-          }} />
-      </Form.Group>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="senha"><RiLockPasswordFill /></InputGroup.Text>
+            <Form.Control id="senha" type="password" placeholder="Senha" value={senha} required
+              onChange={(e) => {
+                setSenha(e.target.value)
+              }} />
+          </InputGroup>
 
-      <Button variant="primary" type="submit"
-        onClick={
-          (e) => {
-            e.preventDefault()
-            entrarUsuario()
-          }
-        }>
-        Entrar
-      </Button>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="Lembre-me"
+              onChange={(e) => {
+                setLembreMe(e.target.value)
+              }} />
+          </Form.Group>
 
-      <p className="mt-3">Não possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/cadastrar">Cadastrar</NavLink></p>
-    </Form>
+          <Button variant="primary" type="submit"
+            onClick={
+              (e) => {
+                e.preventDefault()
+                entrarUsuario()
+              }
+            }>
+            Entrar
+          </Button>
+
+          <p className="mt-3">Não possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/cadastrar">Cadastrar</NavLink></p>
+        </Form>
+      }
+    </>
   );
 }
 

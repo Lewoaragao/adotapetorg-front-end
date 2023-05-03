@@ -5,6 +5,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import Mensagem from './../../components/mensagem/Mensagem';
 import Api from '../../services/Api';
 import TituloPagina from './../../components/TituloPagina';
+import Carregamento from '../../components/Carregamento';
 
 function UsuarioCadastrar() {
   const navigate = useNavigate()
@@ -16,6 +17,7 @@ function UsuarioCadastrar() {
   const [senhaRepetida, setSenhaRepetida] = useState("")
   const [msg, setMsg] = useState("")
   const [msgTipo] = useState("warning")
+  const [isLoading, setIsLoading] = useState(false)
 
   function validaCampos() {
     if (nome === "" || nome === null) {
@@ -53,6 +55,7 @@ function UsuarioCadastrar() {
 
   function cadastrarUsuario() {
     if (validaCampos()) {
+      setIsLoading(true)
       Api.post("users", {
         nome: nome,
         sobrenome: sobrenome,
@@ -62,67 +65,76 @@ function UsuarioCadastrar() {
         navigate("/usuario/entrar")
       }).catch(({ response }) => {
         setMsg(response.data.message)
+      }).finally(() => {
+        setIsLoading(false)
       })
     }
   }
 
   return (
-    <Form className="container col-md-6">
-      <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
+    <>
+      {isLoading
+        ?
+        <Carregamento />
+        :
+        <Form className="container col-md-6">
+          <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-      <TituloPagina titulo="Cadastrar"/>
+          <TituloPagina titulo="Cadastrar" />
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="nome">Nome</Form.Label>
-        <Form.Control id="nome" type="text" placeholder="Digite seu primeiro nome" value={nome} required autoFocus
-          onChange={(e) => {
-            setNome(e.target.value)
-          }} />
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="nome">Nome</Form.Label>
+            <Form.Control id="nome" type="text" placeholder="Digite seu primeiro nome" value={nome} required autoFocus
+              onChange={(e) => {
+                setNome(e.target.value)
+              }} />
+          </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="sobrenome">Sobrenome</Form.Label>
-        <Form.Control id="sobrenome" type="text" placeholder="Digite o restante do seu nome" value={sobrenome} required
-          onChange={(e) => {
-            setSobrenome(e.target.value)
-          }} />
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="sobrenome">Sobrenome</Form.Label>
+            <Form.Control id="sobrenome" type="text" placeholder="Digite o restante do seu nome" value={sobrenome} required
+              onChange={(e) => {
+                setSobrenome(e.target.value)
+              }} />
+          </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="email">E-mail</Form.Label>
-        <Form.Control id="email" type="email" placeholder="Digite seu melhor e-mail" value={email} required
-          onChange={(e) => {
-            setEmail(e.target.value)
-          }} />
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="email">E-mail</Form.Label>
+            <Form.Control id="email" type="email" placeholder="Digite seu melhor e-mail" value={email} required
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }} />
+          </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="senha">Senha</Form.Label>
-        <Form.Control id="senha" type="password" placeholder="Digite sua senha" value={senha} required
-          onChange={(e) => {
-            setSenha(e.target.value)
-          }} />
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="senha">Senha</Form.Label>
+            <Form.Control id="senha" type="password" placeholder="Digite sua senha" value={senha} required
+              onChange={(e) => {
+                setSenha(e.target.value)
+              }} />
+          </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="senhaRepetida">Repetir senha</Form.Label>
-        <Form.Control id="senhaRepetida" type="password" placeholder="Repita a senha" value={senhaRepetida} required
-          onChange={(e) => {
-            setSenhaRepetida(e.target.value)
-          }} />
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="senhaRepetida">Repetir senha</Form.Label>
+            <Form.Control id="senhaRepetida" type="password" placeholder="Repita a senha" value={senhaRepetida} required
+              onChange={(e) => {
+                setSenhaRepetida(e.target.value)
+              }} />
+          </Form.Group>
 
-      <Button variant="primary" type="submit"
-        onClick={(e) => {
-          e.preventDefault()
-          cadastrarUsuario()
-        }}>
-        Cadastrar
-      </Button>
+          <Button variant="primary" type="submit"
+            onClick={(e) => {
+              e.preventDefault()
+              cadastrarUsuario()
+            }}>
+            Cadastrar
+          </Button>
 
-      <p className="mt-3">Já possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/entrar">Entrar</NavLink></p>
-    </Form>
-  );
+          <p className="mt-3">Já possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/entrar">Entrar</NavLink></p>
+        </Form>
+      }
+    </>
+  )
 }
 
 export default UsuarioCadastrar;
