@@ -54,6 +54,7 @@ function PetCadastrar() {
             }).then(({ data }) => {
                 setMsgTipo("success")
                 setMsg(data.message)
+                limparCampos()
             }).catch(({ response }) => {
                 setMsgTipo("danger")
                 setMsg(response.data.message)
@@ -61,6 +62,12 @@ function PetCadastrar() {
                 setIsLoading(false)
             })
         }
+    }
+    
+    function limparCampos() {
+        setNome("")
+        setRaca("")
+        setDataNascimento(null)
     }
 
     return (
