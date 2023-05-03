@@ -80,7 +80,7 @@ function UsuarioCadastrar() {
         <Form className="container col-md-6">
           <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-          <TituloPagina titulo="Cadastrar" />
+          <TituloPagina titulo="Cadastrar Usuário" />
 
           <Form.Group className="mb-3">
             <Form.Label htmlFor="nome">Nome</Form.Label>

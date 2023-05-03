@@ -1,19 +1,20 @@
 import TituloPagina from './../../components/TituloPagina'
+import { TbAlertTriangle } from 'react-icons/tb'
 
 function Inicio({ logo }) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo adota pet org" />
-        
-        <TituloPagina titulo="Início"/>
+    <header className="App-header d-flex justify-content-center align-items-center vh-100">
+      <div className="text-center">
+        <img src={logo} className="rounded-circle" width="300px" alt="logo adota pet org" />
 
-        <p className="text-info fs-1 fw-bold rounded mt-2">
-          Em desenvolvimento...
+        <TituloPagina titulo="Início" />
+
+        <p className="bg-dark text-warning fs-1 fw-bold rounded mt-2">
+          <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
         </p>
         <p>
           <a
-            className="nav-link d-inline mx-2 text-underline-hover"
+            className="nav-link d-inline mx-2 text-underline-hover fs-4"
             href="https://github.com/adotapetorg"
             target="_blank"
             rel="noopener noreferrer"
@@ -21,7 +22,7 @@ function Inicio({ logo }) {
             Github
           </a>
           <a
-            className="nav-link d-inline mx-2 text-underline-hover"
+            className="nav-link d-inline mx-2 text-underline-hover fs-4"
             href="https://instagram.com/adotapetorg"
             target="_blank"
             rel="noopener noreferrer"
@@ -29,7 +30,7 @@ function Inicio({ logo }) {
             Instagram
           </a>
           <a
-            className="nav-link d-inline mx-2 text-underline-hover"
+            className="nav-link d-inline mx-2 text-underline-hover fs-4"
             href="https://youtube.com/@adotapetorg"
             target="_blank"
             rel="noopener noreferrer"
@@ -37,8 +38,8 @@ function Inicio({ logo }) {
             Youtube
           </a>
         </p>
-      </header>
-    </div>
+      </div>
+    </header>
   )
 }
 

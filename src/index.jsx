@@ -10,16 +10,22 @@ import Sobre from './pages/sobre/Sobre';
 import UsuarioCadastrar from './pages/usuario/UsuarioCadastrar';
 import UsuarioEntrar from './pages/usuario/UsuarioEntrar';
 import Error404 from './pages/error/Error404';
+import PetCadastrar from './pages/pet/PetCadastrar';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      // GERAL
       { path: "/", element: <Inicio logo={logo} /> },
       { path: "/sobre", element: <Sobre /> },
+      // USUÁRIO
       { path: "/usuario/cadastrar", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
+      // PET
+      { path: "/pet/cadastrar", element: <PetCadastrar /> },
+      // ERRO
       { path: "/*", element: <Error404 /> },
     ]
   }

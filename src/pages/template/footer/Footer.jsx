@@ -72,8 +72,8 @@ function Footer({ logo }) {
                 </div>
 
                 <div>
-                    <span>Desenvolvido por </span>
-                    <a target="_blank" rel="noreferrer" className="text-reset text-underline-hover fw-bold" href="https://lewoaragao.com.br">Leonardo Aragão</a>
+                    <span>Desenvolvido com carinho por </span>
+                    <a target="_blank" rel="noreferrer" className="text-center text-reset text-underline-hover fw-bold" href="https://lewoaragao.com.br">Leonardo Aragão</a>
                 </div>
             </section>
         </footer>

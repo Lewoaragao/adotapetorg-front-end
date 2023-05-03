@@ -7,6 +7,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import NavBarUsuarioLogado from './NavBarUsuarioLogado';
 import NavBarUsuarioNaoLogado from './NavBarUsuarioNaoLogado';
+import { BiHomeHeart } from 'react-icons/bi';
+import { AiFillQuestionCircle } from 'react-icons/ai';
 
 function Header({ logo, usuarioLogadoVerificado }) {
     const navigate = useNavigate()
@@ -28,7 +30,7 @@ function Header({ logo, usuarioLogadoVerificado }) {
 
     return (
         <>
-            <Navbar sticky="top" bg="light">
+            <Navbar expand="md" sticky="top" bg="light">
                 <Container>
                     <NavLink to="/">
                         <img
@@ -39,10 +41,11 @@ function Header({ logo, usuarioLogadoVerificado }) {
                             alt="logo adota pet org"
                         />
                     </NavLink>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse className="justify-content-end">
-                        <Nav>
-                            <NavLink className="nav nav-link text-secondary" to="/">Início</NavLink>
-                            <NavLink className="nav nav-link text-secondary" to="/sobre">Sobre</NavLink>
+                        <Nav className="gap-2">
+                            <NavLink className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1" to="/"><BiHomeHeart /> Início</NavLink>
+                            <NavLink className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1" to="/sobre"><AiFillQuestionCircle /> Sobre</NavLink>
 
                             {isUsuarioLogado
                                 ?
