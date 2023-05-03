@@ -8,6 +8,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { InputGroup } from 'react-bootstrap';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordFill } from 'react-icons/ri';
+import TituloPagina from './../../components/TituloPagina';
 
 function UsuarioEntrar() {
   const navigate = useNavigate()
@@ -53,8 +54,8 @@ function UsuarioEntrar() {
   return (
     <Form className="container col-md-6">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-
-      <h1 className="fw-bold">Entrar</h1>
+      
+      <TituloPagina titulo="Entrar"/>
 
       <InputGroup className="mb-3">
         <InputGroup.Text id="email"><HiOutlineMail /></InputGroup.Text>

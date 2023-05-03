@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import { useNavigate, NavLink } from "react-router-dom";
 import Mensagem from './../../components/mensagem/Mensagem';
 import Api from '../../services/Api';
+import TituloPagina from './../../components/TituloPagina';
 
 function UsuarioCadastrar() {
   const navigate = useNavigate()
@@ -69,7 +70,7 @@ function UsuarioCadastrar() {
     <Form className="container col-md-6">
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-      <h1 className="fw-bold">Cadastrar</h1>
+      <TituloPagina titulo="Cadastrar"/>
 
       <Form.Group className="mb-3">
         <Form.Label htmlFor="nome">Nome</Form.Label>

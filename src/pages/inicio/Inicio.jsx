@@ -1,9 +1,13 @@
+import TituloPagina from './../../components/TituloPagina'
+
 function Inicio({ logo }) {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h1 className="fw-bold mt-3">Início</h1>
+        
+        <TituloPagina titulo="Início"/>
+
         <p id="textoDesenv" className="mt-2">
           Em desenvolvimento...
         </p>
