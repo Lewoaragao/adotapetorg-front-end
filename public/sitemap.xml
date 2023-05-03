@@ -5,7 +5,7 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://adotapet.org/</loc>
-    <lastmod>2023-04-26</lastmod>
+    <lastmod>2023-05-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -17,14 +17,20 @@
   </url>
   <url>
     <loc>https://adotapet.org/usuario/cadastrar</loc>
-    <lastmod>2023-04-26</lastmod>
+    <lastmod>2023-05-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://adotapet.org/usuario/entrar</loc>
-    <lastmod>2023-04-26</lastmod>
+    <lastmod>2023-05-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://adotapet.org/pet/cadastrar</loc>
+    <lastmod>2023-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>
