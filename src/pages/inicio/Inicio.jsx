@@ -60,7 +60,7 @@ function Inicio({ logo }) {
           </a>
         </p>
 
-        {/* <Row xs={3} md={3} className="g-4">
+        <Row xs={3} md={3} className="g-4">
           {listaPets.map((item) => (
             <Col>
               <Card>
@@ -74,7 +74,7 @@ function Inicio({ logo }) {
               </Card>
             </Col>
           ))}
-        </Row> */}
+        </Row>
       </div >
     </header>
   )
