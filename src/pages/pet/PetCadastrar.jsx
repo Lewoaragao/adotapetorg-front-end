@@ -12,6 +12,7 @@ function PetCadastrar() {
     const [nome, setNome] = useState("")
     const [raca, setRaca] = useState("")
     const [dataNascimento, setDataNascimento] = useState(null)
+    const [imagem, setImagem] = useState('')
     const [msg, setMsg] = useState("")
     const [msgTipo, setMsgTipo] = useState("warning")
     const [isLoading, setIsLoading] = useState(false)
@@ -30,8 +31,8 @@ function PetCadastrar() {
             return false
         }
 
-        if (raca === "" || raca === null) {
-            setMsg("Preencha o campo raça")
+        if (dataNascimento === "" || dataNascimento === null) {
+            setMsg("Preencha o campo data nascimento")
             return false
         }
 
@@ -40,16 +41,20 @@ function PetCadastrar() {
 
     function cadastrarPet() {
         if (validaCampos()) {
-            setIsLoading(true)
-            setMsg("")
-            Api.post("pets", {
+        setIsLoading(true)
+        setMsg("")
+        Api.post("pets",
+            {
                 usuario_id: usuarioLogado.id,
                 nome: nome,
                 raca: raca,
                 data_nascimento: dataNascimento,
-            }, {
+                imagem: imagem
+            },
+            {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
                 }
             }).then(({ data }) => {
                 setMsgTipo("success")
@@ -58,16 +63,18 @@ function PetCadastrar() {
             }).catch(({ response }) => {
                 setMsgTipo("danger")
                 setMsg(response.data.message)
+                console.log(response.data)
             }).finally(() => {
                 setIsLoading(false)
             })
         }
     }
-    
+
     function limparCampos() {
         setNome("")
         setRaca("")
         setDataNascimento(null)
+        setImagem()
     }
 
     return (
@@ -76,7 +83,7 @@ function PetCadastrar() {
                 ?
                 <Carregamento />
                 :
-                <Form className="container col-md-6">
+                <Form className="container col-md-6" encType="multipart/form-data">
                     <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
                     <TituloPagina titulo="Cadastrar Pet" />
@@ -99,11 +106,19 @@ function PetCadastrar() {
 
                     <Form.Group className="mb-3">
                         <Form.Label htmlFor="dataNascimento">Data nascimento</Form.Label>
-                        <Form.Control id="dataNascimento" type="date" value={dataNascimento} required 
+                        <Form.Control id="dataNascimento" type="date" value={dataNascimento} required
                             onChange={(e) => {
                                 setDataNascimento(e.target.value)
                             }} />
                     </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <Form.Label htmlFor="imagem">Imagem</Form.Label>
+                        <Form.Control id="imagem" type="file" onChange={(e) =>
+                            setImagem(e.target.files[0]
+                            )} />
+                    </Form.Group>
+
 
                     <Button variant="primary" type="submit"
                         onClick={(e) => {

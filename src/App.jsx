@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       <Header logo={logo} usuarioLogadoVerificado={usuarioLogadoVerificado} />
-      <Container className="mb-5 pb-5">
+      <Container className="my-5">
         <Outlet />
       </Container>
       <BtnVoltarTopo />

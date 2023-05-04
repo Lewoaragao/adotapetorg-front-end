@@ -3,27 +3,32 @@ import Api from '../../services/Api'
 import TituloPagina from './../../components/TituloPagina'
 import { TbAlertTriangle } from 'react-icons/tb'
 import { Button, Card, CardGroup, Col, Row } from 'react-bootstrap';
+import Carregamento from '../../components/Carregamento';
 
 function Inicio({ logo }) {
 
   const [listaPets, setListaPets] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     listarTodosPets()
   }, []);
 
   function listarTodosPets() {
-    Api.get("pets/?page=2")
+    setIsLoading(true)
+    Api.get("pets")
       .then(({ data }) => {
         setListaPets(data.data)
       }).catch(({ response }) => {
         console.log(response.data.message)
+      }).finally(() => {
+        setIsLoading(false)
       })
   }
 
 
   return (
-    <header className="App-header d-flex justify-content-center align-items-center">
+    <div className="d-flex justify-content-center align-items-center">
       <div className="text-center">
 
         <img src={logo} className="rounded-circle" width="300px" alt="logo adota pet org" />
@@ -60,23 +65,28 @@ function Inicio({ logo }) {
           </a>
         </p>
 
-        <Row xs={3} md={3} className="g-4">
-          {listaPets.map((item) => (
-            <Col>
-              <Card>
-                <Card.Img variant="top" src={item.foto} />
-                <Card.Body>
-                  <Card.Title>{item.nome}</Card.Title>
-                  <Card.Text>
-                  {item.foto}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {isLoading
+          ?
+          <Carregamento />
+          :
+          <Row xs={2} md={3} className="g-4">
+            {listaPets.map((pet) => (
+              <Col>
+                <Card>
+                  <Card.Img variant="top" src={process.env.REACT_APP_API_URL + pet.imagem} alt={`foto pet ${pet.nome}`} />
+                  <Card.Body >
+                    <Card.Title>{pet.nome}</Card.Title>
+                    <Card.Text>
+                      {pet.raca}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        }
       </div >
-    </header>
+    </div>
   )
 }
 
