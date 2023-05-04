@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Api from '../../services/Api'
 import TituloPagina from './../../components/TituloPagina'
 import { TbAlertTriangle } from 'react-icons/tb'
-import { Button, Card, CardGroup, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import Carregamento from '../../components/Carregamento';
 
 function Inicio({ logo }) {
