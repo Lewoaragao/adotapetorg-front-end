@@ -13,7 +13,7 @@ function Inicio({ logo }) {
   }, []);
 
   function listarTodosPets() {
-    Api.get("pets")
+    Api.get("pets/?page=2")
       .then(({ data }) => {
         setListaPets(data.data)
       }).catch(({ response }) => {
