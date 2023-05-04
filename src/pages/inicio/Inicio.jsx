@@ -1,10 +1,31 @@
+import { useEffect, useState } from 'react';
+import Api from '../../services/Api'
 import TituloPagina from './../../components/TituloPagina'
 import { TbAlertTriangle } from 'react-icons/tb'
+import { Button, Card, CardGroup, Col, Row } from 'react-bootstrap';
 
 function Inicio({ logo }) {
+
+  const [listaPets, setListaPets] = useState([])
+
+  useEffect(() => {
+    listarTodosPets()
+  }, []);
+
+  function listarTodosPets() {
+    Api.get("pets")
+      .then(({ data }) => {
+        setListaPets(data.data)
+      }).catch(({ response }) => {
+        console.log(response.data.message)
+      })
+  }
+
+
   return (
-    <header className="App-header d-flex justify-content-center align-items-center vh-100">
+    <header className="App-header d-flex justify-content-center align-items-center">
       <div className="text-center">
+
         <img src={logo} className="rounded-circle" width="300px" alt="logo adota pet org" />
 
         <TituloPagina titulo="Início" />
@@ -38,7 +59,23 @@ function Inicio({ logo }) {
             Youtube
           </a>
         </p>
-      </div>
+
+        <Row xs={3} md={3} className="g-4">
+          {listaPets.map((item) => (
+            <Col>
+              <Card>
+                <Card.Img variant="top" src={item.foto} />
+                <Card.Body>
+                  <Card.Title>{item.nome}</Card.Title>
+                  <Card.Text>
+                  {item.foto}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div >
     </header>
   )
 }
