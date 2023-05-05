@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { /* FaFacebook */ FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaHome, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaHome, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 
 function Footer({ logo }) {
 
@@ -27,7 +27,7 @@ function Footer({ logo }) {
                     <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://github.com/adotapetorg"><FaGithub /></a>
                     <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://linkedin.com/company/adotapetorg"><FaLinkedin /></a>
                     <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://twitter.com/adotapetorg"><FaTwitter /></a>
-                    {/* <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://facebok.com/adotapetorg"><FaFacebook /></a> */}
+                    <a className="btn btn-warning mx-1" target="_blank" rel="noreferrer" href="https://facebok.com/adotapetorg"><FaFacebook /></a>
                 </div>
             </section>
 
