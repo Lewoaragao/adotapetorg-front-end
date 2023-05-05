@@ -45,7 +45,7 @@ function PetCadastrar() {
         setMsg("")
         Api.post("pets",
             {
-                usuario_id: usuarioLogado.id,
+                user_id: usuarioLogado.id,
                 nome: nome,
                 raca: raca,
                 data_nascimento: dataNascimento,
