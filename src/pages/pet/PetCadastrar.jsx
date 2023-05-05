@@ -41,32 +41,32 @@ function PetCadastrar() {
 
     function cadastrarPet() {
         if (validaCampos()) {
-        setIsLoading(true)
-        setMsg("")
-        Api.post("pets",
-            {
-                user_id: usuarioLogado.id,
-                nome: nome,
-                raca: raca,
-                data_nascimento: dataNascimento,
-                imagem: imagem
-            },
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                }
-            }).then(({ data }) => {
-                setMsgTipo("success")
-                setMsg(data.message)
-                limparCampos()
-            }).catch(({ response }) => {
-                setMsgTipo("danger")
-                setMsg(response.data.message)
-                console.log(response.data)
-            }).finally(() => {
-                setIsLoading(false)
-            })
+            setIsLoading(true)
+            setMsg("")
+            Api.post("pets",
+                {
+                    user_id: usuarioLogado.id,
+                    nome: nome,
+                    raca: raca,
+                    data_nascimento: dataNascimento,
+                    imagem: imagem
+                },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    }
+                }).then(({ data }) => {
+                    setMsgTipo("success")
+                    setMsg(data.message)
+                    limparCampos()
+                }).catch(({ response }) => {
+                    setMsgTipo("danger")
+                    setMsg(response.data.message)
+                    console.log(response.data)
+                }).finally(() => {
+                    setIsLoading(false)
+                })
         }
     }
 
