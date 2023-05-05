@@ -6,7 +6,7 @@ function TituloPagina({ titulo }) {
     }, [titulo]);
 
     return (
-        <h1 className="fw-bold">{titulo}</h1>
+        <h1 className="fw-bold text-primary">{titulo}</h1>
     );
 }
 

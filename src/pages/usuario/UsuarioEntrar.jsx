@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Mensagem from '../../components/mensagem/Mensagem';
 import Api from '../../services/Api';
 import { AuthContext } from '../../contexts/AuthContext';
-import { InputGroup } from 'react-bootstrap';
+import { InputGroup, Row } from 'react-bootstrap';
 import { HiOutlineMail } from 'react-icons/hi';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import TituloPagina from './../../components/TituloPagina';
@@ -62,35 +62,41 @@ function UsuarioEntrar() {
         ?
         <Carregamento />
         :
-        <Form className="container col-md-6">
+        <Form className="container col-md-12 col-lg-6">
           <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
           <TituloPagina titulo="Entrar" />
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="email"><HiOutlineMail /></InputGroup.Text>
-            <Form.Control id="email" type="email" placeholder="E-mail" value={email} required
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }} />
-          </InputGroup>
+          <Row>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="email"><HiOutlineMail /></InputGroup.Text>
+              <Form.Control id="email" type="email" placeholder="E-mail" value={email} required
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                }} />
+            </InputGroup>
+          </Row>
 
-          <InputGroup className="mb-3">
-            <InputGroup.Text id="senha"><RiLockPasswordFill /></InputGroup.Text>
-            <Form.Control id="senha" type="password" placeholder="Senha" value={senha} required
-              onChange={(e) => {
-                setSenha(e.target.value)
-              }} />
-          </InputGroup>
+          <Row>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="senha"><RiLockPasswordFill /></InputGroup.Text>
+              <Form.Control id="senha" type="password" placeholder="Senha" value={senha} required
+                onChange={(e) => {
+                  setSenha(e.target.value)
+                }} />
+            </InputGroup>
+          </Row>
 
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Lembre-me"
-              onChange={(e) => {
-                setLembreMe(e.target.value)
-              }} />
-          </Form.Group>
+          <Row>
+            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+              <Form.Check type="checkbox" label="Lembre-me"
+                onChange={(e) => {
+                  setLembreMe(e.target.value)
+                }} />
+            </Form.Group>
+          </Row>
 
-          <Button variant="primary" type="submit"
+          <Button className="mb-3" variant="primary" type="submit"
             onClick={
               (e) => {
                 e.preventDefault()
@@ -100,7 +106,7 @@ function UsuarioEntrar() {
             Entrar
           </Button>
 
-          <p className="mt-3">Não possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/cadastrar">Cadastrar</NavLink></p>
+          <p>Não possui uma conta? <NavLink className="nav-link d-inline text-decoration-underline" to="/usuario/cadastrar">Cadastrar</NavLink></p>
         </Form>
       }
     </>
