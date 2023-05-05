@@ -1,32 +1,8 @@
-import { useEffect, useState } from 'react';
-import Api from '../../services/Api'
 import TituloPagina from './../../components/TituloPagina'
 import { TbAlertTriangle } from 'react-icons/tb'
-import { Card, Col, Row } from 'react-bootstrap';
-import Carregamento from '../../components/Carregamento';
+import PetListar from '../../components/pet/PetListar';
 
 function Inicio({ logo }) {
-
-  const [listaPets, setListaPets] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    listarTodosPets()
-  }, []);
-
-  function listarTodosPets() {
-    setIsLoading(true)
-    Api.get("pets")
-      .then(({ data }) => {
-        setListaPets(data.data)
-      }).catch(({ response }) => {
-        console.log(response.data.message)
-      }).finally(() => {
-        setIsLoading(false)
-      })
-  }
-
-
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div className="text-center">
@@ -65,26 +41,7 @@ function Inicio({ logo }) {
           </a>
         </p>
 
-        {isLoading
-          ?
-          <Carregamento />
-          :
-          <Row xs={2} md={3} className="g-4">
-            {listaPets.map((pet) => (
-              <Col>
-                <Card>
-                  <Card.Img variant="top" src={process.env.REACT_APP_API_URL + pet.imagem} alt={`foto pet ${pet.nome}`} />
-                  <Card.Body >
-                    <Card.Title>{pet.nome}</Card.Title>
-                    <Card.Text>
-                      {pet.raca}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        }
+        <PetListar endpoint="pets"/>
       </div >
     </div>
   )
