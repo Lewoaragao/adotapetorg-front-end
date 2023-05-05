@@ -10,6 +10,7 @@ function PetListar({ endpoint }) {
 
     useEffect(() => {
         listarTodosPets()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function listarTodosPets() {
