@@ -1,6 +1,6 @@
+import PetListarTodos from '../../components/pet/PetListarTodos'
 import TituloPagina from './../../components/TituloPagina'
 import { TbAlertTriangle } from 'react-icons/tb'
-import PetListar from '../../components/pet/PetListar';
 
 function Inicio({ logo }) {
   return (
@@ -41,8 +41,8 @@ function Inicio({ logo }) {
           </a>
         </p>
 
-        <PetListar endpoint="pets"/>
-      </div >
+        <PetListarTodos />
+      </div>
     </div>
   )
 }

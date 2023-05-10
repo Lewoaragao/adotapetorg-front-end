@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import Api from '../../services/Api'
 import { Card, Col, Row } from 'react-bootstrap'
-import Carregamento from '../../components/Carregamento'
+import Carregamento from '../Carregamento'
+import { NavLink } from 'react-router-dom'
 
-function PetListar({ endpoint }) {
+function PetListarTodos() {
 
     const [listaPets, setListaPets] = useState([])
     const [isLoading, setIsLoading] = useState(false)
@@ -15,7 +16,7 @@ function PetListar({ endpoint }) {
 
     function listarTodosPets() {
         setIsLoading(true)
-        Api.get(`${endpoint}`)
+        Api.get("pets")
             .then(({ data }) => {
                 setListaPets(data.data)
             }).catch(({ response }) => {
@@ -42,6 +43,7 @@ function PetListar({ endpoint }) {
                                         {pet.raca}
                                     </Card.Text>
                                 </Card.Body>
+                                <Card.Footer><NavLink to={`/pet/informacao/${pet.id}`}>Informações</NavLink ></Card.Footer>
                             </Card>
                         </Col>
                     ))}
@@ -51,4 +53,4 @@ function PetListar({ endpoint }) {
     )
 }
 
-export default PetListar
+export default PetListarTodos

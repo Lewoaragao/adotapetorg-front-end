@@ -11,6 +11,7 @@ import UsuarioCadastrar from './pages/usuario/UsuarioCadastrar';
 import UsuarioEntrar from './pages/usuario/UsuarioEntrar';
 import Error404 from './pages/error/Error404';
 import PetCadastrar from './pages/pet/PetCadastrar';
+import PetInformacao from './pages/pet/PetInformacao';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
       // PET
       { path: "/pet/cadastrar", element: <PetCadastrar /> },
+      { path: "/pet/informacao/:id", element: <PetInformacao /> },
       // ERRO
       { path: "/*", element: <Error404 /> },
     ]
