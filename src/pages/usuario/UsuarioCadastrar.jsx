@@ -13,6 +13,7 @@ function UsuarioCadastrar() {
 
   const [nome, setNome] = useState("")
   const [sobrenome, setSobrenome] = useState("")
+  const [dataNascimento, setDataNascimento] = useState(null)
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
   const [senhaRepetida, setSenhaRepetida] = useState("")
@@ -27,7 +28,7 @@ function UsuarioCadastrar() {
   const [cnpj, setCnpj] = useState("")
   const [telefone, setTelefone] = useState("")
   const [telefoneIsWhatsapp, setTelefoneIsWhatsapp] = useState(false)
-  const [isPessoaFisica, setIsPessoaFisica] = useState(false)
+  const [isPessoaFisica, setIsPessoaFisica] = useState(true)
   const [msg, setMsg] = useState("")
   const [msgTipo] = useState("warning")
   const [isLoading, setIsLoading] = useState(false)
@@ -40,6 +41,11 @@ function UsuarioCadastrar() {
 
     if (sobrenome === "" || sobrenome === null) {
       setMsg("Preencha o campo sobrenome")
+      return false
+    }
+
+    if (dataNascimento === "" || dataNascimento === null) {
+      setMsg("Preencha o campo data de nascimento")
       return false
     }
 
@@ -92,12 +98,17 @@ function UsuarioCadastrar() {
       setMsg("Preencha o campo CPF")
       return false
     }
-
+    
     if (!isPessoaFisica && cnpj == null) {
       setMsg("Preencha o campo CNPJ")
       return false
     }
-
+    
+    if (telefone === "" || telefone === null) {
+      setMsg("Preencha o campo telefone")
+      return false
+    }
+    
     return true
   }
 
@@ -107,6 +118,7 @@ function UsuarioCadastrar() {
       Api.post("users", {
         nome: nome,
         sobrenome: sobrenome,
+        data_nascimento: dataNascimento,
         email: email,
         senha: senha,
         imagem: imagem,
@@ -118,7 +130,7 @@ function UsuarioCadastrar() {
         cpf: isPessoaFisica ? cpf : null,
         cnpj: isPessoaFisica ? null : cnpj,
         telefone: telefone,
-        telefone_is_whatsapp: telefoneIsWhatsapp,
+        telefone_is_whatsapp: telefoneIsWhatsapp ? 1 : 0,
       },
         {
           headers: {
@@ -136,6 +148,8 @@ function UsuarioCadastrar() {
 
   function mudarPessoaFisicaJuridica() {
     setIsPessoaFisica(!isPessoaFisica)
+    setCpf("")
+    setCnpj("")
   }
 
   function mudarTelefoneIsWhatsapp() {
@@ -148,7 +162,7 @@ function UsuarioCadastrar() {
         ?
         <Carregamento />
         :
-        <Form className="container col-md-12 col-lg-8">
+        <Form>
           <Row>
             <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
@@ -171,6 +185,16 @@ function UsuarioCadastrar() {
                 <Form.Control id="sobrenome" type="text" placeholder="Digite o restante do seu nome" value={sobrenome} required
                   onChange={(e) => {
                     setSobrenome(e.target.value)
+                  }} />
+              </Form.Group>
+            </Col>
+
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold" htmlFor="dataNascimento">Data de nascimento</Form.Label>
+                <Form.Control id="dataNascimento" type="date" placeholder="Digite o restante do seu nome" value={dataNascimento} required
+                  onChange={(e) => {
+                    setDataNascimento(e.target.value)
                   }} />
               </Form.Group>
             </Col>
@@ -298,7 +322,7 @@ function UsuarioCadastrar() {
               <Col className="col-8">
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="cpf">CPF</Form.Label>
-                  <Form.Control id="cpf" type="text" placeholder="Digite seu CPF" value={cpf} required
+                  <Form.Control id="cpf" type="text" placeholder="Digite seu CPF" value={cpf} required minLength="11" maxLength="11"
                     onChange={(e) => {
                       setCpf(e.target.value)
                     }} />
@@ -308,7 +332,7 @@ function UsuarioCadastrar() {
               <Col className="col-8">
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="cnpj">CNPJ</Form.Label>
-                  <Form.Control id="cnpj" type="text" placeholder="Digite seu CNPJ" value={cnpj} required
+                  <Form.Control id="cnpj" type="text" placeholder="Digite seu CNPJ" value={cnpj} required minLength="14" maxLength="14"
                     onChange={(e) => {
                       setCnpj(e.target.value)
                     }} />
