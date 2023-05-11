@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Api from "../../services/Api"
-import Carregamento from './../../components/Carregamento'
+import Carregamento, { CarregamentoBotao } from './../../components/Carregamento'
 import TituloPagina from './../../components/TituloPagina'
 import { formataData } from "../../utils/DataUtil"
 import { formataCelular } from "../../utils/Mask"
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { AuthContext } from "../../contexts/AuthContext"
-import Mensagem from "../../components/mensagem/Mensagem"
 
 function PetInformacao() {
 
@@ -16,8 +15,7 @@ function PetInformacao() {
     const [usuarioResponsavel, setUsuarioResponsavel] = useState([])
     const [petFavoritado, setPetFavoritado] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [msg, setMsg] = useState("")
-    const [msgTipo, setMsgTipo] = useState("warning")
+    const [isLoadingButton, setIsLoadingButton] = useState(false)
     const { token, isUsuarioLogado } = useContext(AuthContext)
 
     useEffect(() => {
@@ -39,76 +37,74 @@ function PetInformacao() {
     }
 
     function favoritarPet(idPet) {
-        setIsLoading(true)
+        setIsLoadingButton(true)
         setPetFavoritado(true)
         Api.post(`pets/${idPet}/favoritar`, null,
             {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
-            }).then(({ data }) => {
-                setMsgTipo("success")
-                setMsg(data.message)
             }).catch(({ response }) => {
-                setMsgTipo("danger")
-                setMsg(response.data.message)
+                console.log(response.data.message)
             }).finally(() => {
-                setIsLoading(false)
+                setIsLoadingButton(false)
             })
     }
 
     function desfavoritarPet(idPet) {
-        setIsLoading(true)
+        setIsLoadingButton(true)
         setPetFavoritado(false)
         Api.post(`pets/${idPet}/desfavoritar`, null,
             {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
-            }).then(({ data }) => {
-                setMsgTipo("success")
-                setMsg(data.message)
             }).catch(({ response }) => {
-                setMsgTipo("danger")
-                setMsg(response.data.message)
+                console.log(response.data.message)
             }).finally(() => {
-                setIsLoading(false)
+                setIsLoadingButton(false)
             })
     }
 
     return (
         <>
-            {
-                isLoading
-                    ?
-                    <Carregamento />
-                    :
+
+            {isLoading
+                ?
+                <Carregamento />
+                :
+                <>
                     <div className="d-flex justify-content-center align-items-center flex-wrap gap-3">
                         <img className="img-thumbnail" style={{ maxWidth: '300px' }} src={process.env.REACT_APP_API_URL + pet.imagem} alt={`foto pet ${pet.nome}`} />
                         <div className="fs-4">
-                            <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-                            <TituloPagina titulo="Informação Pet" />
+
+
+                            <TituloPagina titulo="Pet Informação" />
+
                             <p><span className="fw-bold">Nome:</span> {pet.nome}</p>
                             <p><span className="fw-bold">Data de nascimento:</span> {formataData(pet.data_nascimento)}</p>
                             <p><span className="fw-bold">Responsável:</span> {usuarioResponsavel.nome}</p>
                             <p><span className="fw-bold">Contato:</span> {formataCelular(usuarioResponsavel.telefone)}</p>
-                            {
-                                petFavoritado
-                                    ?
-                                    <button className="btn btn-warning" 
-                                    disabled={!isUsuarioLogado}
-                                    onClick={() => desfavoritarPet(pet.id)}>
-                                        <BsStarFill />
+                            <div>
+                                {
+                                    petFavoritado
+                                        ?
+                                        <button className="btn btn-warning"
+                                            disabled={!isUsuarioLogado}
+                                            onClick={() => desfavoritarPet(pet.id)}>
+                                            {isLoadingButton ? <CarregamentoBotao /> : <BsStarFill />}
                                         </button>
-                                    :
-                                    <button className="btn btn-warning" 
-                                    disabled={!isUsuarioLogado}
-                                    onClick={() => favoritarPet(pet.id)}>
-                                        <BsStar />
+                                        :
+                                        <button className="btn btn-warning"
+                                            disabled={!isUsuarioLogado}
+                                            onClick={() => favoritarPet(pet.id)}>
+                                            {isLoadingButton ? <CarregamentoBotao /> : <BsStar />}
                                         </button>
-                            }
+                                }
+                            </div>
                         </div>
                     </div>
+                </>
             }
         </>
     )

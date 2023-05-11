@@ -86,7 +86,7 @@ function PetCadastrar() {
                 <Form className="container col-md-6" encType="multipart/form-data">
                     <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-                    <TituloPagina titulo="Cadastrar Pet" />
+                    <TituloPagina titulo="Pet Cadastar" />
 
                     <Form.Group className="mb-3">
                         <Form.Label htmlFor="nome">Nome</Form.Label>
