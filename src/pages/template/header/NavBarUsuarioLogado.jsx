@@ -13,7 +13,7 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
 
                     <Dropdown.Menu>
                         <NavLink className="dropdown-item" to="/pet/cadastrar">Cadastrar Pet</NavLink>
-                        <NavLink className="dropdown-item disabled" to="/pet/meus">Meus Pets</NavLink>
+                        <NavLink className="dropdown-item" to="/pet/meus">Meus Pets</NavLink>
                         <NavLink className="dropdown-item disabled" to="/pet/favoritos">Pets Favoritos</NavLink>
                     </Dropdown.Menu>
                 </Dropdown>
