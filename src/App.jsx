@@ -1,6 +1,6 @@
 import './App.css';
 import { Container } from 'react-bootstrap';
-import logo from './images/logo.jpg';
+import logo from './images/logo-adotapetorg.jpg';
 import { Outlet } from 'react-router-dom';
 import BtnVoltarTopo from './components/buttons/BtnVoltarTopo';
 import { useContext, useState } from 'react';

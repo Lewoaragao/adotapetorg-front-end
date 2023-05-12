@@ -63,7 +63,6 @@ function PetCadastrar() {
                 }).catch(({ response }) => {
                     setMsgTipo("danger")
                     setMsg(response.data.message)
-                    console.log(response.data)
                 }).finally(() => {
                     setIsLoading(false)
                 })

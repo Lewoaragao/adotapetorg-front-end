@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import logo from './images/logo.jpg'
+import logo from './images/logo-adotapetorg.jpg'
 import { AuthProvider } from './contexts/AuthContext';
 import Inicio from './pages/inicio/Inicio';
 import Sobre from './pages/sobre/Sobre';
@@ -12,7 +12,8 @@ import UsuarioEntrar from './pages/usuario/UsuarioEntrar';
 import Error404 from './pages/error/Error404';
 import PetCadastrar from './pages/pet/PetCadastrar';
 import PetInformacao from './pages/pet/PetInformacao';
-import PetMeus from './pages/pet/PetMeu';
+import PetUsuarioLogado from './pages/pet/PetUsuarioLogado';
+import PetUsuarioLogadoFavoritos from './pages/pet/PetUsuarioLogadoFavoritos';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
       // PET
       { path: "/pet/cadastrar", element: <PetCadastrar /> },
       { path: "/pet/informacao/:id", element: <PetInformacao /> },
-      { path: "/pet/meus", element: <PetMeus /> },
+      { path: "/pet/meus", element: <PetUsuarioLogado /> },
+      { path: "/pet/favoritos", element: <PetUsuarioLogadoFavoritos /> },
       // ERRO
       { path: "/*", element: <Error404 /> },
     ]
