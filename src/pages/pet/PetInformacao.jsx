@@ -84,6 +84,8 @@ function PetInformacao() {
                             <p><span className="fw-bold">Nome:</span> {pet.nome}</p>
                             <p><span className="fw-bold">Data de nascimento:</span> {formataData(pet.data_nascimento)}</p>
                             <p><span className="fw-bold">Responsável:</span> {usuarioResponsavel.nome}</p>
+                            <p><span className="fw-bold">Cidade:</span> {usuarioResponsavel.cidade_endereco}</p>
+                            <p><span className="fw-bold">Estado:</span> {usuarioResponsavel.estado_endereco}</p>
                             <p><span className="fw-bold">Contato:</span> {formataCelular(usuarioResponsavel.telefone)}</p>
                             <div>
                                 {
