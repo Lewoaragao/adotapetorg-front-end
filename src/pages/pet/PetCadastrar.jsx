@@ -72,7 +72,7 @@ function PetCadastrar() {
     function limparCampos() {
         setNome("")
         setRaca("")
-        setDataNascimento(null)
+        setDataNascimento("")
         setImagem()
     }
 
