@@ -14,6 +14,7 @@ import PetCadastrar from './pages/pet/PetCadastrar';
 import PetInformacao from './pages/pet/PetInformacao';
 import PetUsuarioLogado from './pages/pet/PetUsuarioLogado';
 import PetUsuarioLogadoFavoritos from './pages/pet/PetUsuarioLogadoFavoritos';
+import PrivateRoute from './routes/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -27,10 +28,10 @@ const router = createBrowserRouter([
       { path: "/usuario/cadastrar", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
       // PET
-      { path: "/pet/cadastrar", element: <PetCadastrar /> },
+      { path: "/pet/cadastrar", element: <PrivateRoute element={<PetCadastrar />} /> },
       { path: "/pet/informacao/:id", element: <PetInformacao /> },
-      { path: "/pet/meus", element: <PetUsuarioLogado /> },
-      { path: "/pet/favoritos", element: <PetUsuarioLogadoFavoritos /> },
+      { path: "/pet/meus", element: <PrivateRoute element={<PetUsuarioLogado />} /> },
+      { path: "/pet/favoritos", element: <PrivateRoute element={<PetUsuarioLogadoFavoritos />} /> },
       // ERRO
       { path: "/*", element: <Error404 /> },
     ]

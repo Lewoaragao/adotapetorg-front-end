@@ -4,7 +4,7 @@ import Api from "../services/Api";
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    
+
     const [usuarioLogado, setUsuarioLogado] = useState({})
     const [isUsuarioLogado, setIsUsuarioLogado] = useState(false)
     const [token, setToken] = useState("")
@@ -31,12 +31,12 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const getUsuarioLogado = () => {
-        return usuarioLogado
-    }
-
     return (
-        <AuthContext.Provider value={{ isUsuarioLogado, usuarioLogado, setarUsuarioLogado, token, verificaUsuarioLogado, getUsuarioLogado }}>
+        <AuthContext.Provider value={{
+            isUsuarioLogado, usuarioLogado,
+            setarUsuarioLogado, 
+            token, verificaUsuarioLogado, 
+        }}>
             {children}
         </AuthContext.Provider>
     )
