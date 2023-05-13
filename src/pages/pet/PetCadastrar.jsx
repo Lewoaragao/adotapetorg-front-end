@@ -11,7 +11,7 @@ function PetCadastrar() {
 
     const [nome, setNome] = useState("")
     const [raca, setRaca] = useState("")
-    const [dataNascimento, setDataNascimento] = useState(null)
+    const [dataNascimento, setDataNascimento] = useState("")
     const [imagem, setImagem] = useState("")
     const [msg, setMsg] = useState("")
     const [msgTipo, setMsgTipo] = useState("warning")
