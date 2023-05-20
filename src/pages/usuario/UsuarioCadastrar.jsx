@@ -166,7 +166,7 @@ function UsuarioCadastrar() {
           <Row>
             <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-            <TituloPagina titulo="Cadastrar Usuário" />
+            <TituloPagina titulo="Cadastro de Usuário" />
           </Row>
           <Row>
             <Col>

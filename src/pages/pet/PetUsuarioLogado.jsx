@@ -40,7 +40,7 @@ export default function PetUsuarioLogado() {
                 <Carregamento />
                 :
                 <>
-                    <TituloPagina titulo="Pet Meus" />
+                    <TituloPagina titulo="Meus Pets" />
                     
                     <Row xs={2} md={3} className="g-4">
                         {listaPets == null
