@@ -1,15 +1,13 @@
-import Alert from 'react-bootstrap/Alert'
+import Alert from "react-bootstrap/Alert";
 
 function Mensagem({ mensagem, mensagemTipo }) {
-    return (
-        <>
-            {mensagem !== '' && mensagem !== null && (
-                <Alert variant={mensagemTipo}>
-                    {mensagem}
-                </Alert>
-            )}
-        </>
-    )
+  return (
+    <>
+      {mensagem !== "" && mensagem !== null && (
+        <Alert variant={mensagemTipo}>{mensagem}</Alert>
+      )}
+    </>
+  );
 }
 
-export default Mensagem
+export default Mensagem;

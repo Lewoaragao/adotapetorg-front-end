@@ -40,9 +40,9 @@ function Inicio({ logo }) {
             width="300px"
             alt="logo adota pet org"
           />
-  
+
           <TituloPagina titulo="Início" />
-  
+
           <p className="bg-dark text-warning fs-1 fw-bold rounded mt-2">
             <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
           </p>

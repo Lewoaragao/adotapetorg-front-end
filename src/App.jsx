@@ -1,21 +1,20 @@
-import './App.css';
-import { Container } from 'react-bootstrap';
-import logo from './images/logo-adotapetorg.jpg';
-import { Outlet } from 'react-router-dom';
-import BtnVoltarTopo from './components/buttons/BtnVoltarTopo';
-import { useContext, useState } from 'react';
-import { AuthContext } from './contexts/AuthContext';
-import Header from './pages/template/header/Header'
-import Footer from './pages/template/footer/Footer';
+import "./App.css";
+import { Container } from "react-bootstrap";
+import logo from "./images/logo-adotapetorg.jpg";
+import { Outlet } from "react-router-dom";
+import BtnVoltarTopo from "./components/buttons/BtnVoltarTopo";
+import { useContext, useState } from "react";
+import { AuthContext } from "./contexts/AuthContext";
+import Header from "./pages/template/header/Header";
+import Footer from "./pages/template/footer/Footer";
 
 function App() {
-
-  const { verificaUsuarioLogado } = useContext(AuthContext)
-  const [usuarioLogadoVerificado, setUsuarioLogadoVerificado] = useState(false)
+  const { verificaUsuarioLogado } = useContext(AuthContext);
+  const [usuarioLogadoVerificado, setUsuarioLogadoVerificado] = useState(false);
 
   if (usuarioLogadoVerificado === false) {
-    verificaUsuarioLogado()
-    setUsuarioLogadoVerificado(true)
+    verificaUsuarioLogado();
+    setUsuarioLogadoVerificado(true);
   }
 
   return (
@@ -27,7 +26,7 @@ function App() {
       <BtnVoltarTopo />
       <Footer logo={logo} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

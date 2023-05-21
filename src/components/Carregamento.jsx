@@ -1,4 +1,4 @@
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 
 export default function Carregamento() {
   return (
@@ -7,7 +7,7 @@ export default function Carregamento() {
         <span className="visually-hidden">Loading...</span>
       </Spinner>
     </div>
-  )
+  );
 }
 
 export function CarregamentoBotao() {

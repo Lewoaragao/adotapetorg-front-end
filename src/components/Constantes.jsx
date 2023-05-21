@@ -1,8 +1,8 @@
-/** 
+/**
  * Aqui ficarão as contantes
  * que vão se repetir no sistema
  * @since 21/05/2023 17:47:03
- */ 
+ */
 
 /**
  * Constante fazendo referencia ao back-end em PHP
