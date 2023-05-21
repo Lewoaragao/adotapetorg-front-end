@@ -39,7 +39,9 @@ function PetCadastrar() {
         return true
     }
 
-    function cadastrarPet() {
+    function cadastrarPet(e) {
+        e.preventDefault()
+
         if (validaCampos()) {
             setIsLoading(true)
             setMsg("")
@@ -82,48 +84,36 @@ function PetCadastrar() {
                 ?
                 <Carregamento />
                 :
-                <Form className="container col-md-6" encType="multipart/form-data">
+                <Form  encType="multipart/form-data">
                     <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-                    <TituloPagina titulo="Pet Cadastar" />
+                    <TituloPagina titulo="Cadastrar Pet" />
 
                     <Form.Group className="mb-3">
-                        <Form.Label htmlFor="nome">Nome</Form.Label>
+                        <Form.Label className="fw-bold" htmlFor="nome">Nome</Form.Label>
                         <Form.Control id="nome" type="text" placeholder="Digite o nome do Pet" value={nome} required autoFocus
-                            onChange={(e) => {
-                                setNome(e.target.value)
-                            }} />
+                            onChange={e => setNome(e.target.value)} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label htmlFor="raca">Raça</Form.Label>
+                        <Form.Label className="fw-bold" htmlFor="raca">Raça</Form.Label>
                         <Form.Control id="raca" type="text" placeholder="Digite a raça do Pet" value={raca} required
-                            onChange={(e) => {
-                                setRaca(e.target.value)
-                            }} />
+                            onChange={e => setRaca(e.target.value)} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label htmlFor="dataNascimento">Data nascimento</Form.Label>
+                        <Form.Label className="fw-bold" htmlFor="dataNascimento">Data nascimento</Form.Label>
                         <Form.Control id="dataNascimento" type="date" value={dataNascimento} required
-                            onChange={(e) => {
-                                setDataNascimento(e.target.value)
-                            }} />
+                            onChange={e => setDataNascimento(e.target.value)} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label htmlFor="imagem">Imagem</Form.Label>
-                        <Form.Control id="imagem" type="file" onChange={(e) =>
-                            setImagem(e.target.files[0]
-                            )} />
+                        <Form.Label className="fw-bold" htmlFor="imagem">Imagem</Form.Label>
+                        <Form.Control id="imagem" type="file" onChange={e => setImagem(e.target.files[0])} />
                     </Form.Group>
-
 
                     <Button variant="primary" type="submit"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            cadastrarPet()
-                        }}>
+                        onClick={cadastrarPet}>
                         Cadastrar
                     </Button>
                 </Form>

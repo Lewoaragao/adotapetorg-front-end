@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaHome, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 function Footer({ logo }) {
 
@@ -41,18 +42,16 @@ function Footer({ logo }) {
                             </h6>
                             <p>{process.env.REACT_APP_SITE_DESCRIPTION}</p>
                         </div>
-
+   
                         <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Serviços</h6>
-                            <p><a href="#!" className="text-reset text-underline-hover disabled">Adotar Pet</a></p>
-                            <p><a href="#!" className="text-reset text-underline-hover disabled">Cadastrar Pet</a></p>
-                            <p><a href="#!" className="text-reset text-underline-hover disabled">Encontrar Pet</a></p>
+                            <p><NavLink to="/pet/cadastrar" className="text-reset text-underline-hover">Cadastrar Pet</NavLink></p>
                         </div>
 
                         <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">Links úteis</h6>
-                            <p><a href="/" className="text-reset text-underline-hover">Início</a></p>
-                            <p><a href="/sobre" className="text-reset text-underline-hover">Sobre</a></p>
+                            <p><NavLink to="/" className="text-reset text-underline-hover">Início</NavLink></p>
+                            <p><NavLink to="/sobre" className="text-reset text-underline-hover">Sobre</NavLink></p>
                         </div>
 
                         <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">

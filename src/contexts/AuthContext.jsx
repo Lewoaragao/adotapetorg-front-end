@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
             }).then(({ data }) => {
                 setarUsuarioLogado(data.usuario, tokenStorage, true)
             }).catch(({ response }) => {
-                console.log(response.data.message)
+                localStorage.removeItem('token')
             })
         }
     }
