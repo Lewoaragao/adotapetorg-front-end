@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom"
 import Api from "../../services/Api"
 import Carregamento, { CarregamentoBotao } from './../../components/Carregamento'
 import TituloPagina from './../../components/TituloPagina'
-import { formataData } from "../../utils/DataUtil"
 import { formataCelular } from "../../utils/Mask"
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { AuthContext } from "../../contexts/AuthContext"
+import formataData from "../../utils/DataUtil"
 
 function PetInformacao() {
 
@@ -79,7 +79,7 @@ function PetInformacao() {
                         <div className="fs-4">
 
 
-                            <TituloPagina titulo="Pet Informação" />
+                            <TituloPagina titulo="Informações do Pet" />
 
                             <p><span className="fw-bold">Nome:</span> {pet.nome}</p>
                             <p><span className="fw-bold">Data de nascimento:</span> {formataData(pet.data_nascimento)}</p>

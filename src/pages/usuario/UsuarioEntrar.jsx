@@ -65,7 +65,7 @@ function UsuarioEntrar() {
         <Form className="container col-md-12 col-lg-6">
           <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-          <TituloPagina titulo="Login" />
+          <TituloPagina titulo="Entrar" />
 
           <Row>
             <InputGroup className="mb-3">

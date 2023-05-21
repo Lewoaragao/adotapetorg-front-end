@@ -24,7 +24,7 @@ export default function PetUsuarioLogadoFavoritos() {
             {
                 headers: { "Authorization": `Bearer ${token}` }
             }).then(({ data }) => {
-                setListaPets(data)
+                setListaPets(data.data)
             }).catch(({ response }) => {
                 setListaPets(null)
                 setMsg(response.data.message)
