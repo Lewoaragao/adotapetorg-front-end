@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
-import Form from "react-bootstrap/Form";
+import { Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import Mensagem from "./../../components/mensagem/Mensagem";
-import Api from "../../services/Api";
-import TituloPagina from "./../../components/TituloPagina";
+import Form from "react-bootstrap/Form";
 import Carregamento from "../../components/Carregamento";
 import { AuthContext } from "../../contexts/AuthContext";
+import Api from "../../services/Api";
+import TituloPagina from "./../../components/TituloPagina";
+import Mensagem from "./../../components/mensagem/Mensagem";
 
 function PetCadastrar() {
   const [nome, setNome] = useState("");
@@ -88,66 +89,68 @@ function PetCadastrar() {
         <Carregamento />
       ) : (
         <Form encType="multipart/form-data">
-          <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
+          <Container>
+            <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
-          <TituloPagina titulo="Cadastrar Pet" />
+            <TituloPagina titulo="Cadastrar Pet" />
 
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="nome">
-              Nome
-            </Form.Label>
-            <Form.Control
-              id="nome"
-              type="text"
-              placeholder="Digite o nome do Pet"
-              value={nome}
-              required
-              autoFocus
-              onChange={(e) => setNome(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="nome">
+                Nome
+              </Form.Label>
+              <Form.Control
+                id="nome"
+                type="text"
+                placeholder="Digite o nome do Pet"
+                value={nome}
+                required
+                autoFocus
+                onChange={(e) => setNome(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="raca">
-              Raça
-            </Form.Label>
-            <Form.Control
-              id="raca"
-              type="text"
-              placeholder="Digite a raça do Pet"
-              value={raca}
-              required
-              onChange={(e) => setRaca(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="raca">
+                Raça
+              </Form.Label>
+              <Form.Control
+                id="raca"
+                type="text"
+                placeholder="Digite a raça do Pet"
+                value={raca}
+                required
+                onChange={(e) => setRaca(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="dataNascimento">
-              Data nascimento
-            </Form.Label>
-            <Form.Control
-              id="dataNascimento"
-              type="date"
-              value={dataNascimento}
-              required
-              onChange={(e) => setDataNascimento(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="dataNascimento">
+                Data nascimento
+              </Form.Label>
+              <Form.Control
+                id="dataNascimento"
+                type="date"
+                value={dataNascimento}
+                required
+                onChange={(e) => setDataNascimento(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="imagem">
-              Imagem
-            </Form.Label>
-            <Form.Control
-              id="imagem"
-              type="file"
-              onChange={(e) => setImagem(e.target.files[0])}
-            />
-          </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="imagem">
+                Imagem
+              </Form.Label>
+              <Form.Control
+                id="imagem"
+                type="file"
+                onChange={(e) => setImagem(e.target.files[0])}
+              />
+            </Form.Group>
 
-          <Button variant="primary" type="submit" onClick={cadastrarPet}>
-            Cadastrar
-          </Button>
+            <Button variant="primary" type="submit" onClick={cadastrarPet}>
+              Cadastrar
+            </Button>
+          </Container>
         </Form>
       )}
     </>
