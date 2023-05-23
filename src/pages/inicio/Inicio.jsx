@@ -1,25 +1,30 @@
 import { useEffect, useState } from "react";
-import TituloPagina from "./../../components/TituloPagina";
+import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
-import Api from "../../services/Api";
-import Carregamento from "../../components/Carregamento";
-import { Card, Col, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import Carregamento from "../../components/Carregamento";
+import Api from "../../services/Api";
+import TituloPagina from "./../../components/TituloPagina";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [mensagem, setMensagem] = useState(false);
+  const [data, setData] = useState([]);
+  const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
-    listarTodosPets();
+    listarTodosPets(pagina);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pagina]);
 
-  function listarTodosPets() {
+  function listarTodosPets(numeroPagina) {
+    setPagina(numeroPagina);
     setIsLoading(true);
-    Api.get("pets")
+    Api.get(`pets?page=${pagina}`)
       .then(({ data }) => {
+        // console.log(data);
+        setData(data);
         setListaPets(data.data);
       })
       .catch(({ response }) => {
@@ -79,7 +84,7 @@ function Inicio({ logo }) {
             <Carregamento />
           ) : (
             <>
-              <Row xs={2} md={3} className="g-4">
+              <Row xs={1} sm={3} className="g-4">
                 {listaPets == null ? (
                   <div>{mensagem}</div>
                 ) : (
@@ -106,6 +111,59 @@ function Inicio({ logo }) {
                     ))}
                   </>
                 )}
+              </Row>
+
+              <Row className="mt-3">
+                <Pagination className="d-flex justify-content-center align-items-center">
+                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                  <Pagination.First
+                    onClick={() => listarTodosPets(data.first_page)}
+                  />
+
+                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                  <Pagination.Prev
+                    onClick={() => listarTodosPets(data.current_page - 1)}
+                  />
+
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+
+                  {/* PÁGINA ATUAL MENOS UM */}
+                  {data.current_page >= 2 && (
+                    <Pagination.Item
+                      onClick={() => listarTodosPets(data.current_page - 1)}
+                    >
+                      {data.current_page - 1}
+                    </Pagination.Item>
+                  )}
+
+                  {/* PÁGINA ATUAL */}
+                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+
+                  {/* PÁGINA ATUAL MAIS UM */}
+                  {data.current_page + 1 <= data.last_page && (
+                    <Pagination.Item
+                      onClick={() => listarTodosPets(data.current_page + 1)}
+                    >
+                      {data.current_page + 1}
+                    </Pagination.Item>
+                  )}
+
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                  {data.current_page + 1 < data.last_page && (
+                    <Pagination.Ellipsis disabled />
+                  )}
+
+                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                  <Pagination.Next
+                    onClick={() => listarTodosPets(data.current_page + 1)}
+                  />
+
+                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                  <Pagination.Last
+                    onClick={() => listarTodosPets(data.last_page)}
+                  />
+                </Pagination>
               </Row>
             </>
           )}
