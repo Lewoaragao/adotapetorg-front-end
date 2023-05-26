@@ -1,19 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import logo from "./images/logo-adotapetorg.jpg";
+import App from "./App";
 import { AuthProvider } from "./contexts/AuthContext";
-import Inicio from "./pages/inicio/Inicio";
-import Sobre from "./pages/sobre/Sobre";
-import UsuarioCadastrar from "./pages/usuario/UsuarioCadastrar";
-import UsuarioEntrar from "./pages/usuario/UsuarioEntrar";
+import logo from "./images/logo-adotapetorg.jpg";
 import Error404 from "./pages/error/Error404";
+import Inicio from "./pages/inicio/Inicio";
+import Link from "./pages/link/Link";
 import PetCadastrar from "./pages/pet/PetCadastrar";
 import PetInformacao from "./pages/pet/PetInformacao";
 import PetUsuarioLogado from "./pages/pet/PetUsuarioLogado";
 import PetUsuarioLogadoFavoritos from "./pages/pet/PetUsuarioLogadoFavoritos";
+import Sobre from "./pages/sobre/Sobre";
+import UsuarioCadastrar from "./pages/usuario/UsuarioCadastrar";
+import UsuarioEntrar from "./pages/usuario/UsuarioEntrar";
+import reportWebVitals from "./reportWebVitals";
 import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "/", element: <Inicio logo={logo} /> },
       { path: "/sobre", element: <Sobre /> },
       // USUÁRIO
+      { path: "/link/:nomeUsuario", element: <Link /> },
       { path: "/usuario/cadastrar", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
       // PET
