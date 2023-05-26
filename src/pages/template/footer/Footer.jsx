@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
+  FaEnvelope,
   FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
   FaGithub,
   FaHome,
-  FaEnvelope,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
   FaWhatsapp,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
@@ -35,7 +35,7 @@ function Footer({ logo }) {
           <a
             className="btn btn-warning mx-1"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://instagram.com/adotapetorg"
           >
             <FaInstagram />
@@ -43,7 +43,7 @@ function Footer({ logo }) {
           <a
             className="btn btn-warning mx-1"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://github.com/adotapetorg"
           >
             <FaGithub />
@@ -51,7 +51,7 @@ function Footer({ logo }) {
           <a
             className="btn btn-warning mx-1"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://linkedin.com/company/adotapetorg"
           >
             <FaLinkedin />
@@ -59,7 +59,7 @@ function Footer({ logo }) {
           <a
             className="btn btn-warning mx-1"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://twitter.com/adotapetorg"
           >
             <FaTwitter />
@@ -67,7 +67,7 @@ function Footer({ logo }) {
           <a
             className="btn btn-warning mx-1"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             href="https://facebok.com/adotapetorg"
           >
             <FaFacebook />
@@ -130,7 +130,7 @@ function Footer({ logo }) {
                 <FaEnvelope />{" "}
                 <a
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="text-reset text-underline-hover"
                   href="mailto:contato@adotapet.org"
                 >
@@ -141,7 +141,7 @@ function Footer({ logo }) {
                 <FaWhatsapp />{" "}
                 <a
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="text-reset text-underline-hover"
                   href="https://api.whatsapp.com/send/?phone=5585997972854&text=Ol%C3%A1&type=phone_number&app_absent=0"
                 >
@@ -161,7 +161,7 @@ function Footer({ logo }) {
           </span>
           <a
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="text-reset text-underline-hover fw-bold"
             href={process.env.REACT_APP_GITHUB_ORGANIZATION_URL}
           >
@@ -173,7 +173,7 @@ function Footer({ logo }) {
           <span>Desenvolvido com carinho por </span>
           <a
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="text-center text-reset text-underline-hover fw-bold"
             href="https://lewoaragao.com.br"
           >
