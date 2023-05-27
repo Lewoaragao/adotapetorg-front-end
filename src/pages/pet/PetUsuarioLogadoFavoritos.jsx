@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import Api from "../../services/Api";
-import { AuthContext } from "../../contexts/AuthContext";
 import { Card, Col, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
+import { AuthContext } from "../../contexts/AuthContext";
+import Api from "../../services/Api";
 
 export default function PetUsuarioLogadoFavoritos() {
   const { token } = useContext(AuthContext);
@@ -60,7 +60,7 @@ export default function PetUsuarioLogadoFavoritos() {
                         <Card.Text>{pet.raca}</Card.Text>
                       </Card.Body>
                       <Card.Footer>
-                        <NavLink to={`/pet/informacao/${pet.id}`}>
+                        <NavLink to={`/informacoes/pet/${pet.id}`}>
                           Informações
                         </NavLink>
                       </Card.Footer>

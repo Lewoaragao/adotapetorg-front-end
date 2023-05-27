@@ -80,7 +80,7 @@ function PetCadastrar() {
     setNome("");
     setRaca("");
     setDataNascimento("");
-    setImagem();
+    setImagem("");
   }
 
   return (

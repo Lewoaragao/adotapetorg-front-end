@@ -1,9 +1,9 @@
-import { Image, Dropdown } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { Dropdown, Image } from "react-bootstrap";
+import { AiOutlineLink } from "react-icons/ai";
 import { FaDog } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 function NavBarUsuarioLogado({ usuarioLogado, logout }) {
-  console.log(process.env.REACT_APP_API_URL + usuarioLogado.imagem);
   return (
     <>
       <div className="d-flex justify-content-center align-items-center">
@@ -13,17 +13,26 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLink className="dropdown-item" to="/pet/cadastrar">
+            <NavLink className="dropdown-item" to="/cadastrar/pet">
               Cadastrar Pet
             </NavLink>
-            <NavLink className="dropdown-item" to="/pet/meus">
+            <NavLink className="dropdown-item" to="/meus/pets">
               Meus Pets
             </NavLink>
-            <NavLink className="dropdown-item" to="/pet/favoritos">
+            <NavLink className="dropdown-item" to="/pets/favoritos">
               Meus Pets Favoritos
             </NavLink>
           </Dropdown.Menu>
         </Dropdown>
+      </div>
+
+      <div className="d-flex justify-content-center align-items-center">
+        <NavLink
+          className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
+          to="/link/meus"
+        >
+          <AiOutlineLink /> Link na Bio
+        </NavLink>
       </div>
 
       <div className="d-flex justify-content-center align-items-center">
@@ -39,7 +48,7 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLink className="dropdown-item disabled" to="/usuario/perfil">
+            {/* <NavLink className="dropdown-item disabled" to="/usuario/perfil">
               Perfil
             </NavLink>
             <NavLink
@@ -53,7 +62,7 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
               to="/usuario/editar/senha"
             >
               Mudar senha
-            </NavLink>
+            </NavLink> */}
             <button className="dropdown-item" onClick={logout}>
               Sair
             </button>
