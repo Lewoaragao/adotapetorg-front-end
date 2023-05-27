@@ -8,6 +8,7 @@ import {
   FaLinkedin,
   FaTwitter,
   FaWhatsapp,
+  FaYoutube,
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
@@ -71,6 +72,14 @@ function Footer({ logo }) {
             href="https://facebok.com/adotapetorg"
           >
             <FaFacebook />
+          </a>
+          <a
+            className="btn btn-warning mx-1"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://youtube.com/adotapetorg"
+          >
+            <FaYoutube />
           </a>
         </div>
       </section>
