@@ -5,7 +5,19 @@
   xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://adotapet.org</loc>
-    <lastmod>2023-05-12</lastmod>
+    <lastmod>2023-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://adotapet.org/politica/privacidade</loc>
+    <lastmod>2023-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://adotapet.org/link</loc>
+    <lastmod>2023-05-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -34,10 +46,10 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://adotapet.org/pet/informacao</loc>
+    <loc>https://adotapet.org/informacoes/pet</loc>
     <lastmod>2023-05-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://adotapet.org/pet/meus</loc>
@@ -50,11 +62,5 @@
     <lastmod>2023-05-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://adotapet.org/link</loc>
-    <lastmod>2023-05-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
   </url>
 </urlset>

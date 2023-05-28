@@ -23,9 +23,9 @@ function Inicio({ logo }) {
     setIsLoading(true);
     Api.get(`pets?page=${pagina}`)
       .then(({ data }) => {
-        // console.log(data);
         setData(data);
         setListaPets(data.data);
+        console.log(data.data);
       })
       .catch(({ response }) => {
         setMensagem(response.data.message);
@@ -84,7 +84,7 @@ function Inicio({ logo }) {
             <Carregamento />
           ) : (
             <>
-              <Row xs={1} sm={3} className="g-4">
+              <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {listaPets == null ? (
                   <div>{mensagem}</div>
                 ) : (
@@ -102,7 +102,7 @@ function Inicio({ logo }) {
                             <Card.Text>{pet.raca}</Card.Text>
                           </Card.Body>
                           <Card.Footer>
-                            <NavLink to={`/pet/informacao/${pet.id}`}>
+                            <NavLink to={`/informacoes/pet/${pet.id}`}>
                               Informações
                             </NavLink>
                           </Card.Footer>
@@ -113,7 +113,7 @@ function Inicio({ logo }) {
                 )}
               </Row>
 
-              {listaPets == null && (
+              {listaPets != null && (
                 <Row className="mt-3">
                   <Pagination className="d-flex justify-content-center align-items-center">
                     {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}

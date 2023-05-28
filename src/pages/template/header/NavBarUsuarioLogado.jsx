@@ -42,9 +42,9 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
               width="20px"
               roundedCircle
               src={process.env.REACT_APP_API_URL + usuarioLogado.imagem}
-              alt={`Foto do usuário ${usuarioLogado.nome}`}
+              alt={`Foto do usuário ${usuarioLogado.primeiro_nome}`}
             />
-            Olá, <span className="fw-bold">{usuarioLogado.nome}</span>
+            Olá, <span className="fw-bold">{usuarioLogado.primeiro_nome}</span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>

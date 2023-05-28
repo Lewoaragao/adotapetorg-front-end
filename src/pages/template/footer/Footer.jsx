@@ -111,6 +111,14 @@ function Footer({ logo }) {
                   Cadastrar Pet
                 </NavLink>
               </p>
+              <p>
+                <NavLink
+                  to="/link/meus"
+                  className="text-reset text-underline-hover"
+                >
+                  Link na Bio
+                </NavLink>
+              </p>
             </div>
 
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -126,6 +134,14 @@ function Footer({ logo }) {
                   className="text-reset text-underline-hover"
                 >
                   Sobre
+                </NavLink>
+              </p>
+              <p>
+                <NavLink
+                  to="/politica/privacidade"
+                  className="text-reset text-underline-hover"
+                >
+                  Política de privacidade
                 </NavLink>
               </p>
             </div>

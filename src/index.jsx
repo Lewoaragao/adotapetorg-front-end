@@ -12,6 +12,7 @@ import PetCadastrar from "./pages/pet/PetCadastrar";
 import PetInformacao from "./pages/pet/PetInformacao";
 import PetUsuarioLogado from "./pages/pet/PetUsuarioLogado";
 import PetUsuarioLogadoFavoritos from "./pages/pet/PetUsuarioLogadoFavoritos";
+import PoliticaPrivacidade from "./pages/politicaPrivacidade/PoliticaPrivacidade";
 import Sobre from "./pages/sobre/Sobre";
 import UsuarioCadastrar from "./pages/usuario/UsuarioCadastrar";
 import UsuarioEntrar from "./pages/usuario/UsuarioEntrar";
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       // GERAL
       { path: "/", element: <Inicio logo={logo} /> },
       { path: "/sobre", element: <Sobre /> },
+      { path: "/politica/privacidade", element: <PoliticaPrivacidade /> },
       // USUÁRIO
       { path: "/cadastrar/usuario", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
@@ -43,8 +45,7 @@ const router = createBrowserRouter([
         path: "/pets/favoritos",
         element: <PrivateRoute element={<PetUsuarioLogadoFavoritos />} />,
       },
-      // LINKS
-      { path: "/links/:nomeUsuario", element: <Links /> },
+      // LINK
       {
         path: "/link/meus",
         element: <PrivateRoute element={<LinkMeus />} />,
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
       { path: "/*", element: <Error404 /> },
     ],
   },
+  { path: "/links/:nomeUsuario", element: <Links /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

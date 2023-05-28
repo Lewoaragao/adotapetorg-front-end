@@ -1,53 +1,37 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
+import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
-import { useNavigate, NavLink } from "react-router-dom";
-import Mensagem from "./../../components/mensagem/Mensagem";
+import Form from "react-bootstrap/Form";
+import { NavLink, useNavigate } from "react-router-dom";
+import Carregamento from "../../components/Carregamento";
+import { CONST_FALSE_PHP, CONST_TRUE_PHP } from "../../components/Constantes";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
-import Carregamento from "../../components/Carregamento";
-import { Col, Row } from "react-bootstrap";
-import { CONST_FALSE_PHP, CONST_TRUE_PHP } from "../../components/Constantes";
+import Mensagem from "./../../components/mensagem/Mensagem";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();
 
-  const [nome, setNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [primeiroNome, setPrimeiroNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaRepetida, setSenhaRepetida] = useState("");
   const [imagem, setImagem] = useState("");
-  const [ruaEndereco, setRuaEndereco] = useState("");
-  const [numeroEndereco, setNumeroEndereco] = useState("");
-  const [complementoEndereco, setComplementoEndereco] = useState("");
-  const [bairroEndereco, setBairroEndereco] = useState("");
-  const [estadoEndereco, setEstadoEndereco] = useState("");
-  const [cidadeEndereco, setCidadeEndereco] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [cnpj, setCnpj] = useState("");
+  const [enderecoCidade, setEnderecoCidade] = useState("");
+  const [enderecoEstado, setEnderecoEstado] = useState("");
+  const [enderecoPais, setEnderecoPais] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [flgTelefoneWhatsapp, setFlgTelefoneWhatsapp] = useState(false);
   const [celular, setCelular] = useState("");
-  const [flgWhatsapp, setFlgWhatsapp] = useState(false);
-  const [isPessoaFisica, setIsPessoaFisica] = useState(true);
+  const [flgCelularWhatsapp, setFlgCelularWhatsapp] = useState(false);
   const [msg, setMsg] = useState("");
   const [msgTipo] = useState("warning");
   const [isLoading, setIsLoading] = useState(false);
 
   function validaCampos() {
-    if (nome === "" || nome === null) {
-      setMsg("Preencha o campo nome");
-      return false;
-    }
-
-    if (sobrenome === "" || sobrenome === null) {
-      setMsg("Preencha o campo sobrenome");
-      return false;
-    }
-
-    if (dataNascimento === "" || dataNascimento === null) {
-      setMsg("Preencha o campo data de nascimento");
+    if (primeiroNome === "" || primeiroNome === null) {
+      setMsg("Preencha o campo primeiro nome");
       return false;
     }
 
@@ -71,40 +55,8 @@ function UsuarioCadastrar() {
       return false;
     }
 
-    if (ruaEndereco === "" || ruaEndereco === null) {
-      setMsg("Preencha o campo rua");
-      return false;
-    }
-
-    if (numeroEndereco === "" || numeroEndereco === null) {
-      setMsg("Preencha o campo número");
-      return false;
-    }
-
-    if (bairroEndereco === "" || bairroEndereco === null) {
-      setMsg("Preencha o campo bairro");
-      return false;
-    }
-
-    if (estadoEndereco === "" || estadoEndereco === null) {
-      setMsg("Preencha o campo estado");
-      return false;
-    }
-
-    if (cidadeEndereco === "" || cidadeEndereco === null) {
+    if (enderecoCidade === "" || enderecoCidade === null) {
       setMsg("Preencha o campo cidade");
-      return false;
-    }
-
-    if (isPessoaFisica && cpf == null) {
-      setCnpj("");
-      setMsg("Preencha o campo CPF");
-      return false;
-    }
-
-    if (!isPessoaFisica && cnpj == null) {
-      setCpf("");
-      setMsg("Preencha o campo CNPJ");
       return false;
     }
 
@@ -127,22 +79,22 @@ function UsuarioCadastrar() {
       Api.post(
         "users",
         {
-          nome: nome,
-          sobrenome: sobrenome,
-          data_nascimento: dataNascimento,
+          usuario: usuario,
+          primeiro_nome: primeiroNome,
           email: email,
           senha: senha,
           imagem: imagem,
-          rua_endereco: ruaEndereco,
-          numero_endereco: numeroEndereco,
-          bairro_endereco: bairroEndereco,
-          estado_endereco: estadoEndereco,
-          cidade_endereco: cidadeEndereco,
-          cpf: isPessoaFisica ? cpf : null,
-          cnpj: isPessoaFisica ? null : cnpj,
+          endereco_cidade: enderecoCidade,
+          endereco_estado: enderecoEstado,
+          endereco_pais: enderecoPais,
           telefone: telefone === "" ? null : telefone,
+          flg_telefone_whatsapp: flgTelefoneWhatsapp
+            ? CONST_TRUE_PHP
+            : CONST_FALSE_PHP,
           celular: celular === "" ? null : celular,
-          flg_whatsapp: flgWhatsapp ? CONST_TRUE_PHP : CONST_FALSE_PHP,
+          flg_celular_whatsapp: flgCelularWhatsapp
+            ? CONST_TRUE_PHP
+            : CONST_FALSE_PHP,
         },
         {
           headers: {
@@ -162,14 +114,12 @@ function UsuarioCadastrar() {
     }
   }
 
-  function mudarflgWhatsapp() {
-    setFlgWhatsapp(!flgWhatsapp);
+  function mudarflgTelefoneWhatsapp() {
+    setFlgTelefoneWhatsapp(!flgTelefoneWhatsapp);
   }
 
-  function mudarIsPessoaFisica(event) {
-    const value = event.target.value;
-    const valueBoolean = value === "true" ? true : false;
-    setIsPessoaFisica(valueBoolean);
+  function mudarflgCelularWhatsapp() {
+    setFlgCelularWhatsapp(!flgCelularWhatsapp);
   }
 
   return (
@@ -179,130 +129,39 @@ function UsuarioCadastrar() {
       ) : (
         <Form>
           <Row>
-            <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-
             <TituloPagina titulo="Cadastrar Usuário" />
+            <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
           </Row>
-          <Row>
-            <Col md={4} className="mb-3">
-              <Col>
-                <Form.Label className="fw-bold">
-                  Você é pessoa física?
-                </Form.Label>
-              </Col>
-              <Col className="d-flex gap-3" onChange={mudarIsPessoaFisica}>
-                <div>
-                  <input
-                    className="me-1"
-                    type="radio"
-                    name="isPessoaFisica"
-                    id="isPessoaFisicaTrue"
-                    value="true"
-                    checked={isPessoaFisica}
-                  />
-                  <label htmlFor="isPessoaFisicaTrue">Sim</label>
-                </div>
-                <div>
-                  <input
-                    className="me-1"
-                    type="radio"
-                    name="isPessoaFisica"
-                    id="isPessoaFisicaFalse"
-                    value="false"
-                    checked={!isPessoaFisica}
-                  />
-                  <label htmlFor="isPessoaFisicaFalse">Não</label>
-                </div>
-              </Col>
-            </Col>
 
-            {isPessoaFisica ? (
-              <Col md={8}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="cpf">
-                    CPF
-                  </Form.Label>
-                  <Form.Control
-                    id="cpf"
-                    type="text"
-                    placeholder="Digite seu CPF"
-                    value={cpf}
-                    required
-                    minLength="11"
-                    maxLength="11"
-                    onChange={(e) => setCpf(e.target.value)}
-                    disabled={!isPessoaFisica}
-                  />
-                </Form.Group>
-              </Col>
-            ) : (
-              <Col md={8}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="cnpj">
-                    CNPJ
-                  </Form.Label>
-                  <Form.Control
-                    id="cnpj"
-                    type="text"
-                    placeholder="Digite seu CNPJ"
-                    value={cnpj}
-                    required
-                    minLength="14"
-                    maxLength="14"
-                    onChange={(e) => setCnpj(e.target.value)}
-                  />
-                </Form.Group>
-              </Col>
-            )}
-          </Row>
           <Row>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="nome">
-                  Nome
+                <Form.Label className="fw-bold" htmlFor="usuario">
+                  Usuário
                 </Form.Label>
                 <Form.Control
-                  id="nome"
+                  id="usuario"
                   type="text"
-                  placeholder="Digite seu primeiro nome"
-                  value={nome}
+                  placeholder="Digite seu usuário"
+                  value={usuario}
                   required
                   autoFocus
-                  onChange={(e) => setNome(e.target.value)}
+                  onChange={(e) => setUsuario(e.target.value)}
                 />
               </Form.Group>
             </Col>
-
-            <Col md={5}>
+            <Col md={6}>
               <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="sobrenome">
-                  Sobrenome
+                <Form.Label className="fw-bold" htmlFor="primeiroNome">
+                  Primeiro nome
                 </Form.Label>
                 <Form.Control
-                  id="sobrenome"
+                  id="primeiroNome"
                   type="text"
-                  placeholder="Digite o restante do seu nome"
-                  value={sobrenome}
+                  placeholder="Digite seu primeiro nome"
+                  value={primeiroNome}
                   required
-                  onChange={(e) => setSobrenome(e.target.value)}
-                  disabled={!isPessoaFisica}
-                />
-              </Form.Group>
-            </Col>
-
-            <Col md={3}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="dataNascimento">
-                  Data de nascimento
-                </Form.Label>
-                <Form.Control
-                  id="dataNascimento"
-                  type="date"
-                  placeholder="Digite o restante do seu nome"
-                  value={dataNascimento}
-                  required
-                  onChange={(e) => setDataNascimento(e.target.value)}
-                  disabled={!isPessoaFisica}
+                  onChange={(e) => setPrimeiroNome(e.target.value)}
                 />
               </Form.Group>
             </Col>
@@ -372,105 +231,55 @@ function UsuarioCadastrar() {
           </Row>
 
           <Row>
-            <Col md={8}>
+            <Col md={4}>
               <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="ruaEndereco">
-                  Rua
+                <Form.Label className="fw-bold" htmlFor="enderecoPais">
+                  País
                 </Form.Label>
                 <Form.Control
-                  id="ruaEndereco"
+                  id="enderecoPais"
                   type="text"
-                  placeholder="Digite sua rua"
-                  value={ruaEndereco}
+                  placeholder="Digite o seu país"
+                  value={enderecoPais}
                   required
-                  onChange={(e) => setRuaEndereco(e.target.value)}
+                  onChange={(e) => setEnderecoPais(e.target.value)}
                 />
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="numeroEndereco">
-                  Número
-                </Form.Label>
-                <Form.Control
-                  id="numeroEndereco"
-                  type="text"
-                  placeholder="Digite o número do seu endereço"
-                  value={numeroEndereco}
-                  required
-                  onChange={(e) => setNumeroEndereco(e.target.value)}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={12}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="complementoEndereco">
-                  Complemento
-                </Form.Label>
-                <Form.Control
-                  id="complementoEndereco"
-                  type="text"
-                  placeholder="Se quiser pode descrever um ponto de referência"
-                  value={complementoEndereco}
-                  required
-                  onChange={(e) => setComplementoEndereco(e.target.value)}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="bairroEndereco">
-                  Bairro
-                </Form.Label>
-                <Form.Control
-                  id="bairroEndereco"
-                  type="text"
-                  placeholder="Digite sua rua"
-                  value={bairroEndereco}
-                  required
-                  onChange={(e) => setBairroEndereco(e.target.value)}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="estadoEndereco">
+                <Form.Label className="fw-bold" htmlFor="enderecoEstado">
                   Estado
                 </Form.Label>
                 <Form.Control
-                  id="estadoEndereco"
+                  id="enderecoEstado"
                   type="text"
-                  placeholder="Digite o número do seu endereço"
-                  value={estadoEndereco}
+                  placeholder="Digite o seu estado"
+                  value={enderecoEstado}
                   required
-                  onChange={(e) => setEstadoEndereco(e.target.value)}
+                  onChange={(e) => setEnderecoEstado(e.target.value)}
                 />
               </Form.Group>
             </Col>
             <Col md={4}>
               <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="cidadeEndereco">
+                <Form.Label className="fw-bold" htmlFor="enderecoCidade">
                   Cidade
                 </Form.Label>
                 <Form.Control
-                  id="cidadeEndereco"
+                  id="enderecoCidade"
                   type="text"
-                  placeholder="Digite o número do seu endereço"
-                  value={cidadeEndereco}
+                  placeholder="Digite a sua cidade"
+                  value={enderecoCidade}
                   required
-                  onChange={(e) => setCidadeEndereco(e.target.value)}
+                  onChange={(e) => setEnderecoCidade(e.target.value)}
                 />
               </Form.Group>
             </Col>
           </Row>
+
           <Row>
-            <Col md={4}>
+            <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label className="fw-bold" htmlFor="telefone">
                   Telefone
@@ -482,10 +291,25 @@ function UsuarioCadastrar() {
                   value={telefone}
                   required
                   onChange={(e) => setTelefone(e.target.value)}
+                  maxLength={8}
                 />
               </Form.Group>
             </Col>
-            <Col md={4}>
+            <Col
+              md={6}
+              className="d-flex justify-content-start align-items-center py-3"
+            >
+              <Form.Check
+                onChange={mudarflgTelefoneWhatsapp}
+                variant="secondary"
+                id="flgTelefoneWhatsapp"
+                label="Telefone é whatsapp?"
+              ></Form.Check>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={6}>
               <Form.Group className="mb-3">
                 <Form.Label className="fw-bold" htmlFor="celular">
                   Celular
@@ -497,17 +321,18 @@ function UsuarioCadastrar() {
                   value={celular}
                   required
                   onChange={(e) => setCelular(e.target.value)}
+                  maxLength={11}
                 />
               </Form.Group>
             </Col>
             <Col
-              md={4}
+              md={6}
               className="d-flex justify-content-start align-items-center py-3"
             >
               <Form.Check
-                onChange={mudarflgWhatsapp}
+                onChange={mudarflgCelularWhatsapp}
                 variant="secondary"
-                id="flgWhatsapp"
+                id="flgCelularWhatsapp"
                 label="Celular é whatsapp?"
               ></Form.Check>
             </Col>
