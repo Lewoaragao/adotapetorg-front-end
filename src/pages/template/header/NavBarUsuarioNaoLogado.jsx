@@ -7,7 +7,7 @@ function NavBarUsuarioNaoLogado() {
     <>
       <NavLink
         className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
-        to="/usuario/cadastrar"
+        to="/cadastrar/usuario"
       >
         <FaRegAddressBook /> Cadastrar
       </NavLink>

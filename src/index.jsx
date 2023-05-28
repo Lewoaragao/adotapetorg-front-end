@@ -6,11 +6,13 @@ import { AuthProvider } from "./contexts/AuthContext";
 import logo from "./images/logo-adotapetorg.jpg";
 import Error404 from "./pages/error/Error404";
 import Inicio from "./pages/inicio/Inicio";
-import Link from "./pages/link/Link";
+import LinkMeus from "./pages/link/LinkMeus";
+import Links from "./pages/link/Links";
 import PetCadastrar from "./pages/pet/PetCadastrar";
 import PetInformacao from "./pages/pet/PetInformacao";
 import PetUsuarioLogado from "./pages/pet/PetUsuarioLogado";
 import PetUsuarioLogadoFavoritos from "./pages/pet/PetUsuarioLogadoFavoritos";
+import PoliticaPrivacidade from "./pages/politicaPrivacidade/PoliticaPrivacidade";
 import Sobre from "./pages/sobre/Sobre";
 import UsuarioCadastrar from "./pages/usuario/UsuarioCadastrar";
 import UsuarioEntrar from "./pages/usuario/UsuarioEntrar";
@@ -25,28 +27,34 @@ const router = createBrowserRouter([
       // GERAL
       { path: "/", element: <Inicio logo={logo} /> },
       { path: "/sobre", element: <Sobre /> },
+      { path: "/politica/privacidade", element: <PoliticaPrivacidade /> },
       // USUÁRIO
-      { path: "/link/:nomeUsuario", element: <Link /> },
-      { path: "/usuario/cadastrar", element: <UsuarioCadastrar /> },
+      { path: "/cadastrar/usuario", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
       // PET
       {
-        path: "/pet/cadastrar",
+        path: "/cadastrar/pet",
         element: <PrivateRoute element={<PetCadastrar />} />,
       },
-      { path: "/pet/informacao/:id", element: <PetInformacao /> },
+      { path: "/informacoes/pet/:id", element: <PetInformacao /> },
       {
-        path: "/pet/meus",
+        path: "/meus/pets",
         element: <PrivateRoute element={<PetUsuarioLogado />} />,
       },
       {
-        path: "/pet/favoritos",
+        path: "/pets/favoritos",
         element: <PrivateRoute element={<PetUsuarioLogadoFavoritos />} />,
+      },
+      // LINK
+      {
+        path: "/link/meus",
+        element: <PrivateRoute element={<LinkMeus />} />,
       },
       // ERRO
       { path: "/*", element: <Error404 /> },
     ],
   },
+  { path: "/links/:nomeUsuario", element: <Links /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
