@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react";
+import { BsStar, BsStarFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
+import Mensagem from "../../components/mensagem/Mensagem";
+import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
+import formataData from "../../utils/DataUtil";
+import { formataCelular } from "../../utils/Mask";
 import Carregamento, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";
 import TituloPagina from "./../../components/TituloPagina";
-import { formataCelular } from "../../utils/Mask";
-import { BsStar, BsStarFill } from "react-icons/bs";
-import { AuthContext } from "../../contexts/AuthContext";
-import formataData from "../../utils/DataUtil";
 
 function PetInformacao() {
   const { id } = useParams();
@@ -18,6 +19,8 @@ function PetInformacao() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const { token, isUsuarioLogado } = useContext(AuthContext);
+  const [msg, setMsg] = useState("");
+  const [msgTipo, setMsgTipo] = useState("");
 
   useEffect(() => {
     verInformacaoPet(id);
@@ -32,7 +35,8 @@ function PetInformacao() {
         setPetFavoritado(data.pet_favoritado);
       })
       .catch(({ response }) => {
-        console.log(response.data.message);
+        setMsgTipo("warning");
+        setMsg(response.data.message);
       })
       .finally(() => {
         setIsLoading(false);
@@ -48,7 +52,8 @@ function PetInformacao() {
       },
     })
       .catch(({ response }) => {
-        console.log(response.data.message);
+        setMsgTipo("warning");
+        setMsg(response.data.message);
       })
       .finally(() => {
         setIsLoadingButton(false);
@@ -64,7 +69,8 @@ function PetInformacao() {
       },
     })
       .catch(({ response }) => {
-        console.log(response.data.message);
+        setMsgTipo("warning");
+        setMsg(response.data.message);
       })
       .finally(() => {
         setIsLoadingButton(false);
@@ -73,6 +79,8 @@ function PetInformacao() {
 
   return (
     <>
+      <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
+
       {isLoading ? (
         <Carregamento />
       ) : (
