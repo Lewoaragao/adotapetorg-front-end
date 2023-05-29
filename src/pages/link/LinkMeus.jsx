@@ -54,6 +54,7 @@ export default function LinkMeus() {
       .then(({ data }) => {
         setListaLinks(data.user_links);
         setListaLinkTipos(data.link_tipos);
+        console.log(data);
       })
       .catch(({ response }) => {
         setListaLinks(null);

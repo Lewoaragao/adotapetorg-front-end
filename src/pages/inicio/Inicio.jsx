@@ -25,7 +25,6 @@ function Inicio({ logo }) {
       .then(({ data }) => {
         setData(data);
         setListaPets(data.data);
-        console.log(data.data);
       })
       .catch(({ response }) => {
         setMensagem(response.data.message);
