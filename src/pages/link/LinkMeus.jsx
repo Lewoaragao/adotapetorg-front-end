@@ -31,6 +31,7 @@ export default function LinkMeus() {
   const [imagem, setImagem] = useState("");
   const [tituloLink, setTituloLink] = useState("");
   const [link, setLink] = useState("");
+  const [linkId, setLinkId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
   const [msg, setMsg] = useState("");
@@ -38,10 +39,14 @@ export default function LinkMeus() {
   const [msgTipo, setMsgTipo] = useState("");
   const [listaLinkTipos, setListaLinkTipos] = useState([]);
   const [listaLinks, setListaLinks] = useState([]);
-  const [abrirModalCadastrarLink, setabrirModalCadastrarLink] = useState(false);
+  const [abrirModalCadastrarLink, setAbrirModalCadastrarLink] = useState(false);
+  const [abrirModalEditarLink, setAbrirModalEditarLink] = useState(false);
 
-  const fecharModalCadastrarLink = () => setabrirModalCadastrarLink(false);
-  const handleabrirModalCadastrarLink = () => setabrirModalCadastrarLink(true);
+  const handleFecharModalCadastrarLink = () =>
+    setAbrirModalCadastrarLink(false);
+  const handleAbrirModalCadastrarLink = () => setAbrirModalCadastrarLink(true);
+
+  const handleFecharModalEditarLink = () => setAbrirModalEditarLink(false);
 
   useEffect(() => {
     listarLinksUsuarioLogado();
@@ -124,13 +129,48 @@ export default function LinkMeus() {
     }
   }
 
+  function editarLink() {
+    setMsg("");
+    setMsgModal("");
+
+    if (validaCampos()) {
+      setIsLoading(true);
+      Api.post(
+        `links/atualizar/${linkId}`,
+        {
+          link_tipo_id: tipoLink,
+          imagem: imagem,
+          titulo_link: tituloLink,
+          link: link,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+        .then(({ data }) => {
+          setMsgTipo("success");
+          setMsg(data.message);
+          limparCampos();
+        })
+        .catch(({ response }) => {
+          setMsgTipo("danger");
+          setMsgModal(response.data.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          listarLinksUsuarioLogado();
+        });
+    }
+  }
+
   function limparCampos() {
     setTipoLink("");
     setImagem("");
     setTituloLink("");
     setLink("");
     setMsgModal("");
-    fecharModalCadastrarLink();
+    handleFecharModalCadastrarLink();
+    handleFecharModalEditarLink();
   }
 
   function setarLink(e) {
@@ -169,38 +209,16 @@ export default function LinkMeus() {
       });
   }
 
-  function editarLink(linkId) {
+  function visualizarLink(link) {
     setMsg("");
 
-    // setIsLoading(true);
-    // Api.delete(
-    //   `links/editar/${e.targe.value}`,
-    //   {
-    //     link_tipo_id: tipoLink,
-    //     imagem: imagem,
-    //     titulo_link: tituloLink,
-    //     link: link,
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   }
-    // )
-    //   .then(({ data }) => {
-    //     setMsgTipo("success");
-    //     setMsg(data.message);
-    //     limparCampos();
-    //   })
-    //   .catch(({ response }) => {
-    //     setMsgTipo("danger");
-    //     setMsg(response.data.message);
-    //   })
-    //   .finally(() => {
-    //     setIsLoading(false);
-    //     listarLinksUsuarioLogado();
-    //   });
+    setLinkId(link);
+    setTipoLink(link.link_tipo_id);
+    setTituloLink(link.titulo_link);
+    setImagem(link.imagem);
+    setLink(link.link);
+
+    setAbrirModalEditarLink(true);
   }
 
   function copiarLinkUsuarioLogado() {
@@ -237,7 +255,7 @@ export default function LinkMeus() {
 
           <button
             className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3"
-            onClick={handleabrirModalCadastrarLink}
+            onClick={handleAbrirModalCadastrarLink}
           >
             <AiOutlinePlus /> Cadastrar link
           </button>
@@ -285,7 +303,7 @@ export default function LinkMeus() {
                     <ButtonGroup className="ms-auto my-auto">
                       <Button
                         variant="primary"
-                        onClick={() => editarLink(link.id)}
+                        onClick={() => visualizarLink(link)}
                       >
                         Editar
                       </Button>
@@ -302,9 +320,10 @@ export default function LinkMeus() {
             )}
           </ListGroup>
 
+          {/* MODAL CADASTRAR LINK */}
           <Modal
             show={abrirModalCadastrarLink}
-            onHide={fecharModalCadastrarLink}
+            onHide={handleFecharModalCadastrarLink}
           >
             <Modal.Header closeButton>
               <Modal.Title className="fw-bold text-primary">
@@ -374,6 +393,87 @@ export default function LinkMeus() {
               </Button>
               <Button variant="success" onClick={cadastrarLink}>
                 Cadastrar
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          {/* MODAL EDITAR LINK */}
+          <Modal
+            show={abrirModalEditarLink}
+            onHide={handleFecharModalEditarLink}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title className="fw-bold text-primary">
+                Editar Link na Bio
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Mensagem mensagem={msgModal} mensagemTipo={msgTipo} />
+              <Form>
+                <Form.Control id="imagem" type="hidden" value={linkId} />
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold" htmlFor="imagem">
+                    Tipo de Link
+                  </Form.Label>
+                  <Form.Select
+                    onChange={(e) => setTipoLink(e.target.value)}
+                    value={tipoLink}
+                  >
+                    <option value="0" selected disabled>
+                      Selecione um tipo
+                    </option>
+
+                    {listaLinkTipos.map((linkTipo) => (
+                      <option key={linkTipo.id} value={linkTipo.id}>
+                        {linkTipo.tipo}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold" htmlFor="imagem">
+                    Imagem
+                  </Form.Label>
+                  <Form.Control
+                    id="imagem"
+                    type="file"
+                    onChange={(e) => setImagem(e.target.files[0])}
+                    value={imagem}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold" htmlFor="tituloLink">
+                    Título do Link
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Meu Site Pessoal"
+                    autoFocus
+                    id="tituloLink"
+                    onChange={(e) => setTituloLink(e.target.value)}
+                    value={tituloLink}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-bold" htmlFor="link">
+                    Link
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="meusitepessoal.com.br"
+                    id="link"
+                    onChange={setarLink}
+                    value={formataLink(link)}
+                  />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={limparCampos}>
+                Cancelar
+              </Button>
+              <Button variant="success" onClick={() => editarLink(linkId)}>
+                Editar
               </Button>
             </Modal.Footer>
           </Modal>
