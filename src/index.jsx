@@ -53,10 +53,8 @@ const router = createBrowserRouter([
         element: <PrivateRoute element={<LinkMeus />} />,
       },
       {
-        path: "/links/:nomeUsuario",
+        path: "/link/:nomeUsuario",
         element: <Links />,
-        header: null,
-        footer: null,
       },
       // ROTAS ERRO
       { path: "/*", element: <Error404 /> },
