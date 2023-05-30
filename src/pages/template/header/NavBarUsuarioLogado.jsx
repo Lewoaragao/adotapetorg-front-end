@@ -19,7 +19,7 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
             <NavLink className="dropdown-item" to="/meus/pets">
               Meus Pets
             </NavLink>
-            <NavLink className="dropdown-item" to="/pets/favoritos">
+            <NavLink className="dropdown-item" to="/meus/pets/favoritos">
               Meus Pets Favoritos
             </NavLink>
           </Dropdown.Menu>
@@ -29,7 +29,7 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
       <div className="d-flex justify-content-center align-items-center">
         <NavLink
           className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
-          to="/link/meus"
+          to="/meus/links"
         >
           <AiOutlineLink /> Link na Bio
         </NavLink>

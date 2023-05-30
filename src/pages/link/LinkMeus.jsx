@@ -54,10 +54,10 @@ export default function LinkMeus() {
       .then(({ data }) => {
         setListaLinks(data.user_links);
         setListaLinkTipos(data.link_tipos);
-        console.log(data);
       })
       .catch(({ response }) => {
         setListaLinks(null);
+        setListaLinkTipos(response.data.link_tipos);
         setMensagem(response.data.message);
       })
       .finally(() => {
@@ -320,7 +320,7 @@ export default function LinkMeus() {
                   </Form.Label>
                   <Form.Select
                     onChange={(e) => setTipoLink(e.target.value)}
-                    defaultValue={tipoLink}
+                    value={tipoLink}
                   >
                     <option value="0" selected disabled>
                       Selecione um tipo
