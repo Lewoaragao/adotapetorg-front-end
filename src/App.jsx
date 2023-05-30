@@ -25,7 +25,7 @@ export default function App() {
      * links cadastrado para que o usuário mostre eles
      * como um link na bio
      */
-    if (pathname.startsWith("/links/")) {
+    if (pathname.startsWith("/link/")) {
       // Renderiza o conteúdo sem o header e o footer
       return <Outlet />;
     } else {
