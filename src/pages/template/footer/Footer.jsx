@@ -105,7 +105,7 @@ function Footer({ logo }) {
               <h6 className="text-uppercase fw-bold mb-4">Serviços</h6>
               <p>
                 <NavLink
-                  to="/pet/cadastrar"
+                  to="/cadastrar/pet"
                   className="text-reset text-underline-hover"
                 >
                   Cadastrar Pet
@@ -113,7 +113,7 @@ function Footer({ logo }) {
               </p>
               <p>
                 <NavLink
-                  to="/link/meus"
+                  to="/meus/links"
                   className="text-reset text-underline-hover"
                 >
                   Link na Bio
@@ -149,28 +149,32 @@ function Footer({ logo }) {
             <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Contato</h6>
               <p>
-                <FaHome /> Fortaleza, Ceará, Brasil
+                <a
+                  rel="noopener noreferrer"
+                  className="text-reset text-underline-hover"
+                  href="/"
+                >
+                  <FaHome /> Fortaleza, Ceará, Brasil
+                </a>
               </p>
               <p>
-                <FaEnvelope />{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-reset text-underline-hover"
                   href="mailto:contato@adotapet.org"
                 >
-                  contato@adotapet.org
+                  <FaEnvelope /> contato@adotapet.org
                 </a>
               </p>
               <p>
-                <FaWhatsapp />{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-reset text-underline-hover"
                   href="https://api.whatsapp.com/send/?phone=5585997972854&text=Ol%C3%A1&type=phone_number&app_absent=0"
                 >
-                  +55 (85) 9 9797-2854
+                  <FaWhatsapp /> +55 (85) 9 9797-2854
                 </a>
               </p>
             </div>

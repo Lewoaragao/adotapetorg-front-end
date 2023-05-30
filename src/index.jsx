@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
+import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import logo from "./images/logo-adotapetorg.jpg";
 import Error404 from "./pages/error/Error404";
@@ -24,14 +25,15 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      // GERAL
+      // ROTAS GERAL
       { path: "/", element: <Inicio logo={logo} /> },
       { path: "/sobre", element: <Sobre /> },
       { path: "/politica/privacidade", element: <PoliticaPrivacidade /> },
-      // USUÁRIO
+
+      // ROTAS USUÁRIO
       { path: "/cadastrar/usuario", element: <UsuarioCadastrar /> },
       { path: "/usuario/entrar", element: <UsuarioEntrar /> },
-      // PET
+      // ROTAS PET
       {
         path: "/cadastrar/pet",
         element: <PrivateRoute element={<PetCadastrar />} />,
@@ -42,19 +44,24 @@ const router = createBrowserRouter([
         element: <PrivateRoute element={<PetUsuarioLogado />} />,
       },
       {
-        path: "/pets/favoritos",
+        path: "/meus/pets/favoritos",
         element: <PrivateRoute element={<PetUsuarioLogadoFavoritos />} />,
       },
-      // LINK
+      // ROTAS LINK
       {
-        path: "/link/meus",
+        path: "/meus/links",
         element: <PrivateRoute element={<LinkMeus />} />,
       },
-      // ERRO
+      {
+        path: "/links/:nomeUsuario",
+        element: <Links />,
+        header: null,
+        footer: null,
+      },
+      // ROTAS ERRO
       { path: "/*", element: <Error404 /> },
     ],
   },
-  { path: "/links/:nomeUsuario", element: <Links /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
