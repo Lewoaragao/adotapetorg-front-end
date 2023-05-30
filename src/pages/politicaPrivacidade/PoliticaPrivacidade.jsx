@@ -34,14 +34,14 @@ export default function PoliticaPrivacidade() {
       <h2 className="fw-bold">Uso das Informações Pessoais</h2>
 
       <p>
-        O primeiro nome informado é utilizado para personalizar a comunicação e
+        O primeiro nome informado é utilizado para facilitar a comunicação e
         oferecer um atendimento mais personalizado em relação à adoção de pets.
         O endereço de e-mail é utilizado para enviar notícias, novas postagens
-        no blog, informações sobre mudanças na conta (recuperação de senha,
-        mudança de senha, verificação de e-mail) e outros informativos
-        relacionados ao nosso sistema. Essas informações são utilizadas
-        internamente e não são compartilhadas com terceiros, a menos que
-        expressamente autorizado pelo usuário ou exigido por lei.
+        no blog, informações sobre mudanças na conta (verificação de e-mail,
+        recuperação de senha, mudança de senha, mudanças nos dados do perfil) e
+        outros informativos relacionados ao nosso sistema. Essas informações são
+        utilizadas internamente e não são compartilhadas com terceiros, a menos
+        que expressamente autorizado pelo usuário ou exigido por lei.
       </p>
 
       <h2 className="fw-bold">Proteção dos Dados Pessoais</h2>
@@ -67,12 +67,22 @@ export default function PoliticaPrivacidade() {
       <h2 className="fw-bold">Direitos do Titular dos Dados</h2>
 
       <p>
-        De acordo com a Lei Geral de Proteção de Dados (LGPD), você possui
-        direitos em relação aos seus dados pessoais. Isso inclui o direito de
-        acessar, corrigir, atualizar ou excluir as informações pessoais que
-        temos sobre você. Caso deseje exercer esses direitos ou alterar suas
-        preferências de comunicação, entre em contato conosco através dos canais
-        fornecidos no final desta Política de Privacidade.
+        De acordo com a&nbsp;
+        <a
+          className="text-reset"
+          href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+        >
+          Lei Geral de Proteção de Dados ( LGPD
+        </a>
+        ), você possui direitos em relação aos seus dados pessoais. Isso inclui
+        o direito de acessar, corrigir, atualizar ou excluir as informações
+        pessoais que temos sobre você. Caso deseje exercer esses direitos ou
+        alterar suas preferências de comunicação,&nbsp;
+        <a className="text-reset" href="#contato">
+          entre em contato conosco
+        </a>
+        &nbsp;através dos canais fornecidos no final desta Política de
+        Privacidade.
       </p>
 
       <h2 className="fw-bold">Alterações na Política de Privacidade</h2>
@@ -85,7 +95,9 @@ export default function PoliticaPrivacidade() {
         Privacidade para estar ciente das atualizações.
       </p>
 
-      <h2 className="fw-bold">Contato</h2>
+      <h2 className="fw-bold" id="contato">
+        Contato
+      </h2>
 
       <p>
         Se você tiver alguma dúvida ou preocupação relacionada à nossa Política
@@ -106,7 +118,7 @@ export default function PoliticaPrivacidade() {
       </ul>
 
       <p>
-        <span className="fw-bold">Atualizado em:</span> 28/05/2023
+        <span className="fw-bold">Atualizado em:</span> 30/05/2023
       </p>
     </>
   );
