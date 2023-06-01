@@ -44,9 +44,14 @@ export default function LinkMeus() {
 
   const handleFecharModalCadastrarLink = () =>
     setAbrirModalCadastrarLink(false);
-  const handleAbrirModalCadastrarLink = () => setAbrirModalCadastrarLink(true);
-
   const handleFecharModalEditarLink = () => setAbrirModalEditarLink(false);
+  const handleSelectTipoLinkChange = (e) => setTipoLink(e.target.value);
+  const handleFileImagemChange = (e) => {
+    console.log(e);
+    console.log(e.target.files[0]);
+    setImagem(e.target.files[0]);
+    console.log(imagem);
+  };
 
   useEffect(() => {
     listarLinksUsuarioLogado();
@@ -129,7 +134,7 @@ export default function LinkMeus() {
     }
   }
 
-  function editarLink() {
+  function editarLink(linkId) {
     setMsg("");
     setMsgModal("");
 
@@ -144,7 +149,10 @@ export default function LinkMeus() {
           link: link,
         },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
       )
         .then(({ data }) => {
@@ -165,7 +173,6 @@ export default function LinkMeus() {
 
   function limparCampos() {
     setTipoLink("");
-    setImagem("");
     setTituloLink("");
     setLink("");
     setMsgModal("");
@@ -212,7 +219,7 @@ export default function LinkMeus() {
   function visualizarLink(link) {
     setMsg("");
 
-    setLinkId(link);
+    setLinkId(link.id);
     setTipoLink(link.link_tipo_id);
     setTituloLink(link.titulo_link);
     setImagem(link.imagem);
@@ -255,7 +262,7 @@ export default function LinkMeus() {
 
           <button
             className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3"
-            onClick={handleAbrirModalCadastrarLink}
+            onClick={() => setAbrirModalCadastrarLink(true)}
           >
             <AiOutlinePlus /> Cadastrar link
           </button>
@@ -338,10 +345,10 @@ export default function LinkMeus() {
                     Tipo de Link
                   </Form.Label>
                   <Form.Select
-                    onChange={(e) => setTipoLink(e.target.value)}
+                    onChange={handleSelectTipoLinkChange}
                     value={tipoLink}
                   >
-                    <option value="0" selected disabled>
+                    <option value="0" selected className="fw-bold">
                       Selecione um tipo
                     </option>
 
@@ -359,7 +366,7 @@ export default function LinkMeus() {
                   <Form.Control
                     id="imagem"
                     type="file"
-                    onChange={(e) => setImagem(e.target.files[0])}
+                    onChange={handleFileImagemChange}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -410,16 +417,16 @@ export default function LinkMeus() {
             <Modal.Body>
               <Mensagem mensagem={msgModal} mensagemTipo={msgTipo} />
               <Form>
-                <Form.Control id="imagem" type="hidden" value={linkId} />
+                <Form.Control id="linkId" type="hidden" value={linkId} />
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="imagem">
                     Tipo de Link
                   </Form.Label>
                   <Form.Select
-                    onChange={(e) => setTipoLink(e.target.value)}
+                    onChange={handleSelectTipoLinkChange}
                     value={tipoLink}
                   >
-                    <option value="0" selected disabled>
+                    <option value="0" selected className="fw-bold">
                       Selecione um tipo
                     </option>
 
@@ -431,14 +438,13 @@ export default function LinkMeus() {
                   </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="imagem">
+                  <Form.Label className="fw-bold" htmlFor="imagemEdit">
                     Imagem
                   </Form.Label>
                   <Form.Control
-                    id="imagem"
+                    id="imagemEdit"
                     type="file"
-                    onChange={(e) => setImagem(e.target.files[0])}
-                    value={imagem}
+                    onChange={handleFileImagemChange}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
