@@ -89,6 +89,13 @@ export default function Links() {
           {listaLinks != null &&
             listaLinks.map((link) => (
               <Col key={link.id} lg={4}>
+                {/* <img
+                  className="rounded"
+                  width="25px"
+                  height="25px"
+                  src={logo}
+                  alt="teste"
+                /> */}
                 <LinkItem
                   className="text-start"
                   titulo={link.titulo_link}
@@ -96,6 +103,20 @@ export default function Links() {
                 />
               </Col>
             ))}
+
+          <a
+            className="text-reset text-underline-hover d-flex justify-content-center align-items-center gap-1 small"
+            href="https://adotapet.org"
+          >
+            <img
+              className="rounded"
+              width="25px"
+              height="25px"
+              src={logo}
+              alt="logo adota pet org"
+            />
+            <span className="fw-bold"> Adota Pet Org</span>
+          </a>
         </div>
       )}
     </Container>
