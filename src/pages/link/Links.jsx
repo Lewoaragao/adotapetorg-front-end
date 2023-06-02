@@ -39,6 +39,7 @@ export default function Links() {
       .catch(({ response }) => {
         setListaLinks(null);
         setMsgTipo("warning");
+        setUserImagem(response.data.user_imagem);
         setFlgUserCadastrado(response.data.flg_user_cadastrado);
         setMensagem(response.data.message);
       })
@@ -55,7 +56,7 @@ export default function Links() {
         <div className="vw-100 my-auto" align="center">
           <img
             src={
-              userImagem === "" || userImagem === null
+              userImagem === "" || userImagem === null || !flgUserCadastrado
                 ? logo
                 : process.env.REACT_APP_API_URL + userImagem
             }
@@ -85,9 +86,7 @@ export default function Links() {
           </Col>
 
           <ListGroup>
-            {listaLinks == null ? (
-              <div>{mensagem}</div>
-            ) : (
+            {listaLinks != null && (
               <Col xs={12} sm={8} md={6} className="mx-auto">
                 {listaLinks.map((link) => (
                   <a className="text-decoration-none" href={link.link}>
