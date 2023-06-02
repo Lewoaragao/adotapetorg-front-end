@@ -173,6 +173,7 @@ export default function LinkMeus() {
 
   function limparCampos() {
     setTipoLink("");
+    setImagem("");
     setTituloLink("");
     setLink("");
     setMsgModal("");
@@ -291,7 +292,7 @@ export default function LinkMeus() {
                           width="40px"
                           height="40px"
                           src={process.env.REACT_APP_API_URL + link.imagem}
-                          alt={`Foto do link ${link.link}`}
+                          alt={`Foto do link: ${link.titulo_link}`}
                         />
                       )}
                     </div>
