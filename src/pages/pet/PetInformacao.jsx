@@ -85,14 +85,15 @@ function PetInformacao() {
         <Carregamento />
       ) : (
         <>
-          <div className="d-flex justify-content-center align-items-center flex-wrap gap-3">
+          <div className="d-flex justify-content-center align-items-center flex-wrap gap-5">
             <img
               className="img-thumbnail"
               style={{ maxWidth: "300px" }}
               src={process.env.REACT_APP_API_URL + pet.imagem}
               alt={`foto pet ${pet.nome}`}
             />
-            <div className="fs-4">
+
+            <div>
               <TituloPagina titulo="Informações do Pet" />
 
               <p>
@@ -104,15 +105,19 @@ function PetInformacao() {
               </p>
               <p>
                 <span className="fw-bold">Responsável:</span>{" "}
-                {usuarioResponsavel.nome}
+                {usuarioResponsavel.primeiro_nome}
               </p>
               <p>
                 <span className="fw-bold">Cidade:</span>{" "}
-                {usuarioResponsavel.cidade_endereco}
+                {usuarioResponsavel.endereco_cidade}
               </p>
               <p>
                 <span className="fw-bold">Estado:</span>{" "}
-                {usuarioResponsavel.estado_endereco}
+                {usuarioResponsavel.endereco_estado}
+              </p>
+              <p>
+                <span className="fw-bold">País:</span>{" "}
+                {usuarioResponsavel.endereco_pais}
               </p>
               <p>
                 <span className="fw-bold">Contato:</span>{" "}

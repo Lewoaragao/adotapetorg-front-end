@@ -77,7 +77,7 @@ function Footer({ logo }) {
             className="btn btn-warning mx-1"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://youtube.com/adotapetorg"
+            href="https://youtube.com/@adotapetorg"
           >
             <FaYoutube />
           </a>

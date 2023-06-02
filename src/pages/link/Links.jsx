@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Col, Container } from "react-bootstrap";
+import { Col, Container, ListGroup } from "react-bootstrap";
 import { NavLink, useParams } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
-import LinkItem from "../../components/LinkItem";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import logo from "../../images/logo-adotapetorg.jpg";
@@ -49,11 +48,11 @@ export default function Links() {
   }
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
+    <Container className="d-flex justify-content-center align-items-center vh-100 ">
       {isLoading ? (
         <Carregamento />
       ) : (
-        <div className="vw-100" align="center">
+        <div className="vw-100 my-auto" align="center">
           <img
             src={
               userImagem === "" || userImagem === null
@@ -62,12 +61,11 @@ export default function Links() {
             }
             width="100"
             height="100"
-            className="d-inline-block align-top rounded-circle"
+            className="d-inline-block align-top rounded-circle mt-3"
             alt="logo adota pet org"
           />
 
           <TituloPagina titulo={nomeUsuario} />
-          {/* <h2 className="mb-4">um amor sem fronteiras</h2> */}
 
           <Col lg={4}>
             <Mensagem mensagem={mensagem} mensagemTipo={msgTipo} />
@@ -76,7 +74,7 @@ export default function Links() {
                 <p>
                   Quer se cadastrar com esse usuário?{" "}
                   <NavLink
-                    className="text-reset text-underline-hover"
+                    className="text-underline-hover"
                     to="/cadastrar/usuario"
                   >
                     Clique aqui
@@ -86,16 +84,56 @@ export default function Links() {
             )}
           </Col>
 
-          {listaLinks != null &&
-            listaLinks.map((link) => (
-              <Col key={link.id} lg={4}>
-                <LinkItem
-                  className="text-start"
-                  titulo={link.titulo_link}
-                  url={link.link}
-                />
+          <ListGroup>
+            {listaLinks == null ? (
+              <div>{mensagem}</div>
+            ) : (
+              <Col xs={12} sm={8} md={6} className="mx-auto">
+                {listaLinks.map((link) => (
+                  <a className="text-decoration-none" href={link.link}>
+                    <ListGroup.Item
+                      action
+                      variant="primary"
+                      className="d-flex justify-content-start align-items-center gap-3 mb-3"
+                    >
+                      <div className="my-auto">
+                        {link.imagem === "" ? (
+                          <div style={{ width: "40px", height: "40px" }}></div>
+                        ) : (
+                          <img
+                            className="rounded"
+                            width="40px"
+                            height="40px"
+                            src={process.env.REACT_APP_API_URL + link.imagem}
+                            alt={`Foto do link: ${link.titulo_link}`}
+                          />
+                        )}
+                      </div>
+                      <span>{link.titulo_link}</span>
+                    </ListGroup.Item>
+                  </a>
+                ))}
               </Col>
-            ))}
+            )}
+          </ListGroup>
+
+          <div className="mb-3">
+            <a
+              className="text-reset text-underline-hover d-flex justify-content-center align-items-center gap-1 small"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://adotapet.org"
+            >
+              <img
+                className="rounded"
+                width="25px"
+                height="25px"
+                src={logo}
+                alt="logo adota pet org"
+              />
+              <span className="fw-bold"> Adota Pet Org</span>
+            </a>
+          </div>
         </div>
       )}
     </Container>

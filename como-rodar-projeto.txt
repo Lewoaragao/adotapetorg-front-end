@@ -1,0 +1,3 @@
+Execute os seguintes passos na ordem:
+1 - primeiro é necessário instalar o node.js
+2 - no terminal digite npm start
