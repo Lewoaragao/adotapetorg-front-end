@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
 import { CONST_FALSE_PHP, CONST_TRUE_PHP } from "../../components/Constantes";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import Mensagem from "./../../components/mensagem/Mensagem";
@@ -344,12 +345,12 @@ function UsuarioCadastrar() {
 
           <p className="mt-3">
             Já possui uma conta?{" "}
-            <NavLink
+            <NavLinkToTop
               className="nav-link d-inline text-decoration-underline"
               to="/usuario/entrar"
             >
               Entrar
-            </NavLink>
+            </NavLinkToTop>
           </p>
         </Form>
       )}

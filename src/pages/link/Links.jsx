@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Col, Container, ListGroup } from "react-bootstrap";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import logo from "../../images/logo-adotapetorg.jpg";
 import Api from "../../services/Api";
+import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 
 /**
  * Página onde serão exibidos os links
@@ -74,12 +75,12 @@ export default function Links() {
               <>
                 <p>
                   Quer se cadastrar com esse usuário?{" "}
-                  <NavLink
+                  <NavLinkToTop
                     className="text-underline-hover"
                     to="/cadastrar/usuario"
                   >
                     Clique aqui
-                  </NavLink>
+                  </NavLinkToTop>
                 </p>
               </>
             )}

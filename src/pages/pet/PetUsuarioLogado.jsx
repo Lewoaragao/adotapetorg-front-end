@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
 
@@ -60,9 +60,9 @@ export default function PetUsuarioLogado() {
                         <Card.Text>{pet.raca}</Card.Text>
                       </Card.Body>
                       <Card.Footer>
-                        <NavLink to={`/informacoes/pet/${pet.id}`}>
+                        <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
                           Informações
-                        </NavLink>
+                        </NavLinkToTop>
                       </Card.Footer>
                     </Card>
                   </Col>

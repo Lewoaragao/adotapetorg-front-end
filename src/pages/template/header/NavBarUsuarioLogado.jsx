@@ -1,7 +1,7 @@
 import { Dropdown, Image } from "react-bootstrap";
 import { AiOutlineLink } from "react-icons/ai";
 import { FaDog } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 
 function NavBarUsuarioLogado({ usuarioLogado, logout }) {
   return (
@@ -13,26 +13,26 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLink className="dropdown-item" to="/cadastrar/pet">
+            <NavLinkToTop className="dropdown-item" to="/cadastrar/pet">
               Cadastrar Pet
-            </NavLink>
-            <NavLink className="dropdown-item" to="/meus/pets">
+            </NavLinkToTop>
+            <NavLinkToTop className="dropdown-item" to="/meus/pets">
               Meus Pets
-            </NavLink>
-            <NavLink className="dropdown-item" to="/pets/favoritos">
+            </NavLinkToTop>
+            <NavLinkToTop className="dropdown-item" to="/pets/favoritos">
               Meus Pets Favoritos
-            </NavLink>
+            </NavLinkToTop>
           </Dropdown.Menu>
         </Dropdown>
       </div>
 
       <div className="d-flex justify-content-center align-items-center">
-        <NavLink
+        <NavLinkToTop
           className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
           to="/meus/links"
         >
           <AiOutlineLink /> Link na Bio
-        </NavLink>
+        </NavLinkToTop>
       </div>
 
       <div className="d-flex justify-content-center align-items-center">
@@ -48,21 +48,21 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            {/* <NavLink className="dropdown-item disabled" to="/usuario/perfil">
+            {/* <NavLinkToTop className="dropdown-item disabled" to="/usuario/perfil">
               Perfil
-            </NavLink>
-            <NavLink
+            </NavLinkToTop>
+            <NavLinkToTop
               className="dropdown-item disabled"
               to="/usuario/editar/perfil"
             >
               Editar perfil
-            </NavLink>
-            <NavLink
+            </NavLinkToTop>
+            <NavLinkToTop
               className="dropdown-item disabled"
               to="/usuario/editar/senha"
             >
               Mudar senha
-            </NavLink> */}
+            </NavLinkToTop> */}
             <button className="dropdown-item" onClick={logout}>
               Sair
             </button>

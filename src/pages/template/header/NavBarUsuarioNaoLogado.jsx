@@ -1,22 +1,22 @@
 import { BiLogIn } from "react-icons/bi";
 import { FaRegAddressBook } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 
 function NavBarUsuarioNaoLogado() {
   return (
     <>
-      <NavLink
+      <NavLinkToTop
         className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
         to="/cadastrar/usuario"
       >
         <FaRegAddressBook /> Cadastrar
-      </NavLink>
-      <NavLink
+      </NavLinkToTop>
+      <NavLinkToTop
         className="btn btn-warning fw-bold d-flex justify-content-center align-items-center gap-1"
         to="/usuario/entrar"
       >
         <BiLogIn /> Entrar
-      </NavLink>
+      </NavLinkToTop>
     </>
   );
 }

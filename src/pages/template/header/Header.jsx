@@ -4,12 +4,13 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { BiHomeHeart } from "react-icons/bi";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
 import Api from "../../../services/Api";
 import Mensagem from "./../../../components/mensagem/Mensagem";
 import NavBarUsuarioLogado from "./NavBarUsuarioLogado";
 import NavBarUsuarioNaoLogado from "./NavBarUsuarioNaoLogado";
+import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 
 function Header({ logo, usuarioLogadoVerificado }) {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ function Header({ logo, usuarioLogadoVerificado }) {
     <>
       <Navbar expand="md" sticky="top" bg="light">
         <Container>
-          <NavLink to="/">
+          <NavLinkToTop to="/">
             <img
               src={logo}
               width="40"
@@ -47,22 +48,22 @@ function Header({ logo, usuarioLogadoVerificado }) {
               className="d-inline-block align-top rounded"
               alt="logo adota pet org"
             />
-          </NavLink>
+          </NavLinkToTop>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="justify-content-end">
             <Nav className="gap-2">
-              <NavLink
+              <NavLinkToTop
                 className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
                 to="/"
               >
                 <BiHomeHeart /> Início
-              </NavLink>
-              <NavLink
+              </NavLinkToTop>
+              <NavLinkToTop
                 className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
                 to="/sobre"
               >
                 <AiFillQuestionCircle /> Sobre
-              </NavLink>
+              </NavLinkToTop>
 
               {isUsuarioLogado ? (
                 <NavBarUsuarioLogado
