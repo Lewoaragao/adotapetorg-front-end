@@ -52,6 +52,7 @@ function PetInformacao() {
   }
 
   function verInformacaoPetUserAuth(idPet, token) {
+    setIsLoading(true);
     Api.post(`pets/visualizar/${idPet}`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
