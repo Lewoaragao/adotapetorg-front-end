@@ -26,8 +26,8 @@ function Footer({ logo }) {
   }, [anoInicio, anoAtual]);
 
   return (
-    <footer className="text-center text-lg-start bg-light text-muted">
-      <section className="d-flex justify-content-center justify-content-lg-end align-items-center p-4 border-bottom container">
+    <footer className="text-center text-lg-start bg-light text-muted container">
+      <section className="d-flex justify-content-center justify-content-lg-end align-items-center p-4 border-bottom">
         <div className="me-3 d-none d-lg-block">
           <span>Conecte-se conosco nas redes sociais:</span>
         </div>
@@ -84,7 +84,7 @@ function Footer({ logo }) {
         </div>
       </section>
 
-      <section className="container">
+      <section>
         <div className="text-center text-md-start mt-5">
           <div className="row mt-3">
             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
@@ -149,11 +149,7 @@ function Footer({ logo }) {
             <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Contato</h6>
               <p>
-                <a
-                  rel="noopener noreferrer"
-                  className="text-reset text-underline-hover"
-                  href="/"
-                >
+                <a className="text-reset text-underline-hover" href="/#">
                   <FaHome /> Fortaleza, Ceará, Brasil
                 </a>
               </p>
@@ -182,8 +178,8 @@ function Footer({ logo }) {
         </div>
       </section>
 
-      <section className="text-center p-4 d-flex justify-content-between align-items-center flex-wrap gap-4 container">
-        <div>
+      <section className="text-center">
+        <p>
           <span>
             Copyright {anoInicio} {aposAnoInicio && `- ${anoAtual}`}{" "}
             <span className="fw-bold">©</span> Todos os direitos reservados{" "}
@@ -196,10 +192,10 @@ function Footer({ logo }) {
           >
             Adota Pet Org
           </a>
-        </div>
+        </p>
 
-        <div>
-          <span>Desenvolvido com carinho por </span>
+        <p>
+          <span>Projeto open source ❤️ Desenvolvido com carinho por </span>
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -208,7 +204,7 @@ function Footer({ logo }) {
           >
             Leonardo Aragão
           </a>
-        </div>
+        </p>
       </section>
     </footer>
   );
