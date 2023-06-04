@@ -5,7 +5,11 @@ import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
 import formataData from "../../utils/DataUtil";
-import { formataCelular } from "../../utils/Mask";
+import {
+  formataCelular,
+  formataSexoPet,
+  formataTamanhoPet,
+} from "../../utils/Mask";
 import Carregamento, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";
@@ -98,6 +102,14 @@ function PetInformacao() {
 
               <p>
                 <span className="fw-bold">Nome:</span> {pet.nome}
+              </p>
+              <p>
+                <span className="fw-bold">Sexo:</span>{" "}
+                {formataSexoPet(pet.sexo)}
+              </p>
+              <p>
+                <span className="fw-bold">Tamanho:</span>{" "}
+                {formataTamanhoPet(pet.tamanho, pet.sexo)}
               </p>
               <p>
                 <span className="fw-bold">Data de nascimento:</span>{" "}
