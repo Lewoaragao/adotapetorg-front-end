@@ -10,7 +10,7 @@ import {
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 
 function Footer({ logo }) {
   const [aposAnoInicio, setAposAnoInicio] = useState(false);
@@ -104,54 +104,55 @@ function Footer({ logo }) {
             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Serviços</h6>
               <p>
-                <NavLink
+                <NavLinkToTop
                   to="/cadastrar/pet"
                   className="text-reset text-underline-hover"
                 >
                   Cadastrar Pet
-                </NavLink>
+                </NavLinkToTop>
               </p>
               <p>
-                <NavLink
+                <NavLinkToTop
                   to="/meus/links"
                   className="text-reset text-underline-hover"
                 >
                   Link na Bio
-                </NavLink>
+                </NavLinkToTop>
               </p>
             </div>
 
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Links úteis</h6>
               <p>
-                <NavLink to="/" className="text-reset text-underline-hover">
+                <NavLinkToTop
+                  to="/"
+                  className="text-reset text-underline-hover"
+                >
                   Início
-                </NavLink>
+                </NavLinkToTop>
               </p>
               <p>
-                <NavLink
+                <NavLinkToTop
                   to="/sobre"
                   className="text-reset text-underline-hover"
                 >
                   Sobre
-                </NavLink>
+                </NavLinkToTop>
               </p>
               <p>
-                <NavLink
+                <NavLinkToTop
                   to="/politica/privacidade"
                   className="text-reset text-underline-hover"
                 >
                   Política de privacidade
-                </NavLink>
+                </NavLinkToTop>
               </p>
             </div>
 
             <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Contato</h6>
               <p>
-                <a className="text-reset text-underline-hover" href="/#">
-                  <FaHome /> Fortaleza, Ceará, Brasil
-                </a>
+                <FaHome /> Fortaleza, Ceará, Brasil
               </p>
               <p>
                 <a

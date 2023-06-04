@@ -4,9 +4,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
 import Mensagem from "../../components/mensagem/Mensagem";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
@@ -131,12 +132,12 @@ function UsuarioEntrar() {
 
           <p>
             Não possui uma conta?{" "}
-            <NavLink
+            <NavLinkToTop
               className="nav-link d-inline text-decoration-underline"
               to="/usuario/cadastrar"
             >
               Cadastrar
-            </NavLink>
+            </NavLinkToTop>
           </p>
         </Form>
       )}

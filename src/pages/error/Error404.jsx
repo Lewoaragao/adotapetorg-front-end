@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
 import { AiFillAlert } from "react-icons/ai";
 import { GiCat } from "react-icons/gi";
 import TituloPagina from "../../components/TituloPagina";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 
 function Error404() {
   return (
@@ -13,13 +13,13 @@ function Error404() {
         <TituloPagina titulo="Erro 404" />
         <h2>Ops... essa página não existe</h2>
         <div align="end">
-          <NavLink
+          <NavLinkToTop
             className="btn btn-secondary mt-2"
             to="/"
             title="Voltar para página inicial"
           >
             <GiCat /> Voltar
-          </NavLink>
+          </NavLinkToTop>
         </div>
       </div>
     </div>

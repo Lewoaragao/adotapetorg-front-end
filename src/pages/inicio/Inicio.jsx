@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
-import { NavLink } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
+import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -101,9 +101,9 @@ function Inicio({ logo }) {
                             <Card.Text>{pet.raca}</Card.Text>
                           </Card.Body>
                           <Card.Footer>
-                            <NavLink to={`/informacoes/pet/${pet.id}`}>
+                            <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
                               Informações
-                            </NavLink>
+                            </NavLinkToTop>
                           </Card.Footer>
                         </Card>
                       </Col>
