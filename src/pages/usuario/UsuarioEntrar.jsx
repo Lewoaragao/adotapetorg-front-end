@@ -1,15 +1,15 @@
 import { useContext, useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { NavLink, useNavigate } from "react-router-dom";
-import Mensagem from "../../components/mensagem/Mensagem";
-import Api from "../../services/Api";
-import { AuthContext } from "../../contexts/AuthContext";
 import { InputGroup, Row } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordFill } from "react-icons/ri";
-import TituloPagina from "./../../components/TituloPagina";
+import { NavLink, useNavigate } from "react-router-dom";
 import Carregamento from "../../components/Carregamento";
+import Mensagem from "../../components/mensagem/Mensagem";
+import { AuthContext } from "../../contexts/AuthContext";
+import Api from "../../services/Api";
+import TituloPagina from "./../../components/TituloPagina";
 
 function UsuarioEntrar() {
   const navigate = useNavigate();
@@ -44,9 +44,9 @@ function UsuarioEntrar() {
         senha: senha,
       })
         .then(({ data }) => {
-          if (lembreMe) {
-            localStorage.setItem("token", data.token);
-          }
+          lembreMe
+            ? localStorage.setItem("token", data.token)
+            : localStorage.removeItem("token");
           setarUsuarioLogado(data.usuario, data.token, true);
           navigate("/");
         })
