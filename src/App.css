@@ -11,3 +11,7 @@ a.disabled {
 .text-underline-hover:hover {
   text-decoration: underline;
 }
+
+.text-justify {
+  text-align: justify;
+}
