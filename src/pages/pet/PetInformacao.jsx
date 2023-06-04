@@ -27,12 +27,36 @@ function PetInformacao() {
   const [msgTipo, setMsgTipo] = useState("");
 
   useEffect(() => {
-    verInformacaoPet(id);
-  }, [id]);
+    if (isUsuarioLogado) {
+      verInformacaoPetUserAuth(id, token);
+    } else {
+      verInformacaoPet(id);
+    }
+  }, [id, isUsuarioLogado, token]);
 
   function verInformacaoPet(idPet) {
     setIsLoading(true);
     Api.get(`pets/${idPet}`)
+      .then(({ data }) => {
+        setPet(data.pet);
+        setUsuarioResponsavel(data.user);
+        setPetFavoritado(data.pet_favoritado);
+      })
+      .catch(({ response }) => {
+        setMsgTipo("warning");
+        setMsg(response.data.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  function verInformacaoPetUserAuth(idPet, token) {
+    Api.post(`pets/visualizar/${idPet}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(({ data }) => {
         setPet(data.pet);
         setUsuarioResponsavel(data.user);
