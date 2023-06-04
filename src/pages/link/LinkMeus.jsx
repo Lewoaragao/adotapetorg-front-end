@@ -12,6 +12,14 @@ import {
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsClipboardCheck } from "react-icons/bs";
 import { GoLinkExternal } from "react-icons/go";
+import {
+  LINK_TIPO_FACEBOOK,
+  LINK_TIPO_GITHUB,
+  LINK_TIPO_INSTAGRAM,
+  LINK_TIPO_LINKEDIN,
+  LINK_TIPO_TIK_TOK,
+  LINK_TIPO_YOUTUBE,
+} from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -30,6 +38,8 @@ export default function LinkMeus() {
   const [tipoLink, setTipoLink] = useState(0);
   const [imagem, setImagem] = useState("");
   const [tituloLink, setTituloLink] = useState("");
+  const [desabilitarTituloLink, setDesabilitarTituloLink] = useState(true);
+  const [linkPlaceholder, setLinkPlaceholder] = useState("meu-site.com.br");
   const [link, setLink] = useState("");
   const [linkId, setLinkId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,13 +54,48 @@ export default function LinkMeus() {
 
   const handleFecharModalCadastrarLink = () =>
     setAbrirModalCadastrarLink(false);
+
   const handleFecharModalEditarLink = () => setAbrirModalEditarLink(false);
-  const handleSelectTipoLinkChange = (e) => setTipoLink(e.target.value);
+
+  const handleSelectTipoLinkChange = (e) => {
+    setTipoLink(e.target.value);
+
+    const valueSelectedInteger = parseInt(e.target.value);
+
+    switch (valueSelectedInteger) {
+      case LINK_TIPO_INSTAGRAM:
+        setTituloLink("Instagram");
+        setLinkPlaceholder("instagram.com/seu-usuario");
+        break;
+      case LINK_TIPO_TIK_TOK:
+        setTituloLink("TikTok");
+        setLinkPlaceholder("instagram.com/seu-usuario");
+        break;
+      case LINK_TIPO_LINKEDIN:
+        setTituloLink("LinkedIn");
+        setLinkPlaceholder("linkedin.com/in/seu-usuario");
+        break;
+      case LINK_TIPO_GITHUB:
+        setTituloLink("GitHub");
+        setLinkPlaceholder("github.com/seu-usuario");
+        break;
+      case LINK_TIPO_FACEBOOK:
+        setTituloLink("Facebook");
+        setLinkPlaceholder("facebook.com/seu-usuario");
+        break;
+      case LINK_TIPO_YOUTUBE:
+        setTituloLink("YouTube");
+        setLinkPlaceholder("youtube.com/@seu-usuario");
+        break;
+      default:
+        setDesabilitarTituloLink(false);
+        setTituloLink("");
+        setLinkPlaceholder("meu-site.com.br");
+        break;
+    }
+  };
   const handleFileImagemChange = (e) => {
-    console.log(e);
-    console.log(e.target.files[0]);
     setImagem(e.target.files[0]);
-    console.log(imagem);
   };
 
   useEffect(() => {
@@ -124,8 +169,8 @@ export default function LinkMeus() {
           limparCampos();
         })
         .catch(({ response }) => {
-          setMsgTipo("danger");
-          setMsg(response.data.message);
+          setMsgTipo("warning");
+          setMsgModal(response.data.message);
         })
         .finally(() => {
           setIsLoading(false);
@@ -219,6 +264,7 @@ export default function LinkMeus() {
 
   function visualizarLink(link) {
     setMsg("");
+    setMsgModal("");
 
     setLinkId(link.id);
     setTipoLink(link.link_tipo_id);
@@ -342,19 +388,24 @@ export default function LinkMeus() {
               <Mensagem mensagem={msgModal} mensagemTipo={msgTipo} />
               <Form>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="imagem">
+                  <Form.Label className="fw-bold" htmlFor="tipoLink">
                     Tipo de Link
                   </Form.Label>
                   <Form.Select
                     onChange={handleSelectTipoLinkChange}
                     value={tipoLink}
+                    id="tipoLink"
                   >
-                    <option value="0" selected className="fw-bold">
+                    <option value="0" className="fw-bold">
                       Selecione um tipo
                     </option>
 
                     {listaLinkTipos.map((linkTipo) => (
-                      <option key={linkTipo.id} value={linkTipo.id}>
+                      <option
+                        key={linkTipo.id}
+                        value={linkTipo.id}
+                        name={linkTipo.tipo}
+                      >
                         {linkTipo.tipo}
                       </option>
                     ))}
@@ -380,17 +431,20 @@ export default function LinkMeus() {
                     autoFocus
                     id="tituloLink"
                     onChange={(e) => setTituloLink(e.target.value)}
+                    value={tituloLink}
+                    disabled={desabilitarTituloLink}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="link">
+                  <Form.Label className="fw-bold" htmlFor="linkEdit">
                     Link
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="meusitepessoal.com.br"
-                    id="link"
+                    placeholder={linkPlaceholder}
+                    id="linkEdit"
                     onChange={setarLink}
+                    value={link}
                   />
                 </Form.Group>
               </Form>
@@ -418,21 +472,25 @@ export default function LinkMeus() {
             <Modal.Body>
               <Mensagem mensagem={msgModal} mensagemTipo={msgTipo} />
               <Form>
-                <Form.Control id="linkId" type="hidden" value={linkId} />
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="imagem">
+                  <Form.Label className="fw-bold" htmlFor="tipoLinkEdit">
                     Tipo de Link
                   </Form.Label>
                   <Form.Select
                     onChange={handleSelectTipoLinkChange}
                     value={tipoLink}
+                    id="tipoLinkEdit"
                   >
-                    <option value="0" selected className="fw-bold">
+                    <option value="0" className="fw-bold">
                       Selecione um tipo
                     </option>
 
                     {listaLinkTipos.map((linkTipo) => (
-                      <option key={linkTipo.id} value={linkTipo.id}>
+                      <option
+                        key={linkTipo.id}
+                        value={linkTipo.id}
+                        name={linkTipo.tipo}
+                      >
                         {linkTipo.tipo}
                       </option>
                     ))}
@@ -449,28 +507,29 @@ export default function LinkMeus() {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="tituloLink">
+                  <Form.Label className="fw-bold" htmlFor="tituloLinkEdit">
                     Título do Link
                   </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Meu Site Pessoal"
                     autoFocus
-                    id="tituloLink"
+                    id="tituloLinkEdit"
                     onChange={(e) => setTituloLink(e.target.value)}
                     value={tituloLink}
+                    disabled={desabilitarTituloLink}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="link">
+                  <Form.Label className="fw-bold" htmlFor="linkEdit">
                     Link
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="meusitepessoal.com.br"
-                    id="link"
+                    placeholder={linkPlaceholder}
+                    id="linkEdit"
                     onChange={setarLink}
-                    value={formataLink(link)}
+                    value={link}
                   />
                 </Form.Group>
               </Form>

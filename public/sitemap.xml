@@ -55,7 +55,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://adotapet.org/meus/pets/favoritos</loc>
+    <loc>https://adotapet.org/pets/favoritos</loc>
     <lastmod>2023-05-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

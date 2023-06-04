@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <PrivateRoute element={<PetUsuarioLogado />} />,
       },
       {
-        path: "/meus/pets/favoritos",
+        path: "/pets/favoritos",
         element: <PrivateRoute element={<PetUsuarioLogadoFavoritos />} />,
       },
       // ROTAS LINK

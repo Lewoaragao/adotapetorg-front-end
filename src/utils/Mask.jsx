@@ -17,3 +17,39 @@ export function formataLink(link) {
 
   return link;
 }
+
+export function formataSexoPet(sexo) {
+  return sexo === "M" ? "Macho" : "Fêmea";
+}
+
+export function formataTamanhoPet(tamanho, sexo) {
+  if (sexo === "M") {
+    switch (tamanho) {
+      case "P":
+        return "Pequeno";
+
+      case "M":
+        return "Médio";
+
+      case "G":
+        return "Grande";
+
+      default:
+        return "";
+    }
+  } else {
+    switch (tamanho) {
+      case "P":
+        return "Pequena";
+
+      case "M":
+        return "Média";
+
+      case "G":
+        return "Grande";
+
+      default:
+        return "";
+    }
+  }
+}

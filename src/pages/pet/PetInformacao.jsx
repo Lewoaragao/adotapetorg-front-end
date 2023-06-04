@@ -5,7 +5,11 @@ import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
 import formataData from "../../utils/DataUtil";
-import { formataCelular } from "../../utils/Mask";
+import {
+  formataCelular,
+  formataSexoPet,
+  formataTamanhoPet,
+} from "../../utils/Mask";
 import Carregamento, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";
@@ -23,12 +27,37 @@ function PetInformacao() {
   const [msgTipo, setMsgTipo] = useState("");
 
   useEffect(() => {
-    verInformacaoPet(id);
-  }, [id]);
+    if (isUsuarioLogado) {
+      verInformacaoPetUserAuth(id, token);
+    } else {
+      verInformacaoPet(id);
+    }
+  }, [id, isUsuarioLogado, token]);
 
   function verInformacaoPet(idPet) {
     setIsLoading(true);
     Api.get(`pets/${idPet}`)
+      .then(({ data }) => {
+        setPet(data.pet);
+        setUsuarioResponsavel(data.user);
+        setPetFavoritado(data.pet_favoritado);
+      })
+      .catch(({ response }) => {
+        setMsgTipo("warning");
+        setMsg(response.data.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  function verInformacaoPetUserAuth(idPet, token) {
+    setIsLoading(true);
+    Api.post(`pets/visualizar/${idPet}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(({ data }) => {
         setPet(data.pet);
         setUsuarioResponsavel(data.user);
@@ -98,6 +127,14 @@ function PetInformacao() {
 
               <p>
                 <span className="fw-bold">Nome:</span> {pet.nome}
+              </p>
+              <p>
+                <span className="fw-bold">Sexo:</span>{" "}
+                {formataSexoPet(pet.sexo)}
+              </p>
+              <p>
+                <span className="fw-bold">Tamanho:</span>{" "}
+                {formataTamanhoPet(pet.tamanho, pet.sexo)}
               </p>
               <p>
                 <span className="fw-bold">Data de nascimento:</span>{" "}
