@@ -24,28 +24,28 @@ export function formataSexoPet(sexo) {
 
 export function formataTamanhoPet(tamanho, sexo) {
   if (sexo === "M") {
-    switch (tamanho.toLowerCase()) {
-      case "p":
+    switch (tamanho) {
+      case "P":
         return "Pequeno";
 
-      case "m":
+      case "M":
         return "Médio";
 
-      case "g":
+      case "G":
         return "Grande";
 
       default:
         return "";
     }
   } else {
-    switch (tamanho.toLowerCase()) {
-      case "p":
+    switch (tamanho) {
+      case "P":
         return "Pequena";
 
-      case "m":
+      case "M":
         return "Média";
 
-      case "g":
+      case "G":
         return "Grande";
 
       default:
