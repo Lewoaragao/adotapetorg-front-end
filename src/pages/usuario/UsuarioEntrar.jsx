@@ -134,7 +134,7 @@ function UsuarioEntrar() {
             Não possui uma conta?{" "}
             <NavLinkToTop
               className="nav-link d-inline text-decoration-underline"
-              to="/usuario/cadastrar"
+              to="/cadastrar/usuario"
             >
               Cadastrar
             </NavLinkToTop>
