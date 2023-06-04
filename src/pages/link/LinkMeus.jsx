@@ -12,6 +12,15 @@ import {
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsClipboardCheck } from "react-icons/bs";
 import { GoLinkExternal } from "react-icons/go";
+import {
+  LINK_TIPO_EXTERNO,
+  LINK_TIPO_FACEBOOK,
+  LINK_TIPO_GITHUB,
+  LINK_TIPO_INSTAGRAM,
+  LINK_TIPO_LINKEDIN,
+  LINK_TIPO_TIK_TOK,
+  LINK_TIPO_YOUTUBE,
+} from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -30,6 +39,7 @@ export default function LinkMeus() {
   const [tipoLink, setTipoLink] = useState(0);
   const [imagem, setImagem] = useState("");
   const [tituloLink, setTituloLink] = useState("");
+  const [linkPlaceholder, setLinkPlaceholder] = useState("meu-site.com.br");
   const [link, setLink] = useState("");
   const [linkId, setLinkId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,13 +54,48 @@ export default function LinkMeus() {
 
   const handleFecharModalCadastrarLink = () =>
     setAbrirModalCadastrarLink(false);
+
   const handleFecharModalEditarLink = () => setAbrirModalEditarLink(false);
-  const handleSelectTipoLinkChange = (e) => setTipoLink(e.target.value);
+
+  const handleSelectTipoLinkChange = (e) => {
+    setTipoLink(e.target.value);
+
+    const valueSelectedInteger = parseInt(e.target.value);
+
+    switch (valueSelectedInteger) {
+      case LINK_TIPO_INSTAGRAM:
+        setTituloLink("Instagram");
+        setLinkPlaceholder("instagram.com/seu-usuario");
+        break;
+      case LINK_TIPO_TIK_TOK:
+        setTituloLink("TikTok");
+        setLinkPlaceholder("instagram.com/seu-usuario");
+        break;
+      case LINK_TIPO_LINKEDIN:
+        setTituloLink("LinkedIn");
+        setLinkPlaceholder("linkedin.com/in/seu-usuario");
+        break;
+      case LINK_TIPO_GITHUB:
+        setTituloLink("GitHub");
+        setLinkPlaceholder("github.com/seu-usuario");
+        break;
+      case LINK_TIPO_FACEBOOK:
+        setTituloLink("Facebook");
+        setLinkPlaceholder("facebook.com/seu-usuario");
+        break;
+      case LINK_TIPO_YOUTUBE:
+        setTituloLink("YouTube");
+        setLinkPlaceholder("youtube.com/@seu-usuario");
+        break;
+      default:
+        console.log("entrou padrao");
+        setTituloLink("");
+        setLinkPlaceholder("meu-site.com.br");
+        break;
+    }
+  };
   const handleFileImagemChange = (e) => {
-    console.log(e);
-    console.log(e.target.files[0]);
     setImagem(e.target.files[0]);
-    console.log(imagem);
   };
 
   useEffect(() => {
@@ -124,8 +169,8 @@ export default function LinkMeus() {
           limparCampos();
         })
         .catch(({ response }) => {
-          setMsgTipo("danger");
-          setMsg(response.data.message);
+          setMsgTipo("warning");
+          setMsgModal(response.data.message);
         })
         .finally(() => {
           setIsLoading(false);
@@ -354,7 +399,11 @@ export default function LinkMeus() {
                     </option>
 
                     {listaLinkTipos.map((linkTipo) => (
-                      <option key={linkTipo.id} value={linkTipo.id}>
+                      <option
+                        key={linkTipo.id}
+                        value={linkTipo.id}
+                        name={linkTipo.tipo}
+                      >
                         {linkTipo.tipo}
                       </option>
                     ))}
@@ -380,6 +429,8 @@ export default function LinkMeus() {
                     autoFocus
                     id="tituloLink"
                     onChange={(e) => setTituloLink(e.target.value)}
+                    value={tituloLink}
+                    disabled={tipoLink !== LINK_TIPO_EXTERNO}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -388,7 +439,7 @@ export default function LinkMeus() {
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="meusitepessoal.com.br"
+                    placeholder={linkPlaceholder}
                     id="link"
                     onChange={setarLink}
                   />
