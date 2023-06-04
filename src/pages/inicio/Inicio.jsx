@@ -16,7 +16,7 @@ function Inicio({ logo }) {
   useEffect(() => {
     listarTodosPets(pagina);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pagina]);
+  }, []);
 
   function listarTodosPets(numeroPagina) {
     setPagina(numeroPagina);

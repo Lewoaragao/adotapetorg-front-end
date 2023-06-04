@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Api from "../services/Api";
 
 export const AuthContext = createContext();
@@ -7,6 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [usuarioLogado, setUsuarioLogado] = useState({});
   const [isUsuarioLogado, setIsUsuarioLogado] = useState(false);
   const [token, setToken] = useState("");
+
+  useEffect(() => {
+    verificaUsuarioLogado();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setarUsuarioLogado = (usuario, token, isLogado) => {
     setUsuarioLogado(usuario);
@@ -26,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         .then(({ data }) => {
           setarUsuarioLogado(data.usuario, tokenStorage, true);
         })
-        .catch(({ response }) => {
+        .catch(() => {
           localStorage.removeItem("token");
         });
     }
