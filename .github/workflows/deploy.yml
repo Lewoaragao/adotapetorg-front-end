@@ -10,8 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Clean Cache
+        run: npm start -- --reset-cache
+
       - name: Checkout código-fonte
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Excluir pasta build anterior
         run: rm -rf build
