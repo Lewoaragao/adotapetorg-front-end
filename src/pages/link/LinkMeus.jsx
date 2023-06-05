@@ -12,6 +12,7 @@ import {
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsClipboardCheck } from "react-icons/bs";
 import { GoLinkExternal } from "react-icons/go";
+import CarregamentoTela from "../../components/Carregamento";
 import {
   LINK_TIPO_FACEBOOK,
   LINK_TIPO_GITHUB,
@@ -25,7 +26,6 @@ import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
 import { formataLink } from "../../utils/Mask";
-import Carregamento from "./../../components/Carregamento";
 
 /**
  * Listar Links do usuário logado
@@ -285,7 +285,7 @@ export default function LinkMeus() {
     <>
       <TituloPagina titulo="Meus Links na Bio" />
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <>
           <Col md={6}>

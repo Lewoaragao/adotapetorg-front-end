@@ -26,8 +26,8 @@ function Footer({ logo }) {
   }, [anoInicio, anoAtual]);
 
   return (
-    <footer className="text-center text-lg-start bg-light text-muted container">
-      <section className="d-flex justify-content-center justify-content-lg-end align-items-center p-4 border-bottom">
+    <footer className="text-center text-lg-start bg-light text-muted">
+      <section className="d-flex justify-content-center justify-content-lg-end align-items-center p-4 border-bottom container">
         <div className="me-3 d-none d-lg-block">
           <span>Conecte-se conosco nas redes sociais:</span>
         </div>
@@ -84,7 +84,7 @@ function Footer({ logo }) {
         </div>
       </section>
 
-      <section>
+      <section className="container">
         <div className="text-center text-md-start mt-5">
           <div className="row mt-3">
             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
@@ -179,7 +179,7 @@ function Footer({ logo }) {
         </div>
       </section>
 
-      <section className="text-center">
+      <section className="text-center container">
         <p>
           <span>
             Copyright {anoInicio} {aposAnoInicio && `- ${anoAtual}`}{" "}

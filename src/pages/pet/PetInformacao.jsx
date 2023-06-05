@@ -10,7 +10,7 @@ import {
   formataSexoPet,
   formataTamanhoPet,
 } from "../../utils/Mask";
-import Carregamento, {
+import CarregamentoTela, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";
 import TituloPagina from "./../../components/TituloPagina";
@@ -74,12 +74,14 @@ function PetInformacao() {
 
   function favoritarPet(idPet) {
     setIsLoadingButton(true);
-    setPetFavoritado(true);
     Api.post(`pets/${idPet}/favoritar`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
+      .then(() => {
+        setPetFavoritado(true);
+      })
       .catch(({ response }) => {
         setMsgTipo("warning");
         setMsg(response.data.message);
@@ -91,12 +93,14 @@ function PetInformacao() {
 
   function desfavoritarPet(idPet) {
     setIsLoadingButton(true);
-    setPetFavoritado(false);
     Api.post(`pets/${idPet}/desfavoritar`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
+      .then(() => {
+        setPetFavoritado(false);
+      })
       .catch(({ response }) => {
         setMsgTipo("warning");
         setMsg(response.data.message);
@@ -111,7 +115,7 @@ function PetInformacao() {
       <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
 
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <>
           <div className="d-flex justify-content-center align-items-center flex-wrap gap-5">
@@ -164,10 +168,14 @@ function PetInformacao() {
                 {petFavoritado ? (
                   <button
                     className="btn btn-warning"
-                    disabled={!isUsuarioLogado}
+                    disabled={!isUsuarioLogado || isLoadingButton}
                     onClick={() => desfavoritarPet(pet.id)}
                   >
-                    {isLoadingButton ? <CarregamentoBotao /> : <BsStarFill />}
+                    {isLoadingButton ? (
+                      <CarregamentoBotao variant="dark" />
+                    ) : (
+                      <BsStarFill />
+                    )}
                   </button>
                 ) : (
                   <button
@@ -175,7 +183,11 @@ function PetInformacao() {
                     disabled={!isUsuarioLogado}
                     onClick={() => favoritarPet(pet.id)}
                   >
-                    {isLoadingButton ? <CarregamentoBotao /> : <BsStar />}
+                    {isLoadingButton ? (
+                      <CarregamentoBotao variant="dark" />
+                    ) : (
+                      <BsStar />
+                    )}
                   </button>
                 )}
               </div>

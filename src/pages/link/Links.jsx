@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, Container, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import Carregamento from "../../components/Carregamento";
+import CarregamentoTela from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import logo from "../../images/logo-adotapetorg.jpg";
@@ -52,7 +52,7 @@ export default function Links() {
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100 ">
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <div className="vw-100 my-auto" align="center">
           <img

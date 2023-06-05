@@ -3,8 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-import Carregamento from "../../components/Carregamento";
-import { CONST_FALSE_PHP, CONST_TRUE_PHP } from "../../components/Constantes";
+import CarregamentoTela from "../../components/Carregamento";
+import { FALSE_PHP, TRUE_PHP } from "../../components/Constantes";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
@@ -89,13 +89,9 @@ function UsuarioCadastrar() {
           endereco_estado: enderecoEstado,
           endereco_pais: enderecoPais,
           telefone: telefone === "" ? null : telefone,
-          flg_telefone_whatsapp: flgTelefoneWhatsapp
-            ? CONST_TRUE_PHP
-            : CONST_FALSE_PHP,
+          flg_telefone_whatsapp: flgTelefoneWhatsapp ? TRUE_PHP : FALSE_PHP,
           celular: celular === "" ? null : celular,
-          flg_celular_whatsapp: flgCelularWhatsapp
-            ? CONST_TRUE_PHP
-            : CONST_FALSE_PHP,
+          flg_celular_whatsapp: flgCelularWhatsapp ? TRUE_PHP : FALSE_PHP,
         },
         {
           headers: {
@@ -126,7 +122,7 @@ function UsuarioCadastrar() {
   return (
     <>
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <Form>
           <Row>

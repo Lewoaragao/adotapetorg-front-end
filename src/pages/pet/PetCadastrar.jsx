@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Carregamento from "../../components/Carregamento";
+import CarregamentoTela from "../../components/Carregamento";
 import { AuthContext } from "../../contexts/AuthContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
@@ -86,7 +86,7 @@ function PetCadastrar() {
   return (
     <>
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <Form encType="multipart/form-data">
           <Container>

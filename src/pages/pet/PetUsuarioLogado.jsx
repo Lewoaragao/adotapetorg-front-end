@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import Carregamento from "../../components/Carregamento";
+import CarregamentoTela from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -37,7 +37,7 @@ export default function PetUsuarioLogado() {
   return (
     <>
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <>
           <TituloPagina titulo="Meus Pets" />
