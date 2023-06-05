@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clean Cache
-        run: npm start -- --reset-cache
+#       - name: Clean Cache
+#         run: npm start -- --reset-cache
 
       - name: Checkout código-fonte
         uses: actions/checkout@v2
@@ -19,20 +19,19 @@ jobs:
       - name: Excluir pasta build anterior
         run: rm -rf build
 
-      - name: Instalar dependências
-        run: npm install # ou o comando adequado para instalar as dependências
+#       - name: Instalar dependências
+#         run: npm install
 
-      - name: Gerar nova build
-        run: npm run build # ou o comando adequado para gerar a nova build
+#       - name: Gerar nova build
+#         run: npm run build
 
-      - name: Copiar nova build para o destino
-#         run: cp -r build/ <destination> # substitua <destination> pelo diretório de destino correto
-        run: cp -r build/ $GITHUB_WORKSPACE/build
+#       - name: Copiar nova build para o destino
+#         run: cp -r build/ $GITHUB_WORKSPACE/build
 
-      - name: Commit e push das alterações
-        run: |
-          git config user.email "$(git log --format='%ae' -n 1)"
-          git config user.name "$(git log --format='%an' -n 1)"
-          git add .
-          git commit -m "Deploy da nova build"
-          git push
+#       - name: Commit e push das alterações
+#         run: |
+#           git config user.email "$(git log --format='%ae' -n 1)"
+#           git config user.name "$(git log --format='%an' -n 1)"
+#           git add .
+#           git commit -m "Deploy da nova build"
+#           git push
