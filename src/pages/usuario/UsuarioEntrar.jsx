@@ -6,9 +6,9 @@ import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { CarregamentoBotao } from "../../components/Carregamento";
-import Mensagem from "../../components/mensagem/Mensagem";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 
@@ -18,26 +18,27 @@ function UsuarioEntrar() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [lembreMe, setLembreMe] = useState(false);
-  const [msg, setMsg] = useState("");
-  const [msgTipo] = useState("warning");
+  const { setarMensagem } = useContext(MessageContext);
   const { setarUsuarioLogado } = useContext(AuthContext);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
 
   function validaCampos() {
     if (email === "" || email === null) {
-      setMsg("Preencha o campo email");
+      setarMensagem("Preencha o campo email", null);
       return false;
     }
 
     if (senha === "" || senha === null) {
-      setMsg("Preencha a campo senha");
+      setarMensagem("Preencha a campo senha", null);
       return false;
     }
 
     return true;
   }
 
-  function entrarUsuario() {
+  function entrarUsuario(e) {
+    e.preventDefault();
+
     if (validaCampos()) {
       setIsLoadingButton(true);
       Api.post("login", {
@@ -52,7 +53,7 @@ function UsuarioEntrar() {
           navigate("/");
         })
         .catch(({ response }) => {
-          setMsg(response.data.message);
+          setarMensagem(response.data.message, null);
         })
         .finally(() => {
           setIsLoadingButton(false);
@@ -63,8 +64,6 @@ function UsuarioEntrar() {
   return (
     <>
       <Form className="container col-md-12 col-lg-6">
-        <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-
         <TituloPagina titulo="Entrar" />
 
         <Row>
@@ -119,10 +118,7 @@ function UsuarioEntrar() {
           className="mb-3"
           variant="primary"
           type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            entrarUsuario();
-          }}
+          onClick={entrarUsuario}
           disabled={isLoadingButton}
         >
           {isLoadingButton ? <CarregamentoBotao variant="light" /> : "Entrar"}

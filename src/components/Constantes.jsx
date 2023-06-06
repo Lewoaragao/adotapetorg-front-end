@@ -48,3 +48,11 @@ export const LINK_TIPO_LINKEDIN = 4;
 export const LINK_TIPO_GITHUB = 5;
 export const LINK_TIPO_FACEBOOK = 6;
 export const LINK_TIPO_YOUTUBE = 7;
+
+/**
+ * Tipos de mensagem baseados
+ * nas classes do bootstrap
+ */
+export const MENSAGEM_TIPO_SUCESSO = "success";
+export const MENSAGEM_TIPO_ALERTA = "warning";
+export const MENSAGEM_TIPO_ERRO = "danger";

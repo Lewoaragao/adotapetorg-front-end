@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Col, Container, ListGroup } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import CarregamentoTela from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
-import Mensagem from "../../components/mensagem/Mensagem";
+import { MessageContext } from "../../contexts/MessageContext";
 import logo from "../../images/logo-adotapetorg.jpg";
 import Api from "../../services/Api";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
@@ -19,10 +19,9 @@ export default function Links() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [listaLinks, setListaLinks] = useState([]);
-  const [mensagem, setMensagem] = useState("");
-  const [msgTipo, setMsgTipo] = useState("");
   const [userImagem, setUserImagem] = useState("");
   const [flgUserCadastrado, setFlgUserCadastrado] = useState(false);
+  const { setarMensagem } = useContext(MessageContext);
 
   useEffect(() => {
     listarLinksUsuario();
@@ -39,10 +38,9 @@ export default function Links() {
       })
       .catch(({ response }) => {
         setListaLinks(null);
-        setMsgTipo("warning");
         setUserImagem(response.data.user_imagem);
         setFlgUserCadastrado(response.data.flg_user_cadastrado);
-        setMensagem(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -70,9 +68,9 @@ export default function Links() {
           <TituloPagina titulo={nomeUsuario} />
 
           <Col lg={4}>
-            <Mensagem mensagem={mensagem} mensagemTipo={msgTipo} />
             {!flgUserCadastrado && (
               <>
+                <p>Nenhum usuário cadastraro com esse nome.</p>
                 <p>
                   Quer se cadastrar com esse usuário?{" "}
                   <NavLinkToTop

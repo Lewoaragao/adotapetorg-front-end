@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { useParams } from "react-router-dom";
-import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import formataData from "../../utils/DataUtil";
 import {
@@ -23,16 +23,14 @@ function PetInformacao() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const { token, isUsuarioLogado } = useContext(AuthContext);
-  const [msg, setMsg] = useState("");
-  const [msgTipo, setMsgTipo] = useState("");
+  const { setarMensagem } = useContext(MessageContext);
 
   useEffect(() => {
-    if (isUsuarioLogado) {
-      verInformacaoPetUserAuth(id, token);
-    } else {
-      verInformacaoPet(id);
-    }
-  }, [id, isUsuarioLogado, token]);
+    isUsuarioLogado
+      ? verInformacaoPetUserAuth(id, token)
+      : verInformacaoPet(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function verInformacaoPet(idPet) {
     setIsLoading(true);
@@ -43,8 +41,7 @@ function PetInformacao() {
         setPetFavoritado(data.pet_favoritado);
       })
       .catch(({ response }) => {
-        setMsgTipo("warning");
-        setMsg(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -64,8 +61,7 @@ function PetInformacao() {
         setPetFavoritado(data.pet_favoritado);
       })
       .catch(({ response }) => {
-        setMsgTipo("warning");
-        setMsg(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -83,8 +79,7 @@ function PetInformacao() {
         setPetFavoritado(true);
       })
       .catch(({ response }) => {
-        setMsgTipo("warning");
-        setMsg(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoadingButton(false);
@@ -102,8 +97,7 @@ function PetInformacao() {
         setPetFavoritado(false);
       })
       .catch(({ response }) => {
-        setMsgTipo("warning");
-        setMsg(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoadingButton(false);
@@ -112,8 +106,6 @@ function PetInformacao() {
 
   return (
     <>
-      <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-
       {isLoading ? (
         <CarregamentoTela />
       ) : (

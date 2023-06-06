@@ -1,0 +1,28 @@
+.mensagem-global {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  z-index: 999;
+}
+
+.mensagem-global .alert {
+  border-bottom-width: 5px;
+  transition: border-bottom-width 0.2s;
+}
+
+.mensagem-global-warning .alert {
+  border-color: orange;
+}
+
+.mensagem-global-success .alert {
+  border-color: green;
+}
+
+.mensagem-global-danger .alert {
+  border-color: red;
+}
+
+.mensagem-global .alert:hover {
+  cursor: pointer;
+  border-bottom-width: 3px;
+}

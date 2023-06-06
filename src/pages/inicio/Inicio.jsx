@@ -112,7 +112,7 @@ function Inicio({ logo }) {
                 )}
               </Row>
 
-              {listaPets != null && (
+              {listaPets !== null && listaPets.length > 0 && (
                 <Row className="mt-3">
                   <Pagination className="d-flex justify-content-center align-items-center">
                     {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}

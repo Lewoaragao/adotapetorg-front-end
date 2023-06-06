@@ -18,6 +18,7 @@ import {
   TELA_USUARIO_ENTRAR,
 } from "./components/Constantes";
 import { AuthProvider } from "./contexts/AuthContext";
+import { MessageProvider } from "./contexts/MessageContext";
 import logo from "./images/logo-adotapetorg.jpg";
 import Error404 from "./pages/error/Error404";
 import Inicio from "./pages/inicio/Inicio";
@@ -96,7 +97,9 @@ root.render(
 
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <MessageProvider>
+        <RouterProvider router={router} />
+      </MessageProvider>
     </AuthProvider>
   </React.StrictMode>
 );

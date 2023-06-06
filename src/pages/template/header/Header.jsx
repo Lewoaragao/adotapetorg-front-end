@@ -1,23 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Nav } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { BiHomeHeart } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { MessageContext } from "../../../contexts/MessageContext";
 import Api from "../../../services/Api";
-import Mensagem from "./../../../components/mensagem/Mensagem";
 import NavBarUsuarioLogado from "./NavBarUsuarioLogado";
 import NavBarUsuarioNaoLogado from "./NavBarUsuarioNaoLogado";
-import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 
 function Header({ logo, usuarioLogadoVerificado }) {
   const navigate = useNavigate();
   const { isUsuarioLogado, usuarioLogado, setarUsuarioLogado, token } =
     useContext(AuthContext);
-  const [msg, setMsg] = useState("");
-  const [msgTipo, setMsgTipo] = useState("");
+  const { setarMensagem } = useContext(MessageContext);
 
   function logout() {
     Api.get("logout", {
@@ -31,8 +30,7 @@ function Header({ logo, usuarioLogadoVerificado }) {
         navigate("/");
       })
       .catch(({ response }) => {
-        setMsg(response.data.message);
-        setMsgTipo("warning");
+        setarMensagem(response.data.message, null);
       });
   }
 
@@ -77,8 +75,6 @@ function Header({ logo, usuarioLogadoVerificado }) {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
-      <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
     </>
   );
 }

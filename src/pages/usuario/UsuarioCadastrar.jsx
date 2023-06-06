@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import CarregamentoTela from "../../components/Carregamento";
 import { FALSE_PHP, TRUE_PHP } from "../../components/Constantes";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
-import Mensagem from "./../../components/mensagem/Mensagem";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();
@@ -26,38 +26,42 @@ function UsuarioCadastrar() {
   const [flgTelefoneWhatsapp, setFlgTelefoneWhatsapp] = useState(false);
   const [celular, setCelular] = useState("");
   const [flgCelularWhatsapp, setFlgCelularWhatsapp] = useState(false);
-  const [msg, setMsg] = useState("");
-  const [msgTipo] = useState("warning");
   const [isLoading, setIsLoading] = useState(false);
+  const { setarMensagem } = useContext(MessageContext);
 
   function validaCampos() {
+    if (usuario === "" || usuario === null) {
+      setarMensagem("Preencha o campo usuário", null);
+      return false;
+    }
+
     if (primeiroNome === "" || primeiroNome === null) {
-      setMsg("Preencha o campo primeiro nome");
+      setarMensagem("Preencha o campo primeiro nome", null);
       return false;
     }
 
     if (email === "" || email === null) {
-      setMsg("Preencha o campo email");
+      setarMensagem("Preencha o campo email", null);
       return false;
     }
 
     if (senha === "" || senha === null) {
-      setMsg("Preencha a campo senha");
+      setarMensagem("Preencha a campo senha", null);
       return false;
     }
 
     if (senhaRepetida === "" || senhaRepetida === null) {
-      setMsg("Preencha o campo repetir senha");
+      setarMensagem("Preencha o campo repetir senha", null);
       return false;
     }
 
     if (senha !== senhaRepetida) {
-      setMsg("As senhas estão diferentes");
+      setarMensagem("As senhas estão diferentes", null);
       return false;
     }
 
     if (enderecoCidade === "" || enderecoCidade === null) {
-      setMsg("Preencha o campo cidade");
+      setarMensagem("Preencha o campo cidade", null);
       return false;
     }
 
@@ -65,7 +69,7 @@ function UsuarioCadastrar() {
       (telefone === "" || telefone === null) &&
       (celular === "" || celular === null)
     ) {
-      setMsg("Preencha o campo celular ou telefone");
+      setarMensagem("Preencha o campo celular ou telefone", null);
       return false;
     }
 
@@ -103,7 +107,7 @@ function UsuarioCadastrar() {
           navigate("/usuario/entrar");
         })
         .catch(({ response }) => {
-          setMsg(response.data.message);
+          setarMensagem(response.data.message, null);
         })
         .finally(() => {
           setIsLoading(false);
@@ -127,7 +131,6 @@ function UsuarioCadastrar() {
         <Form>
           <Row>
             <TituloPagina titulo="Cadastrar Usuário" />
-            <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
           </Row>
 
           <Row>

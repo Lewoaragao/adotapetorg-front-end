@@ -40,7 +40,7 @@ function Sobre() {
       </div>
 
       <div className="mb-5">
-        <h3 className="fw-bold">#️⃣ Hashtags</h3>
+        <h3 className="fw-bold">♯ Hashtags</h3>
         <p className="text-justify fs-5">
           #sistema #adota #pet #adocao #gato #org #pets #cachorro #adote #dog
           #cat #cute #foco #cachorros #gatos #love #instadog #instacat #dogs

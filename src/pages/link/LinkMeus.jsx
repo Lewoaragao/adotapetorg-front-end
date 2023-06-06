@@ -20,10 +20,12 @@ import {
   LINK_TIPO_LINKEDIN,
   LINK_TIPO_TIK_TOK,
   LINK_TIPO_YOUTUBE,
+  MENSAGEM_TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { formataLink } from "../../utils/Mask";
 
@@ -35,6 +37,7 @@ import { formataLink } from "../../utils/Mask";
  */
 export default function LinkMeus() {
   const { token, usuarioLogado } = useContext(AuthContext);
+  const { setarMensagem } = useContext(MessageContext);
   const [tipoLink, setTipoLink] = useState(0);
   const [imagem, setImagem] = useState("");
   const [tituloLink, setTituloLink] = useState("");
@@ -43,10 +46,7 @@ export default function LinkMeus() {
   const [link, setLink] = useState("");
   const [linkId, setLinkId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [mensagem, setMensagem] = useState("");
-  const [msg, setMsg] = useState("");
   const [msgModal, setMsgModal] = useState("");
-  const [msgTipo, setMsgTipo] = useState("");
   const [listaLinkTipos, setListaLinkTipos] = useState([]);
   const [listaLinks, setListaLinks] = useState([]);
   const [abrirModalCadastrarLink, setAbrirModalCadastrarLink] = useState(false);
@@ -113,7 +113,7 @@ export default function LinkMeus() {
       .catch(({ response }) => {
         setListaLinks(null);
         setListaLinkTipos(response.data.link_tipos);
-        setMensagem(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -121,8 +121,6 @@ export default function LinkMeus() {
   }
 
   function validaCampos() {
-    setMsgTipo("warning");
-
     if (tipoLink === 0) {
       setMsgModal("Escolha o tipo de link");
       return false;
@@ -143,7 +141,7 @@ export default function LinkMeus() {
 
   function cadastrarLink(e) {
     e.preventDefault();
-    setMsg("");
+    setarMensagem("");
     setMsgModal("");
 
     if (validaCampos()) {
@@ -164,12 +162,10 @@ export default function LinkMeus() {
         }
       )
         .then(({ data }) => {
-          setMsgTipo("success");
-          setMsg(data.message);
+          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
           limparCampos();
         })
         .catch(({ response }) => {
-          setMsgTipo("warning");
           setMsgModal(response.data.message);
         })
         .finally(() => {
@@ -180,7 +176,6 @@ export default function LinkMeus() {
   }
 
   function editarLink(linkId) {
-    setMsg("");
     setMsgModal("");
 
     if (validaCampos()) {
@@ -201,12 +196,10 @@ export default function LinkMeus() {
         }
       )
         .then(({ data }) => {
-          setMsgTipo("success");
-          setMsg(data.message);
+          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
           limparCampos();
         })
         .catch(({ response }) => {
-          setMsgTipo("danger");
           setMsgModal(response.data.message);
         })
         .finally(() => {
@@ -241,20 +234,16 @@ export default function LinkMeus() {
   }
 
   function deletarLink(linkId) {
-    setMsg("");
-
     setIsLoading(true);
     Api.post(`links/deletar/${linkId}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        setMsgTipo("success");
-        setMsg(data.message);
+        setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
         limparCampos();
       })
       .catch(({ response }) => {
-        setMsgTipo("danger");
-        setMsg(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -263,7 +252,6 @@ export default function LinkMeus() {
   }
 
   function visualizarLink(link) {
-    setMsg("");
     setMsgModal("");
 
     setLinkId(link.id);
@@ -277,8 +265,7 @@ export default function LinkMeus() {
 
   function copiarLinkUsuarioLogado() {
     navigator.clipboard.writeText(usuarioLogado.link);
-    setMsgTipo("success");
-    setMsg("Link copiado");
+    setarMensagem("Link copiado", MENSAGEM_TIPO_SUCESSO);
   }
 
   return (
@@ -314,11 +301,9 @@ export default function LinkMeus() {
             <AiOutlinePlus /> Cadastrar link
           </button>
 
-          <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
-
           <ListGroup>
             {listaLinks == null ? (
-              <div>{mensagem}</div>
+              <div>Nenhum link cadastrado</div>
             ) : (
               <>
                 {listaLinks.map((link) => (
@@ -385,7 +370,7 @@ export default function LinkMeus() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Mensagem mensagem={msgModal} mensagemTipo={msgTipo} />
+              <Mensagem mensagem={msgModal} mensagemTipo="warning" />
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="tipoLink">
@@ -470,7 +455,7 @@ export default function LinkMeus() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Mensagem mensagem={msgModal} mensagemTipo={msgTipo} />
+              <Mensagem mensagem={msgModal} mensagemTipo="warning" />
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="tipoLinkEdit">
