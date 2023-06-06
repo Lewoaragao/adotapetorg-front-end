@@ -1,16 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import Carregamento from "../../components/Carregamento";
+import CarregamentoTela from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 
 export default function PetUsuarioLogadoFavoritos() {
   const { token } = useContext(AuthContext);
+  const { setarMensagem } = useContext(MessageContext);
   const [isLoading, setIsLoading] = useState(false);
   const [listaPets, setListaPets] = useState([]);
-  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     listarPetsUsuarioLogadoFavoritos();
@@ -27,7 +28,7 @@ export default function PetUsuarioLogadoFavoritos() {
       })
       .catch(({ response }) => {
         setListaPets(null);
-        setMsg(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -37,14 +38,14 @@ export default function PetUsuarioLogadoFavoritos() {
   return (
     <>
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
         <>
           <TituloPagina titulo="Meus Pets Favoritos" />
 
           <Row xs={2} md={3} className="g-4">
             {listaPets == null ? (
-              <div>{msg}</div>
+              <div>Nenhum pet favoritado</div>
             ) : (
               <>
                 {listaPets.map((pet) => (

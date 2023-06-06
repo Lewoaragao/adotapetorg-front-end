@@ -5,10 +5,10 @@ import Form from "react-bootstrap/Form";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import Carregamento from "../../components/Carregamento";
-import Mensagem from "../../components/mensagem/Mensagem";
+import { CarregamentoBotao } from "../../components/Carregamento";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 
@@ -18,28 +18,29 @@ function UsuarioEntrar() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [lembreMe, setLembreMe] = useState(false);
-  const [msg, setMsg] = useState("");
-  const [msgTipo] = useState("warning");
+  const { setarMensagem } = useContext(MessageContext);
   const { setarUsuarioLogado } = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
 
   function validaCampos() {
     if (email === "" || email === null) {
-      setMsg("Preencha o campo email");
+      setarMensagem("Preencha o campo email", null);
       return false;
     }
 
     if (senha === "" || senha === null) {
-      setMsg("Preencha a campo senha");
+      setarMensagem("Preencha a campo senha", null);
       return false;
     }
 
     return true;
   }
 
-  function entrarUsuario() {
+  function entrarUsuario(e) {
+    e.preventDefault();
+
     if (validaCampos()) {
-      setIsLoading(true);
+      setIsLoadingButton(true);
       Api.post("login", {
         email: email,
         senha: senha,
@@ -52,95 +53,87 @@ function UsuarioEntrar() {
           navigate("/");
         })
         .catch(({ response }) => {
-          setMsg(response.data.message);
+          setarMensagem(response.data.message, null);
         })
         .finally(() => {
-          setIsLoading(false);
+          setIsLoadingButton(false);
         });
     }
   }
 
   return (
     <>
-      {isLoading ? (
-        <Carregamento />
-      ) : (
-        <Form className="container col-md-12 col-lg-6">
-          <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
+      <Form className="container col-md-12 col-lg-6">
+        <TituloPagina titulo="Entrar" />
 
-          <TituloPagina titulo="Entrar" />
+        <Row>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="email">
+              <HiOutlineMail />
+            </InputGroup.Text>
+            <Form.Control
+              id="email"
+              type="email"
+              placeholder="E-mail"
+              value={email}
+              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </InputGroup>
+        </Row>
 
-          <Row>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="email">
-                <HiOutlineMail />
-              </InputGroup.Text>
-              <Form.Control
-                id="email"
-                type="email"
-                placeholder="E-mail"
-                value={email}
-                required
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </InputGroup>
-          </Row>
+        <Row>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="senha">
+              <RiLockPasswordFill />
+            </InputGroup.Text>
+            <Form.Control
+              id="senha"
+              type="password"
+              placeholder="Senha"
+              value={senha}
+              required
+              onChange={(e) => {
+                setSenha(e.target.value);
+              }}
+            />
+          </InputGroup>
+        </Row>
 
-          <Row>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="senha">
-                <RiLockPasswordFill />
-              </InputGroup.Text>
-              <Form.Control
-                id="senha"
-                type="password"
-                placeholder="Senha"
-                value={senha}
-                required
-                onChange={(e) => {
-                  setSenha(e.target.value);
-                }}
-              />
-            </InputGroup>
-          </Row>
+        <Row>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check
+              type="checkbox"
+              label="Lembre-me"
+              onChange={(e) => {
+                setLembreMe(e.target.value);
+              }}
+            />
+          </Form.Group>
+        </Row>
 
-          <Row>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check
-                type="checkbox"
-                label="Lembre-me"
-                onChange={(e) => {
-                  setLembreMe(e.target.value);
-                }}
-              />
-            </Form.Group>
-          </Row>
+        <Button
+          className="mb-3"
+          variant="primary"
+          type="submit"
+          onClick={entrarUsuario}
+          disabled={isLoadingButton}
+        >
+          {isLoadingButton ? <CarregamentoBotao variant="light" /> : "Entrar"}
+        </Button>
 
-          <Button
-            className="mb-3"
-            variant="primary"
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault();
-              entrarUsuario();
-            }}
+        <p>
+          Não possui uma conta?{" "}
+          <NavLinkToTop
+            className="nav-link d-inline text-decoration-underline"
+            to="/cadastrar/usuario"
           >
-            Entrar
-          </Button>
-
-          <p>
-            Não possui uma conta?{" "}
-            <NavLinkToTop
-              className="nav-link d-inline text-decoration-underline"
-              to="/cadastrar/usuario"
-            >
-              Cadastrar
-            </NavLinkToTop>
-          </p>
-        </Form>
-      )}
+            Cadastrar
+          </NavLinkToTop>
+        </p>
+      </Form>
     </>
   );
 }

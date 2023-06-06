@@ -3,7 +3,22 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./App.css";
+import {
+  TELA_CADASTRO_PET,
+  TELA_CADASTRO_USUARIO,
+  TELA_ERRO_404,
+  TELA_INFORMACOES_PET,
+  TELA_INICIAL,
+  TELA_LINKS,
+  TELA_MEUS_LINKS,
+  TELA_PETS_USUARIO_LOGADO,
+  TELA_PETS_USUARIO_LOGADO_FAVORITOS,
+  TELA_POLITICA_PRIVACIDADE,
+  TELA_SOBRE,
+  TELA_USUARIO_ENTRAR,
+} from "./components/Constantes";
 import { AuthProvider } from "./contexts/AuthContext";
+import { MessageProvider } from "./contexts/MessageContext";
 import logo from "./images/logo-adotapetorg.jpg";
 import Error404 from "./pages/error/Error404";
 import Inicio from "./pages/inicio/Inicio";
@@ -22,42 +37,41 @@ import PrivateRoute from "./routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: TELA_INICIAL,
     element: <App />,
     children: [
       // ROTAS GERAL
-      { path: "/", element: <Inicio logo={logo} /> },
-      { path: "/sobre", element: <Sobre /> },
-      { path: "/politica/privacidade", element: <PoliticaPrivacidade /> },
-
+      { path: TELA_INICIAL, element: <Inicio logo={logo} /> },
+      { path: TELA_SOBRE, element: <Sobre /> },
+      { path: TELA_POLITICA_PRIVACIDADE, element: <PoliticaPrivacidade /> },
       // ROTAS USUÁRIO
-      { path: "/cadastrar/usuario", element: <UsuarioCadastrar /> },
-      { path: "/usuario/entrar", element: <UsuarioEntrar /> },
+      { path: TELA_CADASTRO_USUARIO, element: <UsuarioCadastrar /> },
+      { path: TELA_USUARIO_ENTRAR, element: <UsuarioEntrar /> },
       // ROTAS PET
       {
-        path: "/cadastrar/pet",
+        path: TELA_CADASTRO_PET,
         element: <PrivateRoute element={<PetCadastrar />} />,
       },
-      { path: "/informacoes/pet/:id", element: <PetInformacao /> },
+      { path: TELA_INFORMACOES_PET, element: <PetInformacao /> },
       {
-        path: "/meus/pets",
+        path: TELA_PETS_USUARIO_LOGADO,
         element: <PrivateRoute element={<PetUsuarioLogado />} />,
       },
       {
-        path: "/pets/favoritos",
+        path: TELA_PETS_USUARIO_LOGADO_FAVORITOS,
         element: <PrivateRoute element={<PetUsuarioLogadoFavoritos />} />,
       },
       // ROTAS LINK
       {
-        path: "/meus/links",
+        path: TELA_MEUS_LINKS,
         element: <PrivateRoute element={<LinkMeus />} />,
       },
       {
-        path: "/link/:nomeUsuario",
+        path: TELA_LINKS,
         element: <Links />,
       },
       // ROTAS ERRO
-      { path: "/*", element: <Error404 /> },
+      { path: TELA_ERRO_404, element: <Error404 /> },
     ],
   },
 ]);
@@ -83,7 +97,9 @@ root.render(
 
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <MessageProvider>
+        <RouterProvider router={router} />
+      </MessageProvider>
     </AuthProvider>
   </React.StrictMode>
 );

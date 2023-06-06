@@ -1,38 +1,34 @@
 import React, { useContext, useState } from "react";
-import { Container } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Carregamento from "../../components/Carregamento";
+import CarregamentoTela from "../../components/Carregamento";
 import { AuthContext } from "../../contexts/AuthContext";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
-import Mensagem from "./../../components/mensagem/Mensagem";
 
 function PetCadastrar() {
   const [nome, setNome] = useState("");
   const [raca, setRaca] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [imagem, setImagem] = useState("");
-  const [msg, setMsg] = useState("");
-  const [msgTipo, setMsgTipo] = useState("warning");
   const [isLoading, setIsLoading] = useState(false);
   const { token, usuarioLogado } = useContext(AuthContext);
+  const { setarMensagem } = useContext(MessageContext);
 
   function validaCampos() {
-    setMsgTipo("warning");
-
     if (nome === "" || nome === null) {
-      setMsg("Preencha o campo nome");
+      setarMensagem("Preencha o campo nome", null);
       return false;
     }
 
     if (raca === "" || raca === null) {
-      setMsg("Preencha o campo raça");
+      setarMensagem("Preencha o campo raça", null);
       return false;
     }
 
     if (dataNascimento === "" || dataNascimento === null) {
-      setMsg("Preencha o campo data nascimento");
+      setarMensagem("Preencha o campo data nascimento", null);
       return false;
     }
 
@@ -44,7 +40,6 @@ function PetCadastrar() {
 
     if (validaCampos()) {
       setIsLoading(true);
-      setMsg("");
       Api.post(
         "pets",
         {
@@ -62,13 +57,11 @@ function PetCadastrar() {
         }
       )
         .then(({ data }) => {
-          setMsgTipo("success");
-          setMsg(data.message);
+          setarMensagem(data.message);
           limparCampos();
         })
         .catch(({ response }) => {
-          setMsgTipo("danger");
-          setMsg(response.data.message);
+          setarMensagem(response.data.message, null);
         })
         .finally(() => {
           setIsLoading(false);
@@ -86,71 +79,67 @@ function PetCadastrar() {
   return (
     <>
       {isLoading ? (
-        <Carregamento />
+        <CarregamentoTela />
       ) : (
-        <Form encType="multipart/form-data">
-          <Container>
-            <Mensagem mensagem={msg} mensagemTipo={msgTipo} />
+        <Form className="container" encType="multipart/form-data">
+          <TituloPagina titulo="Cadastrar Pet" />
 
-            <TituloPagina titulo="Cadastrar Pet" />
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="nome">
+              Nome
+            </Form.Label>
+            <Form.Control
+              id="nome"
+              type="text"
+              placeholder="Digite o nome do Pet"
+              value={nome}
+              required
+              autoFocus
+              onChange={(e) => setNome(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="nome">
-                Nome
-              </Form.Label>
-              <Form.Control
-                id="nome"
-                type="text"
-                placeholder="Digite o nome do Pet"
-                value={nome}
-                required
-                autoFocus
-                onChange={(e) => setNome(e.target.value)}
-              />
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="raca">
+              Raça
+            </Form.Label>
+            <Form.Control
+              id="raca"
+              type="text"
+              placeholder="Digite a raça do Pet"
+              value={raca}
+              required
+              onChange={(e) => setRaca(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="raca">
-                Raça
-              </Form.Label>
-              <Form.Control
-                id="raca"
-                type="text"
-                placeholder="Digite a raça do Pet"
-                value={raca}
-                required
-                onChange={(e) => setRaca(e.target.value)}
-              />
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="dataNascimento">
+              Data nascimento
+            </Form.Label>
+            <Form.Control
+              id="dataNascimento"
+              type="date"
+              value={dataNascimento}
+              required
+              onChange={(e) => setDataNascimento(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="dataNascimento">
-                Data nascimento
-              </Form.Label>
-              <Form.Control
-                id="dataNascimento"
-                type="date"
-                value={dataNascimento}
-                required
-                onChange={(e) => setDataNascimento(e.target.value)}
-              />
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="imagem">
+              Imagem
+            </Form.Label>
+            <Form.Control
+              id="imagem"
+              type="file"
+              onChange={(e) => setImagem(e.target.files[0])}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="imagem">
-                Imagem
-              </Form.Label>
-              <Form.Control
-                id="imagem"
-                type="file"
-                onChange={(e) => setImagem(e.target.files[0])}
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit" onClick={cadastrarPet}>
-              Cadastrar
-            </Button>
-          </Container>
+          <Button variant="primary" type="submit" onClick={cadastrarPet}>
+            Cadastrar
+          </Button>
         </Form>
       )}
     </>

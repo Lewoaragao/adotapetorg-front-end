@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
-import Carregamento from "../../components/Carregamento";
+import CarregamentoTela from "../../components/Carregamento";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
@@ -80,7 +80,7 @@ function Inicio({ logo }) {
 
         <>
           {isLoading ? (
-            <Carregamento />
+            <CarregamentoTela />
           ) : (
             <>
               <Row xs={1} sm={2} md={3} lg={4} className="g-4">
@@ -112,7 +112,7 @@ function Inicio({ logo }) {
                 )}
               </Row>
 
-              {listaPets != null && (
+              {listaPets !== null && listaPets.length > 0 && (
                 <Row className="mt-3">
                   <Pagination className="d-flex justify-content-center align-items-center">
                     {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
