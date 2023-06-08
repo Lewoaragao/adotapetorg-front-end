@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CarregamentoTela from "../../components/Carregamento";
 import { FALSE_PHP, TRUE_PHP } from "../../components/Constantes";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
+import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
@@ -28,6 +29,7 @@ function UsuarioCadastrar() {
   const [flgCelularWhatsapp, setFlgCelularWhatsapp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { setarMensagem } = useContext(MessageContext);
+  const { setarUsuarioLogado } = useContext(AuthContext);
 
   function validaCampos() {
     if (usuario === "" || usuario === null) {
@@ -102,9 +104,19 @@ function UsuarioCadastrar() {
             "Content-Type": "multipart/form-data",
           },
         }
-      )
-        .then(() => {
-          navigate("/usuario/entrar");
+      ).catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+        setIsLoading(false);
+        return;
+      });
+
+      Api.post("login", {
+        email: email,
+        senha: senha,
+      })
+        .then(({ data }) => {
+          setarUsuarioLogado(data.usuario, data.token, true);
+          navigate("/");
         })
         .catch(({ response }) => {
           setarMensagem(response.data.message, null);
