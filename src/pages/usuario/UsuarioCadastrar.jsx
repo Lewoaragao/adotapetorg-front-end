@@ -104,25 +104,27 @@ function UsuarioCadastrar() {
             "Content-Type": "multipart/form-data",
           },
         }
-      ).catch(({ response }) => {
-        setarMensagem(response.data.message, null);
-        setIsLoading(false);
-        return;
-      });
-
-      Api.post("login", {
-        email: email,
-        senha: senha,
-      })
-        .then(({ data }) => {
-          setarUsuarioLogado(data.usuario, data.token, true);
-          navigate("/");
+      )
+        .then(() => {
+          Api.post("login", {
+            email: email,
+            senha: senha,
+          })
+            .then(({ data }) => {
+              setarUsuarioLogado(data.usuario, data.token, true);
+              navigate("/");
+            })
+            .catch(({ response }) => {
+              setarMensagem(response.data.message, null);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
         })
         .catch(({ response }) => {
           setarMensagem(response.data.message, null);
-        })
-        .finally(() => {
           setIsLoading(false);
+          return;
         });
     }
   }
