@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./App.css";
 import {
+  TELA_BLOG,
   TELA_CADASTRO_PET,
   TELA_CADASTRO_USUARIO,
   TELA_ERRO_404,
@@ -20,6 +21,7 @@ import {
 import { AuthProvider } from "./contexts/AuthContext";
 import { MessageProvider } from "./contexts/MessageContext";
 import logo from "./images/logo-adotapetorg.jpg";
+import Blog from "./pages/blog/Blog";
 import Error404 from "./pages/error/Error404";
 import Inicio from "./pages/inicio/Inicio";
 import LinkMeus from "./pages/link/LinkMeus";
@@ -43,6 +45,7 @@ const router = createBrowserRouter([
       // ROTAS GERAL
       { path: TELA_INICIAL, element: <Inicio logo={logo} /> },
       { path: TELA_SOBRE, element: <Sobre /> },
+      { path: TELA_BLOG, element: <Blog /> },
       { path: TELA_POLITICA_PRIVACIDADE, element: <PoliticaPrivacidade /> },
       // ROTAS USUÁRIO
       { path: TELA_CADASTRO_USUARIO, element: <UsuarioCadastrar /> },
