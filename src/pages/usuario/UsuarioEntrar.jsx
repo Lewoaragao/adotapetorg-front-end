@@ -77,6 +77,7 @@ function UsuarioEntrar() {
               placeholder="E-mail"
               value={email}
               required
+              autoFocus
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
