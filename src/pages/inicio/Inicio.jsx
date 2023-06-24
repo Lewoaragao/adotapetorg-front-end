@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
-import CarregamentoTela from "../../components/Carregamento";
+import { CarregamentoListaPet } from "../../components/Carregamento";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
@@ -21,6 +21,7 @@ function Inicio({ logo }) {
   function listarTodosPets(numeroPagina) {
     setPagina(numeroPagina);
     setIsLoading(true);
+
     Api.get(`pets?page=${pagina}`)
       .then(({ data }) => {
         setData(data);
@@ -36,7 +37,7 @@ function Inicio({ logo }) {
 
   return (
     <div className="d-flex justify-content-center align-items-center">
-      <div>
+      <div className="container vw-100">
         <div className="text-center">
           <img
             src={logo}
@@ -80,7 +81,7 @@ function Inicio({ logo }) {
 
         <>
           {isLoading ? (
-            <CarregamentoTela />
+            <CarregamentoListaPet />
           ) : (
             <>
               <Row xs={1} sm={2} md={3} lg={4} className="g-4">

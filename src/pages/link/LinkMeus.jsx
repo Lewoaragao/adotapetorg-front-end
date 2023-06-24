@@ -69,7 +69,7 @@ export default function LinkMeus() {
         break;
       case LINK_TIPO_TIK_TOK:
         setTituloLink("TikTok");
-        setLinkPlaceholder("instagram.com/seu-usuario");
+        setLinkPlaceholder("tiktok.com/@seu-usuario");
         break;
       case LINK_TIPO_LINKEDIN:
         setTituloLink("LinkedIn");
@@ -295,7 +295,7 @@ export default function LinkMeus() {
           </Col>
 
           <button
-            className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3"
+            className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
             onClick={() => setAbrirModalCadastrarLink(true)}
           >
             <AiOutlinePlus /> Cadastrar link
@@ -311,7 +311,7 @@ export default function LinkMeus() {
                     as="li"
                     className="d-flex align-items-start"
                     action
-                    variant="dark"
+                    variant="primary"
                     key={link.id}
                   >
                     <div className="my-auto">

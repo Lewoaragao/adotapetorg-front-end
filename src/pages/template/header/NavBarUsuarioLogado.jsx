@@ -13,9 +13,6 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLinkToTop className="dropdown-item" to="/cadastrar/pet">
-              Cadastrar Pet
-            </NavLinkToTop>
             <NavLinkToTop className="dropdown-item" to="/meus/pets">
               Meus Pets
             </NavLinkToTop>
@@ -42,9 +39,18 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
               width="20px"
               roundedCircle
               src={process.env.REACT_APP_API_URL + usuarioLogado.imagem}
-              alt={`Foto do usuário ${usuarioLogado.primeiro_nome}`}
+              alt={`Foto do usuário ${
+                usuarioLogado.is_pessoa
+                  ? usuarioLogado.primeiro_nome
+                  : usuarioLogado.sigla_organizacao
+              }`}
             />
-            Olá, <span className="fw-bold">{usuarioLogado.primeiro_nome}</span>
+            Olá,{" "}
+            <span className="fw-bold">
+              {usuarioLogado.is_pessoa
+                ? usuarioLogado.primeiro_nome
+                : usuarioLogado.sigla_organizacao}
+            </span>
           </Dropdown.Toggle>
 
           <Dropdown.Menu>

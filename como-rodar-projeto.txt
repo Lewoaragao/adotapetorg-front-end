@@ -1,3 +1,5 @@
 Execute os seguintes passos na ordem:
 1 - primeiro é necessário instalar o node.js
-2 - no terminal digite npm start
+2 - adicionar a variável de ambiente do computador
+3 - no terminal digite npm install
+4 - depois npm start
