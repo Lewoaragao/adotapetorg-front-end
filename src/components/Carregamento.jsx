@@ -1,5 +1,6 @@
 import { Card, Col, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
+import placeholderPet from "../images/placeholder-pet.jpg";
 import NavLinkToTop from "./navLinkToTop/NavLinkToTop";
 
 export default function CarregamentoTela() {
@@ -32,7 +33,7 @@ export function CarregamentoListaPet() {
             <Card>
               <Card.Img
                 variant="top"
-                src="https://api.adotapet.org/api/imagens/pet/placeholder-pet.jpg"
+                src={placeholderPet}
                 alt={`foto carregamento lista pet`}
               />
               <Card.Body>
