@@ -37,12 +37,6 @@
   </url>
   <!-- ROTAS PET -->
   <url>
-    <loc>https://adotapet.org/cadastrar/pet</loc>
-    <lastmod>2023-05-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://adotapet.org/informacoes/pet</loc>
     <lastmod>2023-05-10</lastmod>
     <changefreq>monthly</changefreq>

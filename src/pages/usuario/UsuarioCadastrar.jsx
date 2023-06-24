@@ -17,6 +17,8 @@ function UsuarioCadastrar() {
   const [usuario, setUsuario] = useState("");
   const [primeiroNome, setPrimeiroNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
+  const [siglaOrganizacao, setSiglaOrganizacao] = useState("");
+  const [nomeOrganizacao, setNomeOrganizacao] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaRepetida, setSenhaRepetida] = useState("");
@@ -39,8 +41,23 @@ function UsuarioCadastrar() {
       return false;
     }
 
-    if (primeiroNome === "" || primeiroNome === null) {
+    if (isPessoa && (primeiroNome === "" || primeiroNome === null)) {
       setarMensagem("Preencha o campo primeiro nome", null);
+      return false;
+    }
+
+    if (isPessoa && (sobrenome === "" || sobrenome === null)) {
+      setarMensagem("Preencha o campo sobrenome", null);
+      return false;
+    }
+
+    if (!isPessoa && (siglaOrganizacao === "" || siglaOrganizacao === null)) {
+      setarMensagem("Preencha o campo sigla da organização", null);
+      return false;
+    }
+
+    if (!isPessoa && (nomeOrganizacao === "" || nomeOrganizacao === null)) {
+      setarMensagem("Preencha o campo nome da organização", null);
       return false;
     }
 
@@ -82,15 +99,18 @@ function UsuarioCadastrar() {
 
   function cadastrarUsuario(e) {
     e.preventDefault();
-
+    window.scrollTo(0, 0);
     if (validaCampos()) {
       setIsLoading(true);
       Api.post(
         "users",
         {
           usuario: usuario,
-          primeiro_nome: primeiroNome,
-          sobrenome: sobrenome,
+          is_pessoa: isPessoa ? TRUE_PHP : FALSE_PHP,
+          primeiro_nome: primeiroNome === "" ? null : primeiroNome,
+          sobrenome: sobrenome === "" ? null : sobrenome,
+          sigla_organizacao: siglaOrganizacao === "" ? null : siglaOrganizacao,
+          nome_organizacao: nomeOrganizacao === "" ? null : nomeOrganizacao,
           email: email,
           senha: senha,
           imagem: imagem,
@@ -98,9 +118,19 @@ function UsuarioCadastrar() {
           endereco_estado: enderecoEstado,
           endereco_pais: enderecoPais,
           telefone: telefone === "" ? null : telefone,
-          flg_telefone_whatsapp: flgTelefoneWhatsapp ? TRUE_PHP : FALSE_PHP,
+          flg_telefone_whatsapp:
+            telefone === ""
+              ? FALSE_PHP
+              : flgTelefoneWhatsapp
+              ? TRUE_PHP
+              : FALSE_PHP,
           celular: celular === "" ? null : celular,
-          flg_celular_whatsapp: flgCelularWhatsapp ? TRUE_PHP : FALSE_PHP,
+          flg_celular_whatsapp:
+            celular === ""
+              ? FALSE_PHP
+              : flgCelularWhatsapp
+              ? TRUE_PHP
+              : FALSE_PHP,
         },
         {
           headers: {
@@ -109,13 +139,13 @@ function UsuarioCadastrar() {
         }
       )
         .then(() => {
+          window.scrollTo(0, 0);
           Api.post("login", {
             email: email,
             senha: senha,
           })
             .then(({ data }) => {
               setarUsuarioLogado(data.usuario, data.token, true);
-              window.scrollTo(0, 0);
               navigate("/");
             })
             .catch(({ response }) => {
@@ -141,9 +171,13 @@ function UsuarioCadastrar() {
     setFlgCelularWhatsapp(!flgCelularWhatsapp);
   }
 
-  const handleIsPessoaChange = (e) => {
-    setIsPessoa(e.target.value === "true" ? true : false);
-  };
+  function mudarIsPessoa() {
+    setPrimeiroNome("");
+    setSobrenome("");
+    setSiglaOrganizacao("");
+    setNomeOrganizacao("");
+    setIsPessoa(!isPessoa);
+  }
 
   return (
     <>
@@ -155,43 +189,19 @@ function UsuarioCadastrar() {
             <TituloPagina titulo="Cadastrar Usuário" />
           </Row>
 
-          <Row>
+          <Row className="mb-3">
             <Col md={12} className="fw-bold">
-              <input
-                className="me-1"
-                type="radio"
-                name="isPessoa"
-                value="true"
-                id="isPessoaTrue"
-                checked={isPessoa}
-                onChange={(e) => {
-                  console.log("teste");
-                }}
-              />
-              <label htmlFor="isPessoaTrue">Sou Pessoa</label>
+              <Button onClick={mudarIsPessoa}>
+                {isPessoa ? "Sou organização" : "Sou pessoa"}
+              </Button>
+            </Col>
+          </Row>
 
-              <input
-                className="ms-3 me-1"
-                type="radio"
-                name="isPessoa"
-                value="false"
-                id="isPessoaFalse"
-                checked={isPessoa}
-                onChange={handleIsPessoaChange}
-              />
-              <label htmlFor="isPessoaFalse">Sou Organização</label>
-            </Col>
-            <Col md={12}>
-              <p className="text-muted">
-                Os campos com <span className="text-danger">*</span> são
-                necessários serem preenchidos, juntamente do número de contato e
-                selecionar se o número também é Whatsapp
-              </p>
-            </Col>
+          <Row className="mb-3">
             <Col md={4}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="usuario">
-                  Usuário <span className="text-danger">*</span>
+                  Usuário
                 </Form.Label>
                 <Form.Control
                   id="usuario"
@@ -204,44 +214,80 @@ function UsuarioCadastrar() {
                 />
               </Form.Group>
             </Col>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="primeiroNome">
-                  {isPessoa ? "Primeiro nome" : "Sigla da Organização"}{" "}
-                  <span className="text-danger">*</span>
-                </Form.Label>
-                <Form.Control
-                  id="primeiroNome"
-                  type="text"
-                  placeholder="Digite seu primeiro nome"
-                  value={primeiroNome}
-                  required
-                  onChange={(e) => setPrimeiroNome(e.target.value)}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-bold" htmlFor="sobrenome">
-                  {isPessoa ? "Sobrenome" : "Nome da Organização"}
-                </Form.Label>
-                <Form.Control
-                  id="sobrenome"
-                  type="text"
-                  placeholder="Digite seu primeiro nome"
-                  value={sobrenome}
-                  required
-                  onChange={(e) => setSobrenome(e.target.value)}
-                />
-              </Form.Group>
-            </Col>
+            {isPessoa ? (
+              <>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="fw-bold" htmlFor="primeiroNome">
+                      Primeiro nome
+                    </Form.Label>
+                    <Form.Control
+                      id="primeiroNome"
+                      type="text"
+                      placeholder="Digite seu primeiro nome"
+                      value={primeiroNome}
+                      required
+                      onChange={(e) => setPrimeiroNome(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="fw-bold" htmlFor="sobrenome">
+                      Sobrenome
+                    </Form.Label>
+                    <Form.Control
+                      id="sobrenome"
+                      type="text"
+                      placeholder="Digite seu sobrenome"
+                      value={sobrenome}
+                      required
+                      onChange={(e) => setSobrenome(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </>
+            ) : (
+              <>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="fw-bold" htmlFor="siglaOrganizacao">
+                      Sigla da organização
+                    </Form.Label>
+                    <Form.Control
+                      id="siglaOrganizacao"
+                      type="text"
+                      placeholder="Digite a sigla da sua organização"
+                      value={siglaOrganizacao}
+                      required
+                      onChange={(e) => setSiglaOrganizacao(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="fw-bold" htmlFor="nomeOrganizacao">
+                      Nome da organização
+                    </Form.Label>
+                    <Form.Control
+                      id="nomeOrganizacao"
+                      type="text"
+                      placeholder="Digite o nome da sua organização"
+                      value={nomeOrganizacao}
+                      required
+                      onChange={(e) => setNomeOrganizacao(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </>
+            )}
           </Row>
 
-          <Row>
+          <Row className="mb-3">
             <Col md={6}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="email">
-                  E-mail <span className="text-danger">*</span>
+                  E-mail
                 </Form.Label>
                 <Form.Control
                   id="email"
@@ -254,9 +300,9 @@ function UsuarioCadastrar() {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="imagem">
-                  Imagem <span className="text-danger">*</span>
+                  Imagem
                 </Form.Label>
                 <Form.Control
                   id="imagem"
@@ -267,11 +313,11 @@ function UsuarioCadastrar() {
             </Col>
           </Row>
 
-          <Row>
+          <Row className="mb-3">
             <Col md={6}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="senha">
-                  Senha <span className="text-danger">*</span>
+                  Senha
                 </Form.Label>
                 <Form.Control
                   id="senha"
@@ -284,9 +330,9 @@ function UsuarioCadastrar() {
               </Form.Group>
             </Col>
             <Col md={6}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="senhaRepetida">
-                  Repetir senha <span className="text-danger">*</span>
+                  Repetir senha
                 </Form.Label>
                 <Form.Control
                   id="senhaRepetida"
@@ -300,11 +346,11 @@ function UsuarioCadastrar() {
             </Col>
           </Row>
 
-          <Row>
+          <Row className="mb-3">
             <Col md={4}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="enderecoPais">
-                  País <span className="text-danger">*</span>
+                  País
                 </Form.Label>
                 <Form.Control
                   id="enderecoPais"
@@ -317,9 +363,9 @@ function UsuarioCadastrar() {
               </Form.Group>
             </Col>
             <Col md={4}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="enderecoEstado">
-                  Estado <span className="text-danger">*</span>
+                  Estado
                 </Form.Label>
                 <Form.Control
                   id="enderecoEstado"
@@ -332,9 +378,9 @@ function UsuarioCadastrar() {
               </Form.Group>
             </Col>
             <Col md={4}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="enderecoCidade">
-                  Cidade <span className="text-danger">*</span>
+                  Cidade
                 </Form.Label>
                 <Form.Control
                   id="enderecoCidade"
@@ -348,9 +394,9 @@ function UsuarioCadastrar() {
             </Col>
           </Row>
 
-          <Row>
+          <Row className="mb-3">
             <Col md={6}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="telefone">
                   Telefone
                 </Form.Label>
@@ -378,9 +424,9 @@ function UsuarioCadastrar() {
             </Col>
           </Row>
 
-          <Row>
+          <Row className="mb-3">
             <Col md={6}>
-              <Form.Group className="mb-3">
+              <Form.Group>
                 <Form.Label className="fw-bold" htmlFor="celular">
                   Celular
                 </Form.Label>
