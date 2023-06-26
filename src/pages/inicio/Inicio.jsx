@@ -102,7 +102,9 @@ function Inicio({ logo }) {
                   </Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                  <NavLinkToTop
+                    to={`/blog/10-motivos-adotar-pet-transformar-vida`}
+                  >
                     Ler mais
                   </NavLinkToTop>
                 </Card.Footer>
@@ -396,35 +398,37 @@ function Inicio({ logo }) {
             <CarregamentoListaPet />
           ) : (
             <>
-              <h2>Lista: Pets</h2>
-              <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-                {listaPets == null ? (
-                  <div>{mensagem}</div>
-                ) : (
-                  <>
-                    {listaPets.map((pet) => (
-                      <Col key={pet.id}>
-                        <Card>
-                          <Card.Img
-                            variant="top"
-                            src={process.env.REACT_APP_API_URL + pet.imagem}
-                            alt={`foto pet ${pet.nome}`}
-                          />
-                          <Card.Body>
-                            <Card.Title>{pet.nome}</Card.Title>
-                            <Card.Text>{pet.raca}</Card.Text>
-                          </Card.Body>
-                          <Card.Footer>
-                            <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                              Informações
-                            </NavLinkToTop>
-                          </Card.Footer>
-                        </Card>
-                      </Col>
-                    ))}
-                  </>
-                )}
-              </Row>
+              {listaPets == null ? (
+                <div>{mensagem}</div>
+              ) : (
+                <>
+                  <h2>Lista: Pets</h2>
+                  <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+                    <>
+                      {listaPets.map((pet) => (
+                        <Col key={pet.id}>
+                          <Card>
+                            <Card.Img
+                              variant="top"
+                              src={process.env.REACT_APP_API_URL + pet.imagem}
+                              alt={`foto pet ${pet.nome}`}
+                            />
+                            <Card.Body>
+                              <Card.Title>{pet.nome}</Card.Title>
+                              <Card.Text>{pet.raca}</Card.Text>
+                            </Card.Body>
+                            <Card.Footer>
+                              <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
+                                Informações
+                              </NavLinkToTop>
+                            </Card.Footer>
+                          </Card>
+                        </Col>
+                      ))}
+                    </>
+                  </Row>
+                </>
+              )}
 
               {listaPets !== null && listaPets.length > 0 && (
                 <Row className="mt-3">
