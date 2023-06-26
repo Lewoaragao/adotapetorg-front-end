@@ -5,6 +5,7 @@ import { CarregamentoListaPet } from "../../components/Carregamento";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
+import placeholderBlog from "../../images/placeholder-blog.jpg";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -84,6 +85,11 @@ function Inicio({ logo }) {
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     10 Motivos pelos quais Adotar um Pet vai Transformar sua
@@ -95,12 +101,21 @@ function Inicio({ logo }) {
                     para sua vida.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Conheça os Pets mais Adoráveis que Estão Aguardando por um
@@ -112,12 +127,21 @@ function Inicio({ logo }) {
                     apaixonar!
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Adoção Responsável: Como Encontrar o Pet Perfeito para sua
@@ -129,12 +153,21 @@ function Inicio({ logo }) {
                     garantindo uma adoção bem-sucedida.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Pets com Necessidades Especiais: Amor sem Limites!
@@ -145,12 +178,21 @@ function Inicio({ logo }) {
                     podem trazer alegria e superação para sua vida.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Adote um Pet Mais Velho: A Beleza da Maturidade
@@ -161,12 +203,21 @@ function Inicio({ logo }) {
                     chance para animais mais experientes.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Como se Preparar para a Chegada do seu Novo Amigo de Quatro
@@ -178,12 +229,21 @@ function Inicio({ logo }) {
                     transição tranquila.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Adotar um Pet: Um Atode Amor que Salva Vidas
@@ -193,12 +253,21 @@ function Inicio({ logo }) {
                     animal, mas também oferece uma nova chance e salva vidas.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Fotos de Antes e Depois: Transformações Incríveis após a
@@ -210,12 +279,21 @@ function Inicio({ logo }) {
                     poder do amor e cuidado.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>Pets e Crianças: A Dupla Perfeita</Card.Title>
                   <Card.Text>
@@ -224,12 +302,21 @@ function Inicio({ logo }) {
                     crianças.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Dicas para Adoção de um Gatinho: Tudo o que Você Precisa
@@ -241,12 +328,21 @@ function Inicio({ logo }) {
                     do novo felino em sua casa.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Dicas para Adoção de um Cãozinho: Prepare-se para sua Nova
@@ -258,12 +354,21 @@ function Inicio({ logo }) {
                     inicial.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
 
             <Col>
               <Card>
+                <Card.Img
+                  variant="top"
+                  src={placeholderBlog}
+                  alt={`teste imagem postagem blog`}
+                />
                 <Card.Body>
                   <Card.Title>
                     Animais Exóticos como Pets: Descubra o Fascínio da
@@ -276,7 +381,11 @@ function Inicio({ logo }) {
                     únicos.
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>Ler mais</Card.Footer>
+                <Card.Footer>
+                  <NavLinkToTop to={`/blog/teste-titulo`}>
+                    Ler mais
+                  </NavLinkToTop>
+                </Card.Footer>
               </Card>
             </Col>
           </Row>

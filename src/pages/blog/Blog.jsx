@@ -1,5 +1,7 @@
 import { Card, Col, Row } from "react-bootstrap";
 import TituloPagina from "./../../components/TituloPagina";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
+import placeholderBlog from "../../images/placeholder-blog.jpg";
 
 /**
  * Aqui será a pagina geral do blog
@@ -24,6 +26,11 @@ export default function Blog() {
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   10 Motivos pelos quais Adotar um Pet vai Transformar sua Vida!
@@ -34,12 +41,19 @@ export default function Blog() {
                   vida.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Conheça os Pets mais Adoráveis que Estão Aguardando por um Lar
@@ -50,12 +64,19 @@ export default function Blog() {
                   apaixonar!
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Adoção Responsável: Como Encontrar o Pet Perfeito para sua
@@ -67,12 +88,19 @@ export default function Blog() {
                   garantindo uma adoção bem-sucedida.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Pets com Necessidades Especiais: Amor sem Limites!
@@ -83,12 +111,19 @@ export default function Blog() {
                   podem trazer alegria e superação para sua vida.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Adote um Pet Mais Velho: A Beleza da Maturidade
@@ -99,12 +134,19 @@ export default function Blog() {
                   animais mais experientes.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Como se Preparar para a Chegada do seu Novo Amigo de Quatro
@@ -116,12 +158,19 @@ export default function Blog() {
                   transição tranquila.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Adotar um Pet: Um Atode Amor que Salva Vidas
@@ -131,12 +180,19 @@ export default function Blog() {
                   animal, mas também oferece uma nova chance e salva vidas.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Fotos de Antes e Depois: Transformações Incríveis após a
@@ -148,12 +204,19 @@ export default function Blog() {
                   poder do amor e cuidado.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>Pets e Crianças: A Dupla Perfeita</Card.Title>
                 <Card.Text>
@@ -161,12 +224,19 @@ export default function Blog() {
                   desenvolvimento emocional, social e responsável das crianças.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Dicas para Adoção de um Gatinho: Tudo o que Você Precisa Saber
@@ -177,12 +247,19 @@ export default function Blog() {
                   do novo felino em sua casa.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Dicas para Adoção de um Cãozinho: Prepare-se para sua Nova
@@ -194,12 +271,19 @@ export default function Blog() {
                   inicial.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
 
           <Col>
             <Card>
+              <Card.Img
+                variant="top"
+                src={placeholderBlog}
+                alt={`teste imagem postagem blog`}
+              />
               <Card.Body>
                 <Card.Title>
                   Animais Exóticos como Pets: Descubra o Fascínio da Diversidade
@@ -210,7 +294,9 @@ export default function Blog() {
                   proporcionar uma vida feliz e saudável a esses animais únicos.
                 </Card.Text>
               </Card.Body>
-              <Card.Footer>Ler mais</Card.Footer>
+              <Card.Footer>
+                <NavLinkToTop to={`/blog/teste-titulo`}>Ler mais</NavLinkToTop>
+              </Card.Footer>
             </Card>
           </Col>
         </Row>

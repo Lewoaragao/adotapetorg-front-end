@@ -5,6 +5,7 @@ import App from "./App";
 import "./App.css";
 import {
   TELA_BLOG,
+  TELA_BLOG_POSTAGEM,
   TELA_CADASTRO_PET,
   TELA_CADASTRO_USUARIO,
   TELA_ERRO_404,
@@ -36,6 +37,7 @@ import UsuarioCadastrar from "./pages/usuario/UsuarioCadastrar";
 import UsuarioEntrar from "./pages/usuario/UsuarioEntrar";
 import reportWebVitals from "./reportWebVitals";
 import PrivateRoute from "./routes/PrivateRoute";
+import BlogPostagem from "./pages/blog/BlogPostagem";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,7 @@ const router = createBrowserRouter([
       { path: TELA_INICIAL, element: <Inicio logo={logo} /> },
       { path: TELA_SOBRE, element: <Sobre /> },
       { path: TELA_BLOG, element: <Blog /> },
+      { path: TELA_BLOG_POSTAGEM, element: <BlogPostagem /> },
       { path: TELA_POLITICA_PRIVACIDADE, element: <PoliticaPrivacidade /> },
       // ROTAS USUÁRIO
       { path: TELA_CADASTRO_USUARIO, element: <UsuarioCadastrar /> },

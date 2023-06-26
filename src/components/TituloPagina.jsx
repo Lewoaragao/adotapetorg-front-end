@@ -20,7 +20,12 @@ function TituloPagina({ titulo }) {
     document.head.appendChild(relCanonical);
   }, [titulo, locationPathname]);
 
-  return <h1 className="fw-bold text-primary mb-3">{titulo}</h1>;
+  return (
+    <>
+      <h1 className="fw-bold text-primary mb-3">{titulo}</h1>
+      <hr />
+    </>
+  );
 }
 
 export default TituloPagina;
