@@ -80,6 +80,103 @@ function Inicio({ logo }) {
           </p>
         </div>
 
+        <>
+          {isLoading ? (
+            <CarregamentoListaPet />
+          ) : (
+            <>
+              {listaPets == null ? (
+                <div>{mensagem}</div>
+              ) : (
+                <>
+                  <h2>Lista: Pets</h2>
+                  <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+                    <>
+                      {listaPets.map((pet) => (
+                        <Col key={pet.id}>
+                          <Card>
+                            <Card.Img
+                              variant="top"
+                              src={process.env.REACT_APP_API_URL + pet.imagem}
+                              alt={`foto pet ${pet.nome}`}
+                            />
+                            <Card.Body>
+                              <Card.Title>{pet.nome}</Card.Title>
+                              <Card.Text>{pet.raca}</Card.Text>
+                            </Card.Body>
+                            <Card.Footer>
+                              <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
+                                Informações
+                              </NavLinkToTop>
+                            </Card.Footer>
+                          </Card>
+                        </Col>
+                      ))}
+                    </>
+                  </Row>
+                </>
+              )}
+
+              {listaPets !== null && listaPets.length > 0 && (
+                <Row className="mt-3">
+                  <Pagination className="d-flex justify-content-center align-items-center">
+                    {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                    <Pagination.First
+                      onClick={() => listarTodosPets(data.first_page)}
+                    />
+
+                    {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                    <Pagination.Prev
+                      onClick={() => listarTodosPets(data.current_page - 1)}
+                    />
+
+                    {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                    {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+
+                    {/* PÁGINA ATUAL MENOS UM */}
+                    {data.current_page >= 2 && (
+                      <Pagination.Item
+                        onClick={() => listarTodosPets(data.current_page - 1)}
+                      >
+                        {data.current_page - 1}
+                      </Pagination.Item>
+                    )}
+
+                    {/* PÁGINA ATUAL */}
+                    <Pagination.Item active>
+                      {data.current_page}
+                    </Pagination.Item>
+
+                    {/* PÁGINA ATUAL MAIS UM */}
+                    {data.current_page + 1 <= data.last_page && (
+                      <Pagination.Item
+                        onClick={() => listarTodosPets(data.current_page + 1)}
+                      >
+                        {data.current_page + 1}
+                      </Pagination.Item>
+                    )}
+
+                    {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                    {data.current_page + 1 < data.last_page && (
+                      <Pagination.Ellipsis disabled />
+                    )}
+
+                    {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                    <Pagination.Next
+                      onClick={() => listarTodosPets(data.current_page + 1)}
+                    />
+
+                    {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                    <Pagination.Last
+                      onClick={() => listarTodosPets(data.last_page)}
+                    />
+                  </Pagination>
+                </Row>
+              )}
+            </>
+          )}
+        </>
+
         <div className="mb-3">
           <h2>Blog: Postagens recentes</h2>
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
@@ -392,103 +489,6 @@ function Inicio({ logo }) {
             </Col>
           </Row>
         </div>
-
-        <>
-          {isLoading ? (
-            <CarregamentoListaPet />
-          ) : (
-            <>
-              {listaPets == null ? (
-                <div>{mensagem}</div>
-              ) : (
-                <>
-                  <h2>Lista: Pets</h2>
-                  <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-                    <>
-                      {listaPets.map((pet) => (
-                        <Col key={pet.id}>
-                          <Card>
-                            <Card.Img
-                              variant="top"
-                              src={process.env.REACT_APP_API_URL + pet.imagem}
-                              alt={`foto pet ${pet.nome}`}
-                            />
-                            <Card.Body>
-                              <Card.Title>{pet.nome}</Card.Title>
-                              <Card.Text>{pet.raca}</Card.Text>
-                            </Card.Body>
-                            <Card.Footer>
-                              <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                                Informações
-                              </NavLinkToTop>
-                            </Card.Footer>
-                          </Card>
-                        </Col>
-                      ))}
-                    </>
-                  </Row>
-                </>
-              )}
-
-              {listaPets !== null && listaPets.length > 0 && (
-                <Row className="mt-3">
-                  <Pagination className="d-flex justify-content-center align-items-center">
-                    {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-                    <Pagination.First
-                      onClick={() => listarTodosPets(data.first_page)}
-                    />
-
-                    {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-                    <Pagination.Prev
-                      onClick={() => listarTodosPets(data.current_page - 1)}
-                    />
-
-                    {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                    {data.current_page > 2 && <Pagination.Ellipsis disabled />}
-
-                    {/* PÁGINA ATUAL MENOS UM */}
-                    {data.current_page >= 2 && (
-                      <Pagination.Item
-                        onClick={() => listarTodosPets(data.current_page - 1)}
-                      >
-                        {data.current_page - 1}
-                      </Pagination.Item>
-                    )}
-
-                    {/* PÁGINA ATUAL */}
-                    <Pagination.Item active>
-                      {data.current_page}
-                    </Pagination.Item>
-
-                    {/* PÁGINA ATUAL MAIS UM */}
-                    {data.current_page + 1 <= data.last_page && (
-                      <Pagination.Item
-                        onClick={() => listarTodosPets(data.current_page + 1)}
-                      >
-                        {data.current_page + 1}
-                      </Pagination.Item>
-                    )}
-
-                    {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                    {data.current_page + 1 < data.last_page && (
-                      <Pagination.Ellipsis disabled />
-                    )}
-
-                    {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-                    <Pagination.Next
-                      onClick={() => listarTodosPets(data.current_page + 1)}
-                    />
-
-                    {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-                    <Pagination.Last
-                      onClick={() => listarTodosPets(data.last_page)}
-                    />
-                  </Pagination>
-                </Row>
-              )}
-            </>
-          )}
-        </>
       </div>
     </div>
   );
