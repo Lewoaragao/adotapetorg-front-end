@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
 import { CarregamentoListaPet } from "../../components/Carregamento";
+import placeholderBlog from "../../images/placeholder-blog.jpg";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
-import placeholderBlog from "../../images/placeholder-blog.jpg";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -199,9 +199,7 @@ function Inicio({ logo }) {
                   </Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                  <NavLinkToTop
-                    to={`/blog/10-motivos-adotar-pet-transformar-vida`}
-                  >
+                  <NavLinkToTop to={`/blog/o-melhor-titulo`}>
                     Ler mais
                   </NavLinkToTop>
                 </Card.Footer>

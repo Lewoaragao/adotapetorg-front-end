@@ -53,3 +53,20 @@ export function formataTamanhoPet(tamanho, sexo) {
     }
   }
 }
+
+/**
+ * A dataFormatar vem no formato
+ * 2023-06-28T23:13:50.000000Z
+ * que é o formado da data created_at
+ * ao salvar o objeto no banco de dados
+ * pela api feita com o framework Laravel
+ * @param {string} dataFormatar
+ * @returns {string} data dd/MM/yyyy
+ */
+export function formataDataDDMMYYYY(dataFormatar) {
+  const dataObj = new Date(dataFormatar);
+  const dia = String(dataObj.getDate()).padStart(2, "0");
+  const mes = String(dataObj.getMonth() + 1).padStart(2, "0");
+  const ano = dataObj.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
