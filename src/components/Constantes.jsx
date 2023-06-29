@@ -17,6 +17,7 @@ export const TELA_POLITICA_PRIVACIDADE = "/politica/privacidade";
 export const TELA_CADASTRO_USUARIO = "/cadastrar/usuario";
 export const TELA_USUARIO_ENTRAR = "/usuario/entrar";
 // ROTAS PET
+export const TELA_TODOS_PET = "/todos/pets";
 export const TELA_CADASTRO_PET = "/cadastrar/pet";
 export const TELA_INFORMACOES_PET = "/informacoes/pet/:id";
 export const TELA_PETS_USUARIO_LOGADO = "/meus/pets";

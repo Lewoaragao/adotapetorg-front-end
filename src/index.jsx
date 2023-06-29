@@ -17,6 +17,7 @@ import {
   TELA_PETS_USUARIO_LOGADO_FAVORITOS,
   TELA_POLITICA_PRIVACIDADE,
   TELA_SOBRE,
+  TELA_TODOS_PET,
   TELA_USUARIO_ENTRAR,
 } from "./components/Constantes";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -38,6 +39,7 @@ import UsuarioEntrar from "./pages/usuario/UsuarioEntrar";
 import reportWebVitals from "./reportWebVitals";
 import PrivateRoute from "./routes/PrivateRoute";
 import BlogPostagem from "./pages/blog/BlogPostagem";
+import PetTodos from "./pages/pet/PetTodos";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +56,7 @@ const router = createBrowserRouter([
       { path: TELA_CADASTRO_USUARIO, element: <UsuarioCadastrar /> },
       { path: TELA_USUARIO_ENTRAR, element: <UsuarioEntrar /> },
       // ROTAS PET
+      { path: TELA_TODOS_PET, element: <PetTodos /> },
       {
         path: TELA_CADASTRO_PET,
         element: <PrivateRoute element={<PetCadastrar />} />,

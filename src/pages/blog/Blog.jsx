@@ -54,7 +54,6 @@ export default function Blog() {
               <div>{mensagem}</div>
             ) : (
               <>
-                <h2>Blog: Postagens</h2>
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                   <>
                     {listaPostagens.map((postagem) => (

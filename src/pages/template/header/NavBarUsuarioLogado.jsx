@@ -13,6 +13,9 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
+            <NavLinkToTop className="dropdown-item" to="/todos/pets">
+              Todos os Pets
+            </NavLinkToTop>
             <NavLinkToTop className="dropdown-item" to="/meus/pets">
               Meus Pets
             </NavLinkToTop>
