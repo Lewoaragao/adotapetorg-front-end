@@ -70,3 +70,12 @@ export function formataDataDDMMYYYY(dataFormatar) {
   const ano = dataObj.getFullYear();
   return `${dia}/${mes}/${ano}`;
 }
+
+export function formataTextoCapitalize(textoFormatar) {
+  const textoFormatado = textoFormatar.replace(
+    /(^\w{1})|(\s+\w{1})/g,
+    (letter) => letter.toUpperCase()
+  );
+
+  return textoFormatado;
+}

@@ -54,8 +54,10 @@ export default function BlogPostagem() {
         <CarregamentoTela />
       ) : (
         <div className="mx-auto" style={{ maxWidth: "600px" }}>
-          <TituloPagina titulo={postagem.titulo} />
-          <h4>{postagem.subtitulo}</h4>
+          <TituloPagina
+            titulo={postagem.titulo == null ? "" : postagem.titulo}
+          />
+          <h4 className="uppercase-first-letter">{postagem.subtitulo}</h4>
           <p className="text-muted d-flex gap-3">
             <span className="d-flex justify-content-center align-items-center gap-1">
               <BsPersonBoundingBox /> {autor}
@@ -74,7 +76,10 @@ export default function BlogPostagem() {
           </Row>
 
           <Row className="mb-3 px-3">
-            <BlogPostagemConteudo html={postagem.conteudo} />
+            <BlogPostagemConteudo
+              html={postagem.conteudo}
+              className="uppercase-first-letter"
+            />
           </Row>
 
           <Row className="mb-3">

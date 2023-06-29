@@ -13,7 +13,7 @@ import Api from "../../../services/Api";
 import NavBarUsuarioLogado from "./NavBarUsuarioLogado";
 import NavBarUsuarioNaoLogado from "./NavBarUsuarioNaoLogado";
 
-function Header({ logo, usuarioLogadoVerificado }) {
+function Header({ logo }) {
   const navigate = useNavigate();
   const { isUsuarioLogado, usuarioLogado, setarUsuarioLogado, token } =
     useContext(AuthContext);

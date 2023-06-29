@@ -15,3 +15,7 @@ a.disabled {
 .text-justify {
   text-align: justify;
 }
+
+.uppercase-first-letter::first-letter {
+  text-transform: uppercase;
+}
