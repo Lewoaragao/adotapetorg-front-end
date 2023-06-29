@@ -10,6 +10,8 @@
 // ROTAS GERAL
 export const TELA_INICIAL = "/";
 export const TELA_SOBRE = "/sobre";
+export const TELA_BLOG = "/blog";
+export const TELA_BLOG_POSTAGEM = "/blog/:slug";
 export const TELA_POLITICA_PRIVACIDADE = "/politica/privacidade";
 // ROTAS USUÁRIO
 export const TELA_CADASTRO_USUARIO = "/cadastrar/usuario";

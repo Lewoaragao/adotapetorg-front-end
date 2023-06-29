@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { BiHomeHeart } from "react-icons/bi";
+import { IoMdBook } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../../contexts/AuthContext";
@@ -12,7 +13,7 @@ import Api from "../../../services/Api";
 import NavBarUsuarioLogado from "./NavBarUsuarioLogado";
 import NavBarUsuarioNaoLogado from "./NavBarUsuarioNaoLogado";
 
-function Header({ logo, usuarioLogadoVerificado }) {
+function Header({ logo }) {
   const navigate = useNavigate();
   const { isUsuarioLogado, usuarioLogado, setarUsuarioLogado, token } =
     useContext(AuthContext);
@@ -61,6 +62,13 @@ function Header({ logo, usuarioLogadoVerificado }) {
                 to="/sobre"
               >
                 <AiFillQuestionCircle /> Sobre
+              </NavLinkToTop>
+
+              <NavLinkToTop
+                className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
+                to="/blog"
+              >
+                <IoMdBook /> Blog
               </NavLinkToTop>
 
               {isUsuarioLogado ? (
