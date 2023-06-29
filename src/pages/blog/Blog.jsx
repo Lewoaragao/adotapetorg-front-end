@@ -72,7 +72,9 @@ export default function Blog() {
                             <Card.Text>{postagem.subtitulo}</Card.Text>
                           </Card.Body>
                           <Card.Footer>
-                            <NavLinkToTop to={`/blog/${postagem.slug}`}>
+                            <NavLinkToTop
+                              to={`/blog/postagem/${postagem.slug}`}
+                            >
                               Ler mais
                             </NavLinkToTop>
                           </Card.Footer>
