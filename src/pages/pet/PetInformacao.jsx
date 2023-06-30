@@ -172,7 +172,7 @@ function PetInformacao() {
                 ) : (
                   <button
                     className="btn btn-warning"
-                    disabled={!isUsuarioLogado}
+                    disabled={!isUsuarioLogado || isLoadingButton}
                     onClick={() => favoritarPet(pet.id)}
                   >
                     {isLoadingButton ? (

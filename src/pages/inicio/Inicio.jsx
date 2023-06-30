@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
-import { CarregamentoListaPet } from "../../components/Carregamento";
+import { CarregamentoLista } from "../../components/Carregamento";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
+import { MessageContext } from "../../contexts/MessageContext";
+import {
+  MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
+  MENSAGEM_NENHUM_PET_CADASTRADO,
+} from "../../components/Constantes";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoadingListaPet, setIsLoadingListaPet] = useState(false);
   const [isLoadingBlogPostagens, setIsLoadingBlogPostagens] = useState(false);
-  const [mensagem, setMensagem] = useState(false);
+  const { setarMensagem } = useContext(MessageContext);
   const [data, setData] = useState([]);
   const [pagina, setPagina] = useState(1);
 
@@ -31,7 +36,8 @@ function Inicio({ logo }) {
         setListaPets(data.data);
       })
       .catch(({ response }) => {
-        setMensagem(response.data.message);
+        setListaPets(null);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoadingListaPet(false);
@@ -42,10 +48,11 @@ function Inicio({ logo }) {
     setIsLoadingBlogPostagens(true);
     Api.get(`blog/todas/postagens`)
       .then(({ data }) => {
-        setListaPostagens(data);
+        setListaPostagens(data.data);
       })
       .catch(({ response }) => {
-        setMensagem(response.data.message);
+        setListaPostagens(null);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoadingBlogPostagens(false);
@@ -96,15 +103,15 @@ function Inicio({ logo }) {
           </p>
         </div>
 
+        <h2 className="mb-3">Lista: Pets</h2>
         {isLoadingListaPet ? (
-          <CarregamentoListaPet />
+          <CarregamentoLista />
         ) : (
           <>
             {listaPets == null ? (
-              <div>{mensagem}</div>
+              <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
             ) : (
               <>
-                <h2>Lista: Pets</h2>
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                   <>
                     {listaPets.map((pet) => (
@@ -189,15 +196,15 @@ function Inicio({ logo }) {
           </>
         )}
 
+        <h2 className="mb-3">Blog: Postagens</h2>
         {isLoadingBlogPostagens ? (
-          <CarregamentoListaPet />
+          <CarregamentoLista />
         ) : (
           <>
             {listaPostagens == null ? (
-              <div>{mensagem}</div>
+              <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
             ) : (
               <>
-                <h2>Blog: Postagens</h2>
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                   <>
                     {listaPostagens.map((postagem) => (

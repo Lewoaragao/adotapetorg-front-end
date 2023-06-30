@@ -1,39 +1,41 @@
+import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import TituloPagina from "./../../components/TituloPagina";
-import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
-import { useEffect, useState } from "react";
-import Api from "../../services/Api";
+import { useParams } from "react-router-dom";
 import { CarregamentoLista } from "../../components/Carregamento";
-import { MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA } from "../../components/Constantes";
 import { MessageContext } from "../../contexts/MessageContext";
-import { useContext } from "react";
+import Api from "../../services/Api";
+import TituloPagina from "../../components/TituloPagina";
+import { AuthContext } from "../../contexts/AuthContext";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
+import { MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA } from "../../components/Constantes";
 
 /**
- * Aqui será a pagina geral do blog
- * contendo postagens diversas,
- * separadas por categorias,
- * como postagens recentes,
- * adoção, castração, cuidados...
- * entre outros, onde terá um botão
- * de ler mais em cada postagem
- * redirecionando para a página correta,
- * feita especialmente para aquela postagem.
- * @since 24/06/2023 11:47:50
+ * Aqui será a pagina dedicada
+ * a uma postagem que o usuário
+ * deseja ler por completa
+ * @since 26/06/2023 11:13:35
  * @author Leonardo Aragão
  */
-export default function Blog() {
+export default function BlogPostagemUsuarioLogadoFavoritos() {
+  const { slug } = useParams();
+  const { setarMensagem } = useContext(MessageContext);
+  const { token } = useContext(AuthContext);
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { setarMensagem } = useContext(MessageContext);
 
   useEffect(() => {
-    listarTodasPostagens();
+    verPostagem(slug);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function listarTodasPostagens() {
-    Api.get(`blog/todas/postagens`)
+  function verPostagem(slug) {
+    setIsLoading(true);
+
+    Api.post("blog/postagens/favoritas/user", null, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then(({ data }) => {
+        console.log(data);
         setListaPostagens(data.data);
       })
       .catch(({ response }) => {
@@ -47,7 +49,7 @@ export default function Blog() {
 
   return (
     <>
-      <TituloPagina titulo="Blog" />
+      <TituloPagina titulo="Minhas postagens favoritas" />
 
       <>
         {isLoading ? (
@@ -55,7 +57,7 @@ export default function Blog() {
         ) : (
           <>
             {listaPostagens == null ? (
-              <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
+              <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA}</div>
             ) : (
               <>
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">

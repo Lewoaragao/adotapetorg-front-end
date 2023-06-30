@@ -1,14 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import { Row } from "react-bootstrap";
-import { BsCalendarEvent, BsPersonBoundingBox } from "react-icons/bs";
-import { FaTags } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
-import CarregamentoTela from "../../components/Carregamento";
-import BlogPostagemConteudo from "../../components/blogPostagemConteudo/BlogPostagemConteudo";
+import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { CarregamentoLista } from "../../components/Carregamento";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { formataDataDDMMYYYY } from "../../utils/Mask";
 import TituloPagina from "../../components/TituloPagina";
+import { AuthContext } from "../../contexts/AuthContext";
+import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
+import { MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA } from "../../components/Constantes";
+import { AiOutlinePlus } from "react-icons/ai";
+import Mensagem from "../../components/mensagem/Mensagem";
+import EditorTexto from "../../components/editorTexto/EditorTexto";
 
 /**
  * Aqui será a pagina dedicada
@@ -17,12 +19,19 @@ import TituloPagina from "../../components/TituloPagina";
  * @since 26/06/2023 11:13:35
  * @author Leonardo Aragão
  */
-export default function BlogPostagem() {
-  const navigate = useNavigate();
+export default function BlogPostagemUsuarioLogado() {
   const { slug } = useParams();
   const { setarMensagem } = useContext(MessageContext);
-  const [listaPostagem, setListaPostagem] = useState([]);
+  const { token } = useContext(AuthContext);
+  const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [msgModal, setMsgModal] = useState("");
+  const [textoFormatar, setTextoFormatar] = useState("");
+  const [abrirModalCadastrarPostagem, setAbrirModalCadastrarPostagem] =
+    useState(false);
+
+  const handleFecharModalCadastrarPostagem = () =>
+    setAbrirModalCadastrarPostagem(false);
 
   useEffect(() => {
     verPostagem(slug);
@@ -36,72 +45,108 @@ export default function BlogPostagem() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        setListaPostagem(data);
+        setListaPostagens(data.data);
       })
       .catch(({ response }) => {
+        setListaPostagens(null);
         setarMensagem(response.data.message, null);
-        navigate("/erro404");
+        setMsgModal(response.data.message);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }
 
+  const getTextoFormatar = (textoFormatar) => {
+    setTextoFormatar(textoFormatar);
+  };
+
+  const [value, setValue] = useState("");
+  const getValue = (value) => {
+    setValue(value);
+  };
+
   return (
     <>
-      {isLoading ? (
-        <CarregamentoTela />
-      ) : (
-        <div className="mx-auto" style={{ maxWidth: "600px" }}>
-          <TituloPagina
-            titulo={postagem.titulo == null ? "" : postagem.titulo}
-          />
-          <h4 className="uppercase-first-letter">{postagem.subtitulo}</h4>
-          <p className="text-muted d-flex gap-3">
-            <span className="d-flex justify-content-center align-items-center gap-1">
-              <BsPersonBoundingBox /> {autor}
-            </span>
-            <span className="d-flex justify-content-center align-items-center gap-1">
-              <BsCalendarEvent /> {formataDataDDMMYYYY(postagem.created_at)}
-            </span>
-          </p>
+      <TituloPagina titulo="Minhas postagens" />
 
-          <Row className="mb-3">
-            <img
-              className="img-thumbnail"
-              src={process.env.REACT_APP_API_URL + postagem.imagem}
-              alt={`foto principal da postagem ${postagem.titulo}`}
-            />
-          </Row>
+      <button
+        className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
+        onClick={() => setAbrirModalCadastrarPostagem(true)}
+      >
+        <AiOutlinePlus /> Cadastrar postagem
+      </button>
 
-          <Row className="mb-3 px-3">
-            <BlogPostagemConteudo
-              html={postagem.conteudo}
-              className="uppercase-first-letter"
-            />
-          </Row>
+      <>
+        {isLoading ? (
+          <CarregamentoLista />
+        ) : (
+          <>
+            {listaPostagens == null ? (
+              <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
+            ) : (
+              <>
+                <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+                  <>
+                    {listaPostagens.map((postagem) => (
+                      <Col key={postagem.id}>
+                        <Card>
+                          <Card.Img
+                            variant="top"
+                            src={
+                              process.env.REACT_APP_API_URL + postagem.imagem
+                            }
+                            alt={`foto principal da postagem ${postagem.titulo}`}
+                          />
+                          <Card.Body>
+                            <Card.Title>{postagem.titulo}</Card.Title>
+                            <Card.Text>{postagem.subtitulo}</Card.Text>
+                          </Card.Body>
+                          <Card.Footer>
+                            <NavLinkToTop
+                              to={`/blog/postagem/${postagem.slug}`}
+                            >
+                              Ler mais
+                            </NavLinkToTop>
+                          </Card.Footer>
+                        </Card>
+                      </Col>
+                    ))}
+                  </>
+                </Row>
+              </>
+            )}
+          </>
+        )}
+      </>
 
-          <Row className="mb-3">
-            <span className="d-flex gap-3 text-muted">
-              {tags == null || tags.length === 0 ? (
-                <div>Nenhum tag cadastrada</div>
-              ) : (
-                <div className="d-flex justify-content-center align-items-center gap-3">
-                  <FaTags />
-                  {tags.map((tag) => (
-                    <span
-                      key={tag.id}
-                      className="badge bg-primary text-uppercase"
-                    >
-                      {tag.tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </span>
-          </Row>
-        </div>
-      )}
+      {/* MODAL CADASTRAR POSTAGEM */}
+      <Modal
+        show={abrirModalCadastrarPostagem}
+        onHide={handleFecharModalCadastrarPostagem}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="fw-bold text-primary">
+            Cadastro de Postagem
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Mensagem mensagem={msgModal} mensagemTipo="warning" />
+          <Form>
+            <EditorTexto initialValue="" getValue={getValue} />
+            {value}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={handleFecharModalCadastrarPostagem}
+          >
+            Cancelar
+          </Button>
+          <Button variant="success">Cadastrar</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

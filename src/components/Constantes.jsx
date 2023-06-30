@@ -10,8 +10,6 @@
 // ROTAS GERAL
 export const TELA_INICIAL = "/";
 export const TELA_SOBRE = "/sobre";
-export const TELA_BLOG = "/blog";
-export const TELA_BLOG_POSTAGEM = "/blog/postagem/:slug";
 export const TELA_POLITICA_PRIVACIDADE = "/politica/privacidade";
 // ROTAS USUÁRIO
 export const TELA_CADASTRO_USUARIO = "/cadastrar/usuario";
@@ -25,6 +23,12 @@ export const TELA_PETS_USUARIO_LOGADO_FAVORITOS = "/pets/favoritos";
 // ROTAS LINK
 export const TELA_MEUS_LINKS = "/meus/links";
 export const TELA_LINKS = "/link/:nomeUsuario";
+// ROTAS BLOG
+export const TELA_BLOG = "/blog";
+export const TELA_BLOG_POSTAGEM = "/blog/postagem/:slug";
+export const TELA_BLOG_POSTAGEM_USUARIO_LOGADO = "/minhas/postagens";
+export const TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS =
+  "/postagens/favoritas";
 // ROTAS ERRO
 export const TELA_ERRO_404 = "/*";
 
@@ -59,3 +63,22 @@ export const LINK_TIPO_YOUTUBE = 7;
 export const MENSAGEM_TIPO_SUCESSO = "success";
 export const MENSAGEM_TIPO_ALERTA = "warning";
 export const MENSAGEM_TIPO_ERRO = "danger";
+
+/**
+ * Tipos de mensagem de
+ * nenhum item cadastrado
+ * pelo usuário
+ */
+export const MENSAGEM_NENHUM_LINK_CADASTRADO = "Nenhum link cadastrado";
+export const MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA =
+  "Nenhuma postagem cadastrada";
+export const MENSAGEM_NENHUM_PET_CADASTRADO = "Nenhum pet cadastrado";
+
+/**
+ * Tipos de mensagem de
+ * nenhum item favoritado
+ * pelo usuário
+ */
+export const MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA =
+  "Nenhuma postagem favoritada";
+export const MENSAGEM_NENHUM_PET_FAVORITADO = "Nenhum pet favoritado";

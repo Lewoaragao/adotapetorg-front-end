@@ -20,6 +20,7 @@ import {
   LINK_TIPO_LINKEDIN,
   LINK_TIPO_TIK_TOK,
   LINK_TIPO_YOUTUBE,
+  MENSAGEM_NENHUM_LINK_CADASTRADO,
   MENSAGEM_TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
@@ -271,39 +272,37 @@ export default function LinkMeus() {
   return (
     <>
       <TituloPagina titulo="Meus Links na Bio" />
+
+      <Col md={6}>
+        <FormLabel className="fw-bold">Link para compartilhar: </FormLabel>
+      </Col>
+      <Col md={6}>
+        <InputGroup className="mb-3">
+          <Form.Control
+            placeholder={usuarioLogado.link == null ? "" : usuarioLogado.link}
+            readOnly
+            disabled
+          />
+          <Button variant="outline-secondary" onClick={copiarLinkUsuarioLogado}>
+            <BsClipboardCheck /> Copiar
+          </Button>
+        </InputGroup>
+      </Col>
+
+      <button
+        className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
+        onClick={() => setAbrirModalCadastrarLink(true)}
+      >
+        <AiOutlinePlus /> Cadastrar link
+      </button>
+
       {isLoading ? (
         <CarregamentoTela />
       ) : (
         <>
-          <Col md={6}>
-            <FormLabel className="fw-bold">Link para compartilhar: </FormLabel>
-          </Col>
-          <Col md={6}>
-            <InputGroup className="mb-3">
-              <Form.Control
-                placeholder={usuarioLogado.link}
-                readOnly
-                disabled
-              />
-              <Button
-                variant="outline-secondary"
-                onClick={copiarLinkUsuarioLogado}
-              >
-                <BsClipboardCheck /> Copiar
-              </Button>
-            </InputGroup>
-          </Col>
-
-          <button
-            className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
-            onClick={() => setAbrirModalCadastrarLink(true)}
-          >
-            <AiOutlinePlus /> Cadastrar link
-          </button>
-
           <ListGroup>
             {listaLinks == null ? (
-              <div>Nenhum link cadastrado</div>
+              <div className="mb-3">{MENSAGEM_NENHUM_LINK_CADASTRADO}</div>
             ) : (
               <>
                 {listaLinks.map((link) => (

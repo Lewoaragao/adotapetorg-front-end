@@ -6,6 +6,8 @@ import "./App.css";
 import {
   TELA_BLOG,
   TELA_BLOG_POSTAGEM,
+  TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
+  TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
   TELA_CADASTRO_PET,
   TELA_CADASTRO_USUARIO,
   TELA_ERRO_404,
@@ -40,6 +42,8 @@ import reportWebVitals from "./reportWebVitals";
 import PrivateRoute from "./routes/PrivateRoute";
 import BlogPostagem from "./pages/blog/BlogPostagem";
 import PetTodos from "./pages/pet/PetTodos";
+import BlogPostagemUsuarioLogado from "./pages/blog/BlogPostagemUsuarioLogado";
+import BlogPostagemUsuarioLogadoFavoritos from "./pages/blog/BlogPostagemUsuarioLogadoFavoritos";
 
 const router = createBrowserRouter([
   {
@@ -49,8 +53,6 @@ const router = createBrowserRouter([
       // ROTAS GERAL
       { path: TELA_INICIAL, element: <Inicio logo={logo} /> },
       { path: TELA_SOBRE, element: <Sobre /> },
-      { path: TELA_BLOG, element: <Blog /> },
-      { path: TELA_BLOG_POSTAGEM, element: <BlogPostagem /> },
       { path: TELA_POLITICA_PRIVACIDADE, element: <PoliticaPrivacidade /> },
       // ROTAS USUÁRIO
       { path: TELA_CADASTRO_USUARIO, element: <UsuarioCadastrar /> },
@@ -78,6 +80,18 @@ const router = createBrowserRouter([
       {
         path: TELA_LINKS,
         element: <Links />,
+      },
+      // ROTAS BLOG
+      { path: TELA_BLOG, element: <Blog /> },
+      { path: TELA_BLOG_POSTAGEM, element: <BlogPostagem /> },
+
+      {
+        path: TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
+        element: <PrivateRoute element={<BlogPostagemUsuarioLogado />} />,
+      },
+      {
+        path: TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
+        element: <BlogPostagemUsuarioLogadoFavoritos />,
       },
       // ROTAS ERRO
       { path: TELA_ERRO_404, element: <Error404 /> },

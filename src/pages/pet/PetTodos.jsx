@@ -1,15 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
-import { CarregamentoListaPet } from "../../components/Carregamento";
+import { CarregamentoLista } from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import Api from "../../services/Api";
+import { MessageContext } from "../../contexts/MessageContext";
+import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
 
 export default function PetTodos() {
   const [isLoading, setIsLoading] = useState(false);
   const [listaPets, setListaPets] = useState([]);
   const [data, setData] = useState([]);
-  const [mensagem, setMensagem] = useState(false);
+  const { setarMensagem } = useContext(MessageContext);
   const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function PetTodos() {
         setListaPets(data.data);
       })
       .catch(({ response }) => {
-        setMensagem(response.data.message);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -39,11 +41,11 @@ export default function PetTodos() {
       <TituloPagina titulo="Todos os Pets" />
 
       {isLoading ? (
-        <CarregamentoListaPet />
+        <CarregamentoLista />
       ) : (
         <>
           {listaPets == null ? (
-            <div>{mensagem}</div>
+            <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
           ) : (
             <>
               <Row xs={1} sm={2} md={3} lg={4} className="g-4">

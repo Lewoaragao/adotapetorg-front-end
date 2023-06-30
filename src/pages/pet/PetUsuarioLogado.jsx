@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
-import { CarregamentoListaPet } from "../../components/Carregamento";
+import { CarregamentoLista } from "../../components/Carregamento";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
+import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
 
 export default function PetUsuarioLogado() {
   const { token } = useContext(AuthContext);
@@ -48,22 +49,22 @@ export default function PetUsuarioLogado() {
 
   return (
     <>
+      <TituloPagina titulo="Meus Pets" />
+
+      <button
+        className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
+        onClick={() => setAbrirModalCadastrarPet(true)}
+      >
+        <AiOutlinePlus /> Cadastrar pet
+      </button>
+
       {isLoading ? (
-        <CarregamentoListaPet />
+        <CarregamentoLista />
       ) : (
         <>
-          <TituloPagina titulo="Meus Pets" />
-
-          <button
-            className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
-            onClick={() => setAbrirModalCadastrarPet(true)}
-          >
-            <AiOutlinePlus /> Cadastrar pet
-          </button>
-
-          <Row xs={2} md={3} className="g-4">
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
             {listaPets == null ? (
-              <div>Nenhum pet cadastrado</div>
+              <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
             ) : (
               <>
                 {listaPets.map((pet) => (

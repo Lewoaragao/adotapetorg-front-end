@@ -1,14 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
-import { BsCalendarEvent, BsPersonBoundingBox } from "react-icons/bs";
+import {
+  BsCalendarEvent,
+  BsPersonBoundingBox,
+  BsStar,
+  BsStarFill,
+} from "react-icons/bs";
 import { FaTags } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import CarregamentoTela from "../../components/Carregamento";
+import CarregamentoTela, {
+  CarregamentoBotao,
+} from "../../components/Carregamento";
 import BlogPostagemConteudo from "../../components/blogPostagemConteudo/BlogPostagemConteudo";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { formataDataDDMMYYYY } from "../../utils/Mask";
 import TituloPagina from "./../../components/TituloPagina";
+import { AuthContext } from "../../contexts/AuthContext";
 
 /**
  * Aqui será a pagina dedicada
@@ -20,14 +28,17 @@ import TituloPagina from "./../../components/TituloPagina";
 export default function BlogPostagem() {
   const navigate = useNavigate();
   const { slug } = useParams();
+  const { token, isUsuarioLogado } = useContext(AuthContext);
   const { setarMensagem } = useContext(MessageContext);
   const [postagem, setPostagem] = useState([]);
+  const [postagemFavoritada, setPostagemFavoritada] = useState(false);
   const [autor, setAutor] = useState("");
   const [tags, setTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
 
   useEffect(() => {
-    verPostagem(slug);
+    isUsuarioLogado ? verPostagemUserAuth(slug, token) : verPostagem(slug);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,15 +59,71 @@ export default function BlogPostagem() {
       });
   }
 
+  function verPostagemUserAuth(slug) {
+    setIsLoading(true);
+    Api.post(`blog/${slug}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(({ data }) => {
+        setPostagem(data.postagem);
+        setAutor(data.autor);
+        setTags(data.tags);
+        setPostagemFavoritada(data.postagem_favoritada);
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+        navigate("/erro404");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  function favoritarPostagem(idPostagem) {
+    setIsLoadingButton(true);
+    Api.post(`blog/${idPostagem}/favoritar`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => {
+        setPostagemFavoritada(true);
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        setIsLoadingButton(false);
+      });
+  }
+
+  function desfavoritarPostagem(idPostagem) {
+    setIsLoadingButton(true);
+    Api.post(`blog/${idPostagem}/desfavoritar`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => {
+        setPostagemFavoritada(false);
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        setIsLoadingButton(false);
+      });
+  }
+
   return (
-    <>
+    <div className="mx-auto" style={{ maxWidth: "600px" }}>
+      <TituloPagina titulo={postagem.titulo == null ? "" : postagem.titulo} />
       {isLoading ? (
         <CarregamentoTela />
       ) : (
-        <div className="mx-auto" style={{ maxWidth: "600px" }}>
-          <TituloPagina
-            titulo={postagem.titulo == null ? "" : postagem.titulo}
-          />
+        <>
           <h4 className="uppercase-first-letter">{postagem.subtitulo}</h4>
           <p className="text-muted d-flex gap-3">
             <span className="d-flex justify-content-center align-items-center gap-1">
@@ -65,6 +132,32 @@ export default function BlogPostagem() {
             <span className="d-flex justify-content-center align-items-center gap-1">
               <BsCalendarEvent /> {formataDataDDMMYYYY(postagem.created_at)}
             </span>
+
+            {postagemFavoritada ? (
+              <button
+                className="btn btn-warning"
+                disabled={!isUsuarioLogado || isLoadingButton}
+                onClick={() => desfavoritarPostagem(postagem.id)}
+              >
+                {isLoadingButton ? (
+                  <CarregamentoBotao variant="dark" />
+                ) : (
+                  <BsStarFill />
+                )}
+              </button>
+            ) : (
+              <button
+                className="btn btn-warning"
+                disabled={!isUsuarioLogado || isLoadingButton}
+                onClick={() => favoritarPostagem(postagem.id)}
+              >
+                {isLoadingButton ? (
+                  <CarregamentoBotao variant="dark" />
+                ) : (
+                  <BsStar />
+                )}
+              </button>
+            )}
           </p>
 
           <Row className="mb-3">
@@ -101,8 +194,8 @@ export default function BlogPostagem() {
               )}
             </span>
           </Row>
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
