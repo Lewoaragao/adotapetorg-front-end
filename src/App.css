@@ -19,3 +19,17 @@ a.disabled {
 .uppercase-first-letter::first-letter {
   text-transform: uppercase;
 }
+
+.image-container {
+  height: 214px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

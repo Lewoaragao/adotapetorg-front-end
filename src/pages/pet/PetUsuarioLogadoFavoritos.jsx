@@ -1,18 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import { CarregamentoLista } from "../../components/Carregamento";
+import { BsStarFill } from "react-icons/bs";
+import {
+  CarregamentoBotao,
+  CarregamentoLista,
+} from "../../components/Carregamento";
+import { MENSAGEM_NENHUM_PET_FAVORITADO } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { MENSAGEM_NENHUM_PET_FAVORITADO } from "../../components/Constantes";
 
 export default function PetUsuarioLogadoFavoritos() {
   const { token } = useContext(AuthContext);
   const { setarMensagem } = useContext(MessageContext);
   const [isLoading, setIsLoading] = useState(false);
   const [listaPets, setListaPets] = useState([]);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
 
   useEffect(() => {
     listarPetsUsuarioLogadoFavoritos();
@@ -36,6 +41,24 @@ export default function PetUsuarioLogadoFavoritos() {
       });
   }
 
+  function desfavoritarPet(idPet) {
+    setIsLoadingButton(true);
+    Api.post(`pets/${idPet}/desfavoritar`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => {
+        listarPetsUsuarioLogadoFavoritos();
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        setIsLoadingButton(false);
+      });
+  }
+
   return (
     <>
       <TituloPagina titulo="Meus Pets Favoritos" />
@@ -52,19 +75,36 @@ export default function PetUsuarioLogadoFavoritos() {
                 {listaPets.map((pet) => (
                   <Col key={pet.id}>
                     <Card>
-                      <Card.Img
-                        variant="top"
-                        src={process.env.REACT_APP_API_URL + pet.imagem}
-                        alt={`foto pet ${pet.nome}`}
-                      />
+                      <div className="image-container">
+                        <Card.Img
+                          variant="top"
+                          src={process.env.REACT_APP_API_URL + pet.imagem}
+                          alt={`Foto do pet ${pet.nome}`}
+                        />
+                      </div>
                       <Card.Body>
                         <Card.Title>{pet.nome}</Card.Title>
                         <Card.Text>{pet.raca}</Card.Text>
                       </Card.Body>
-                      <Card.Footer>
-                        <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                          Informações
-                        </NavLinkToTop>
+                      <Card.Footer className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
+                            Informações
+                          </NavLinkToTop>
+                        </div>
+
+                        <div>
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => desfavoritarPet(pet.id)}
+                          >
+                            {isLoadingButton ? (
+                              <CarregamentoBotao variant="dark" />
+                            ) : (
+                              <BsStarFill />
+                            )}
+                          </button>
+                        </div>
                       </Card.Footer>
                     </Card>
                   </Col>

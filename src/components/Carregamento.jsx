@@ -31,11 +31,13 @@ export function CarregamentoLista() {
         {numeroElementosPorPagina.map((n) => (
           <Col key={n}>
             <Card>
-              <Card.Img
-                variant="top"
-                src={placeholder}
-                alt={`foto carregamento lista`}
-              />
+              <div className="image-container">
+                <Card.Img
+                  variant="top"
+                  src={placeholder}
+                  alt={`foto carregamento lista`}
+                />
+              </div>
               <Card.Body>
                 <Card.Title>Carregando...</Card.Title>
                 <Card.Text>Carregando...</Card.Text>

@@ -1,14 +1,23 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Form, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  Col,
+  Form,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
+import { BsPencil, BsTrash } from "react-icons/bs";
 import { CarregamentoLista } from "../../components/Carregamento";
+import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
 
 export default function PetUsuarioLogado() {
   const { token } = useContext(AuthContext);
@@ -70,19 +79,40 @@ export default function PetUsuarioLogado() {
                 {listaPets.map((pet) => (
                   <Col key={pet.id}>
                     <Card>
-                      <Card.Img
-                        variant="top"
-                        src={process.env.REACT_APP_API_URL + pet.imagem}
-                        alt={`Foto do pet ${pet.nome}`}
-                      />
+                      <div className="image-container">
+                        <Card.Img
+                          variant="top"
+                          src={process.env.REACT_APP_API_URL + pet.imagem}
+                          alt={`Foto do pet ${pet.nome}`}
+                        />
+                      </div>
                       <Card.Body>
                         <Card.Title>{pet.nome}</Card.Title>
                         <Card.Text>{pet.raca}</Card.Text>
                       </Card.Body>
-                      <Card.Footer>
-                        <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                          Informações
-                        </NavLinkToTop>
+                      <Card.Footer className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
+                            Informações
+                          </NavLinkToTop>
+                        </div>
+
+                        <div>
+                          <ButtonGroup className="ms-auto my-auto">
+                            <Button
+                              variant="outline-primary"
+                              // onClick={() => visualizarEditarPet(pet)}
+                            >
+                              <BsPencil />
+                            </Button>
+                            <Button
+                              variant="outline-danger"
+                              // onClick={() => deletarPet(pet.id)}
+                            >
+                              <BsTrash />
+                            </Button>
+                          </ButtonGroup>
+                        </div>
                       </Card.Footer>
                     </Card>
                   </Col>

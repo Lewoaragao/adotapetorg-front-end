@@ -2,14 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
 import { CarregamentoLista } from "../../components/Carregamento";
-import Api from "../../services/Api";
-import TituloPagina from "./../../components/TituloPagina";
-import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
-import { MessageContext } from "../../contexts/MessageContext";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
   MENSAGEM_NENHUM_PET_CADASTRADO,
 } from "../../components/Constantes";
+import { MessageContext } from "../../contexts/MessageContext";
+import Api from "../../services/Api";
+import TituloPagina from "./../../components/TituloPagina";
+import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -117,11 +117,13 @@ function Inicio({ logo }) {
                     {listaPets.map((pet) => (
                       <Col key={pet.id}>
                         <Card>
-                          <Card.Img
-                            variant="top"
-                            src={process.env.REACT_APP_API_URL + pet.imagem}
-                            alt={`foto pet ${pet.nome}`}
-                          />
+                          <div className="image-container">
+                            <Card.Img
+                              variant="top"
+                              src={process.env.REACT_APP_API_URL + pet.imagem}
+                              alt={`foto pet ${pet.nome}`}
+                            />
+                          </div>
                           <Card.Body>
                             <Card.Title>{pet.nome}</Card.Title>
                             <Card.Text>{pet.raca}</Card.Text>
@@ -210,13 +212,15 @@ function Inicio({ logo }) {
                     {listaPostagens.map((postagem) => (
                       <Col key={postagem.id}>
                         <Card>
-                          <Card.Img
-                            variant="top"
-                            src={
-                              process.env.REACT_APP_API_URL + postagem.imagem
-                            }
-                            alt={`foto principal da postagem ${postagem.titulo}`}
-                          />
+                          <div className="image-container">
+                            <Card.Img
+                              variant="top"
+                              src={
+                                process.env.REACT_APP_API_URL + postagem.imagem
+                              }
+                              alt={`foto principal da postagem ${postagem.titulo}`}
+                            />
+                          </div>
                           <Card.Body>
                             <Card.Title>{postagem.titulo}</Card.Title>
                             <Card.Text>{postagem.subtitulo}</Card.Text>

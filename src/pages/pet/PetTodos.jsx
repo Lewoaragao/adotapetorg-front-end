@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Col, Pagination, Row } from "react-bootstrap";
 import { CarregamentoLista } from "../../components/Carregamento";
+import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
-import Api from "../../services/Api";
 import { MessageContext } from "../../contexts/MessageContext";
-import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
+import Api from "../../services/Api";
 
 export default function PetTodos() {
   const [isLoading, setIsLoading] = useState(false);
@@ -53,11 +53,13 @@ export default function PetTodos() {
                   {listaPets.map((pet) => (
                     <Col key={pet.id}>
                       <Card>
-                        <Card.Img
-                          variant="top"
-                          src={process.env.REACT_APP_API_URL + pet.imagem}
-                          alt={`foto pet ${pet.nome}`}
-                        />
+                        <div className="image-container">
+                          <Card.Img
+                            variant="top"
+                            src={process.env.REACT_APP_API_URL + pet.imagem}
+                            alt={`Foto do pet ${pet.nome}`}
+                          />
+                        </div>
                         <Card.Body>
                           <Card.Title>{pet.nome}</Card.Title>
                           <Card.Text>{pet.raca}</Card.Text>

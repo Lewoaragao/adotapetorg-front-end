@@ -12,11 +12,11 @@ import CarregamentoTela, {
   CarregamentoBotao,
 } from "../../components/Carregamento";
 import BlogPostagemConteudo from "../../components/blogPostagemConteudo/BlogPostagemConteudo";
+import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { formataDataDDMMYYYY } from "../../utils/Mask";
 import TituloPagina from "./../../components/TituloPagina";
-import { AuthContext } from "../../contexts/AuthContext";
 
 /**
  * Aqui será a pagina dedicada
@@ -119,11 +119,13 @@ export default function BlogPostagem() {
 
   return (
     <div className="mx-auto" style={{ maxWidth: "600px" }}>
-      <TituloPagina titulo={postagem.titulo == null ? "" : postagem.titulo} />
       {isLoading ? (
         <CarregamentoTela />
       ) : (
         <>
+          <TituloPagina
+            titulo={postagem.titulo == null ? "" : postagem.titulo}
+          />
           <h4 className="uppercase-first-letter">{postagem.subtitulo}</h4>
           <p className="text-muted d-flex gap-3">
             <span className="d-flex justify-content-center align-items-center gap-1">

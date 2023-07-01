@@ -10,7 +10,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BsClipboardCheck } from "react-icons/bs";
+import { BsClipboardCheck, BsPencil, BsTrash } from "react-icons/bs";
 import { GoLinkExternal } from "react-icons/go";
 import CarregamentoTela from "../../components/Carregamento";
 import {
@@ -65,26 +65,32 @@ export default function LinkMeus() {
 
     switch (valueSelectedInteger) {
       case LINK_TIPO_INSTAGRAM:
+        setDesabilitarTituloLink(true);
         setTituloLink("Instagram");
         setLinkPlaceholder("instagram.com/seu-usuario");
         break;
       case LINK_TIPO_TIK_TOK:
+        setDesabilitarTituloLink(true);
         setTituloLink("TikTok");
         setLinkPlaceholder("tiktok.com/@seu-usuario");
         break;
       case LINK_TIPO_LINKEDIN:
+        setDesabilitarTituloLink(true);
         setTituloLink("LinkedIn");
         setLinkPlaceholder("linkedin.com/in/seu-usuario");
         break;
       case LINK_TIPO_GITHUB:
+        setDesabilitarTituloLink(true);
         setTituloLink("GitHub");
         setLinkPlaceholder("github.com/seu-usuario");
         break;
       case LINK_TIPO_FACEBOOK:
+        setDesabilitarTituloLink(true);
         setTituloLink("Facebook");
         setLinkPlaceholder("facebook.com/seu-usuario");
         break;
       case LINK_TIPO_YOUTUBE:
+        setDesabilitarTituloLink(true);
         setTituloLink("YouTube");
         setLinkPlaceholder("youtube.com/@seu-usuario");
         break;
@@ -164,7 +170,6 @@ export default function LinkMeus() {
       )
         .then(({ data }) => {
           setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
-          limparCampos();
         })
         .catch(({ response }) => {
           setMsgModal(response.data.message);
@@ -172,12 +177,14 @@ export default function LinkMeus() {
         .finally(() => {
           setIsLoading(false);
           listarLinksUsuarioLogado();
+          limparCampos();
         });
     }
   }
 
   function editarLink(linkId) {
     setMsgModal("");
+    window.scrollTo(0, 0);
 
     if (validaCampos()) {
       setIsLoading(true);
@@ -252,7 +259,7 @@ export default function LinkMeus() {
       });
   }
 
-  function visualizarLink(link) {
+  function visualizarEditarLink(link) {
     setMsgModal("");
 
     setLinkId(link.id);
@@ -289,12 +296,13 @@ export default function LinkMeus() {
         </InputGroup>
       </Col>
 
-      <button
-        className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
+      <Button
+        className="fw-bold mb-3"
+        variant="warning"
         onClick={() => setAbrirModalCadastrarLink(true)}
       >
         <AiOutlinePlus /> Cadastrar link
-      </button>
+      </Button>
 
       {isLoading ? (
         <CarregamentoTela />
@@ -310,7 +318,7 @@ export default function LinkMeus() {
                     as="li"
                     className="d-flex align-items-start"
                     action
-                    variant="primary"
+                    variant="warning"
                     key={link.id}
                   >
                     <div className="my-auto">
@@ -340,16 +348,16 @@ export default function LinkMeus() {
 
                     <ButtonGroup className="ms-auto my-auto">
                       <Button
-                        variant="primary"
-                        onClick={() => visualizarLink(link)}
+                        variant="outline-primary"
+                        onClick={() => visualizarEditarLink(link)}
                       >
-                        Editar
+                        <BsPencil />
                       </Button>
                       <Button
-                        variant="danger"
+                        variant="outline-danger"
                         onClick={() => deletarLink(link.id)}
                       >
-                        Deletar
+                        <BsTrash />
                       </Button>
                     </ButtonGroup>
                   </ListGroup.Item>
@@ -359,10 +367,7 @@ export default function LinkMeus() {
           </ListGroup>
 
           {/* MODAL CADASTRAR LINK */}
-          <Modal
-            show={abrirModalCadastrarLink}
-            onHide={handleFecharModalCadastrarLink}
-          >
+          <Modal show={abrirModalCadastrarLink} onHide={limparCampos}>
             <Modal.Header closeButton>
               <Modal.Title className="fw-bold text-primary">
                 Cadastro de Link na Bio
@@ -380,7 +385,7 @@ export default function LinkMeus() {
                     value={tipoLink}
                     id="tipoLink"
                   >
-                    <option value="0" className="fw-bold">
+                    <option value="0" className="fw-bold" disabled>
                       Selecione um tipo
                     </option>
 
@@ -444,10 +449,7 @@ export default function LinkMeus() {
           </Modal>
 
           {/* MODAL EDITAR LINK */}
-          <Modal
-            show={abrirModalEditarLink}
-            onHide={handleFecharModalEditarLink}
-          >
+          <Modal show={abrirModalEditarLink} onHide={limparCampos}>
             <Modal.Header closeButton>
               <Modal.Title className="fw-bold text-primary">
                 Editar Link na Bio

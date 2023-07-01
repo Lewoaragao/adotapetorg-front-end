@@ -122,7 +122,19 @@ function Footer({ logo }) {
             </div>
 
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Links úteis</h6>
+              <h6 className="text-uppercase fw-bold mb-4">Utilidade</h6>
+              <p>
+                <NavLinkToTop
+                  to="/politica/privacidade"
+                  className="text-reset text-underline-hover"
+                >
+                  Política de privacidade
+                </NavLinkToTop>
+              </p>
+            </div>
+
+            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">Navegação</h6>
               <p>
                 <NavLinkToTop
                   to="/"
@@ -141,10 +153,10 @@ function Footer({ logo }) {
               </p>
               <p>
                 <NavLinkToTop
-                  to="/politica/privacidade"
+                  to="/blog"
                   className="text-reset text-underline-hover"
                 >
-                  Política de privacidade
+                  Blog
                 </NavLinkToTop>
               </p>
             </div>
