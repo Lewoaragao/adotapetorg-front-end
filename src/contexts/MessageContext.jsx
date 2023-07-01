@@ -9,6 +9,7 @@ import { Alert } from "react-bootstrap";
 import { CgCloseR } from "react-icons/cg";
 import { MENSAGEM_TIPO_ALERTA } from "../components/Constantes";
 import "../styles/Mensagem.css";
+import { horaAtual } from "../utils/Util";
 
 export const MessageContext = createContext();
 
@@ -48,7 +49,7 @@ export const MessageProvider = ({ children }) => {
    * @param {string} mensagemTipo
    */
   function setarMensagem(mensagem, mensagemTipo) {
-    setMensagem(mensagem);
+    setMensagem(`${mensagem} ${horaAtual()}`);
 
     mensagemTipo !== null
       ? setMensagemTipo(mensagemTipo)

@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import formataData from "../../utils/DataUtil";
 import {
   formataCelular,
   formataSexoPet,
   formataTamanhoPet,
 } from "../../utils/Mask";
+import formataData from "../../utils/Util";
 import CarregamentoTela, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";

@@ -170,6 +170,7 @@ export default function LinkMeus() {
       )
         .then(({ data }) => {
           setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          limparCampos();
         })
         .catch(({ response }) => {
           setMsgModal(response.data.message);
@@ -177,7 +178,6 @@ export default function LinkMeus() {
         .finally(() => {
           setIsLoading(false);
           listarLinksUsuarioLogado();
-          limparCampos();
         });
     }
   }
@@ -243,12 +243,13 @@ export default function LinkMeus() {
 
   function deletarLink(linkId) {
     setIsLoading(true);
+    window.scrollTo(0, 0);
+
     Api.post(`links/deletar/${linkId}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
         setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
-        limparCampos();
       })
       .catch(({ response }) => {
         setarMensagem(response.data.message, null);

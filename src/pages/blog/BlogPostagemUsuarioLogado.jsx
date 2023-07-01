@@ -40,17 +40,38 @@ export default function BlogPostagemUsuarioLogado() {
   const [subtitulo, setSubtitulo] = useState("");
   const [conteudo, setConteudo] = useState("");
   const [imagem, setImagem] = useState("");
+  const [listaTags, setListaTags] = useState([]);
+  const [listaTagsSelecionadas, setListaTagsSelecionadas] = useState([]);
+  const [tag, setTag] = useState(0);
   const [abrirModalCadastrarPostagem, setAbrirModalCadastrarPostagem] =
     useState(false);
+  const handleSelectTag = (e) => {
+    setTag(e.target.value);
+  };
 
   // config editor de texto
   const editor = useRef(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-    placeholder: "Comece a escrever...",
-    buttons: ["bold", "italic", "underline"],
+    readonly: false,
+    placeholder: "Comece a escrever sua postagem...",
+    buttons: [
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "eraser",
+      "ul",
+      "ol",
+      "paragraph",
+      "superscript",
+      "subscript",
+      "speechRecognize",
+      "cut",
+      "copy",
+      "paste",
+    ],
     toolbarAdaptive: false,
   };
 
@@ -62,6 +83,18 @@ export default function BlogPostagemUsuarioLogado() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function addListaTagsSelecionadas() {
+    if (tag !== 0 && !listaTagsSelecionadas.includes(tag)) {
+      setListaTagsSelecionadas([...listaTagsSelecionadas, tag]);
+      setTag(0);
+    }
+  }
+
+  const removeListaTagsSelecionadas = (tag) => {
+    const updatedTags = listaTagsSelecionadas.filter((item) => item !== tag);
+    setListaTagsSelecionadas(updatedTags);
+  };
+
   function listarPostagensUsuarioLogado() {
     setIsLoading(true);
 
@@ -69,7 +102,9 @@ export default function BlogPostagemUsuarioLogado() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        setListaPostagens(data.data);
+        console.log(data);
+        setListaPostagens(data.postagens.data);
+        setListaTags(data.tags);
       })
       .catch(({ response }) => {
         setListaPostagens(null);
@@ -105,12 +140,14 @@ export default function BlogPostagemUsuarioLogado() {
     setSubtitulo("");
     setConteudo("");
     setMsgModal("");
+    setTag(0);
+    setListaTagsSelecionadas([]);
     handleFecharModalCadastrarPostagem();
   }
 
   function cadastrarPostagem() {
     setMsgModal("");
-    window.scrollTo(0, 0);
+    console.log(tag);
 
     if (validaCampos()) {
       setIsLoading(true);
@@ -121,7 +158,7 @@ export default function BlogPostagemUsuarioLogado() {
           subtitulo: subtitulo,
           conteudo: conteudo,
           imagem: imagem === "" ? null : imagem,
-          tags: [1, 2],
+          tags: listaTagsSelecionadas.length > 0 ? listaTagsSelecionadas : null,
         },
         {
           headers: {
@@ -132,6 +169,7 @@ export default function BlogPostagemUsuarioLogado() {
       )
         .then(({ data }) => {
           setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          limparCampos();
         })
         .catch(({ response }) => {
           setarMensagem(response.data.message, null);
@@ -139,9 +177,31 @@ export default function BlogPostagemUsuarioLogado() {
         .finally(() => {
           listarPostagensUsuarioLogado();
           setIsLoading(false);
-          limparCampos();
         });
     }
+  }
+
+  function deletarPostagem(idPostagem) {
+    setMsgModal("");
+
+    setIsLoading(true);
+    Api.post(`blog/deletar/${idPostagem}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then(({ data }) => {
+        setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+        limparCampos();
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        listarPostagensUsuarioLogado();
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -154,7 +214,6 @@ export default function BlogPostagemUsuarioLogado() {
       >
         <AiOutlinePlus /> Cadastrar postagem
       </button>
-
       <>
         {isLoading ? (
           <CarregamentoLista />
@@ -201,7 +260,7 @@ export default function BlogPostagemUsuarioLogado() {
                                 </Button>
                                 <Button
                                   variant="outline-danger"
-                                  // onClick={() => deletarPostagem(postagem.id)}
+                                  onClick={() => deletarPostagem(postagem.id)}
                                 >
                                   <BsTrash />
                                 </Button>
@@ -229,7 +288,7 @@ export default function BlogPostagemUsuarioLogado() {
         <Modal.Body>
           <Mensagem mensagem={msgModal} mensagemTipo="warning" />
 
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="titulo">
               Título
             </Form.Label>
@@ -244,7 +303,7 @@ export default function BlogPostagemUsuarioLogado() {
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="subtitulo">
               Subtítulo
             </Form.Label>
@@ -258,7 +317,7 @@ export default function BlogPostagemUsuarioLogado() {
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="imagem">
               Imagem
             </Form.Label>
@@ -269,7 +328,7 @@ export default function BlogPostagemUsuarioLogado() {
             />
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="editor">
               Conteúdo da Postagem
             </Form.Label>
@@ -283,6 +342,41 @@ export default function BlogPostagemUsuarioLogado() {
               onChange={(newContent) => {}}
             />
           </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="tipoLink">
+              Tag
+            </Form.Label>
+            <Form.Select onChange={handleSelectTag} value={tag} id="tag">
+              <option value="0" className="fw-bold" disabled>
+                Selecione uma tag
+              </option>
+
+              {listaTags.map((tag) => (
+                <option key={tag.id} value={tag.nome} name={tag.tag}>
+                  {tag.tag}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
+          <Button className="mb-3" onClick={addListaTagsSelecionadas}>
+            Adicionar Tag
+          </Button>
+
+          {listaTagsSelecionadas.length > 0 && (
+            <div className="mb-3">
+              {listaTagsSelecionadas.map((tag) => (
+                <button
+                  type="button"
+                  className="btn btn-primary me-1"
+                  onClick={() => removeListaTagsSelecionadas(tag)}
+                >
+                  {tag} <span className="badge">x</span>
+                </button>
+              ))}
+            </div>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={limparCampos}>
