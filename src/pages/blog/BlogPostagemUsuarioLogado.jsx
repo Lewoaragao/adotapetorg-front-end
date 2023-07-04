@@ -368,6 +368,7 @@ export default function BlogPostagemUsuarioLogado() {
             <div className="mb-3">
               {listaTagsSelecionadas.map((tag) => (
                 <button
+                  key={tag.id}
                   type="button"
                   className="btn btn-primary me-1"
                   onClick={() => removeListaTagsSelecionadas(tag)}

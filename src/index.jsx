@@ -91,7 +91,9 @@ const router = createBrowserRouter([
       },
       {
         path: TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
-        element: <BlogPostagemUsuarioLogadoFavoritos />,
+        element: (
+          <PrivateRoute element={<BlogPostagemUsuarioLogadoFavoritos />} />
+        ),
       },
       // ROTAS ERRO
       { path: TELA_ERRO_404, element: <Error404 /> },
