@@ -112,7 +112,7 @@ function Inicio({ logo }) {
               <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
             ) : (
               <>
-                <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+                <Row xs={1} sm={2} md={3} lg={4} className="g-4 mb-3">
                   <>
                     {listaPets.map((pet) => (
                       <Col key={pet.id}>
@@ -142,7 +142,7 @@ function Inicio({ logo }) {
             )}
 
             {listaPets !== null && listaPets.length > 0 && (
-              <Row className="mt-3">
+              <Row className="my-3">
                 <Pagination className="d-flex justify-content-center align-items-center">
                   {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
                   <Pagination.First

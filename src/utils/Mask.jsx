@@ -1,3 +1,17 @@
+/**
+ * Aqui será a pagina dedicada
+ * a uma postagem que o usuário
+ * deseja ler por completa
+ * @since 30/06/2023 19:24:57
+ * @author Leonardo Aragão
+ */
+
+/**
+ * Formata o celular vindo como número
+ * e retorna como texto formatado
+ * @param {integer} celular
+ * @returns {string} celular (99) 99999-9999
+ */
 export function formataCelular(celular) {
   if (!celular) return null;
   celular = celular.replace(/\D/g, "");
@@ -9,10 +23,12 @@ export function formataCelular(celular) {
 export function formataLink(link) {
   if (!link) return null;
 
-  if (link.includes("https://")) {
-    link = link.replace("https://", "");
-  } else if (link.includes("http://")) {
-    link = link.replace("http://", "");
+  const prefixos = ["http://", "https://"];
+
+  for (const prefixo of prefixos) {
+    if (link.startsWith(prefixo)) {
+      return link.substring(prefixo.length);
+    }
   }
 
   return link;
@@ -61,7 +77,7 @@ export function formataTamanhoPet(tamanho, sexo) {
  * ao salvar o objeto no banco de dados
  * pela api feita com o framework Laravel
  * @param {string} dataFormatar
- * @returns {string} data dd/MM/yyyy
+ * @returns {string} dataFormata dd/MM/yyyy
  */
 export function formataDataDDMMYYYY(dataFormatar) {
   const dataObj = new Date(dataFormatar);
@@ -71,11 +87,50 @@ export function formataDataDDMMYYYY(dataFormatar) {
   return `${dia}/${mes}/${ano}`;
 }
 
+/**
+ * Formarta um texto com capitalize
+ * com cada primeira letra das palavras
+ * em maiúsculo
+ * @param {string} textoFormatar
+ * @returns {string} textoFormatado "Nesse Estilo"
+ */
 export function formataTextoCapitalize(textoFormatar) {
-  const textoFormatado = textoFormatar.replace(
-    /(^\w{1})|(\s+\w{1})/g,
-    (letter) => letter.toUpperCase()
+  return textoFormatar.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+    letter.toUpperCase()
   );
+}
 
-  return textoFormatado;
+/**
+ * Formarta um texto com UPPERCASE
+ * com todas palaravas em maiúsculo
+ * @param {string} textoFormatar
+ * @returns {string} textoFormatado "NESSE ESTILO"
+ */
+export function formataTextoUpperCase(textoFormatar) {
+  return textoFormatar.toUpperCase();
+}
+
+/**
+ * Formarta um texto com lowercase
+ * com todas palaravas em minúsculo
+ * @param {string} textoFormatar
+ * @returns {string} textoFormatado "nesse estilo"
+ */
+export function formataTextoLowerCase(textoFormatar) {
+  return textoFormatar.toLowerCase();
+}
+
+/**
+ * Mostrar primeiro e último nome
+ * de um usuário, geralmente utilizado
+ * para mostrar o nome do autor da postagem
+ * do blog
+ * @param {string} nomeCompleto
+ * @returns {string} nomeFormatado
+ */
+export function formataPrimeiroUltimoNome(nomeCompleto) {
+  const partesNome = nomeCompleto.split(" ");
+  const primeiroNome = partesNome[0];
+  const ultimoNome = partesNome[partesNome.length - 1];
+  return `${primeiroNome} ${ultimoNome}`;
 }

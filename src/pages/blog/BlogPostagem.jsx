@@ -15,7 +15,10 @@ import BlogPostagemConteudo from "../../components/blogPostagemConteudo/BlogPost
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { formataDataDDMMYYYY } from "../../utils/Mask";
+import {
+  formataDataDDMMYYYY,
+  formataPrimeiroUltimoNome,
+} from "../../utils/Mask";
 import TituloPagina from "./../../components/TituloPagina";
 
 /**
@@ -129,7 +132,7 @@ export default function BlogPostagem() {
           <h4 className="uppercase-first-letter">{postagem.subtitulo}</h4>
           <p className="text-muted d-flex gap-3">
             <span className="d-flex justify-content-center align-items-center gap-1">
-              <BsPersonBoundingBox /> {autor}
+              <BsPersonBoundingBox /> {formataPrimeiroUltimoNome(autor)}
             </span>
             <span className="d-flex justify-content-center align-items-center gap-1">
               <BsCalendarEvent /> {formataDataDDMMYYYY(postagem.created_at)}
@@ -185,10 +188,7 @@ export default function BlogPostagem() {
                 <div className="d-flex justify-content-center align-items-center gap-3">
                   <FaTags />
                   {tags.map((tag) => (
-                    <span
-                      key={tag.id}
-                      className="badge bg-primary text-uppercase"
-                    >
+                    <span key={tag.id} className="badge bg-primary">
                       {tag.tag}
                     </span>
                   ))}

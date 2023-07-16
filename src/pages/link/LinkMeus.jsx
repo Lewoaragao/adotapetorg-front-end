@@ -434,7 +434,7 @@ export default function LinkMeus() {
                     placeholder={linkPlaceholder}
                     id="linkEdit"
                     onChange={setarLink}
-                    value={link}
+                    value={formataLink(link)}
                   />
                 </Form.Group>
               </Form>
@@ -516,7 +516,7 @@ export default function LinkMeus() {
                     placeholder={linkPlaceholder}
                     id="linkEdit"
                     onChange={setarLink}
-                    value={link}
+                    value={formataLink(link)}
                   />
                 </Form.Group>
               </Form>

@@ -43,8 +43,12 @@ export default function BlogPostagemUsuarioLogado() {
   const [listaTags, setListaTags] = useState([]);
   const [listaTagsSelecionadas, setListaTagsSelecionadas] = useState([]);
   const [tag, setTag] = useState(0);
+  const [postagemId, setPostagemId] = useState(0);
   const [abrirModalCadastrarPostagem, setAbrirModalCadastrarPostagem] =
     useState(false);
+  const [abrirModalEditarPostagem, setAbrirModalEditarPostagem] =
+    useState(false);
+
   const handleSelectTag = (e) => {
     setTag(e.target.value);
   };
@@ -67,7 +71,6 @@ export default function BlogPostagemUsuarioLogado() {
       "paragraph",
       "superscript",
       "subscript",
-      "speechRecognize",
       "cut",
       "copy",
       "paste",
@@ -77,6 +80,9 @@ export default function BlogPostagemUsuarioLogado() {
 
   const handleFecharModalCadastrarPostagem = () =>
     setAbrirModalCadastrarPostagem(false);
+
+  const handleFecharModalEditarPostagem = () =>
+    setAbrirModalEditarPostagem(false);
 
   useEffect(() => {
     listarPostagensUsuarioLogado();
@@ -143,6 +149,7 @@ export default function BlogPostagemUsuarioLogado() {
     setTag(0);
     setListaTagsSelecionadas([]);
     handleFecharModalCadastrarPostagem();
+    handleFecharModalEditarPostagem();
   }
 
   function cadastrarPostagem() {
@@ -188,7 +195,6 @@ export default function BlogPostagemUsuarioLogado() {
     Api.post(`blog/deletar/${idPostagem}`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
       },
     })
       .then(({ data }) => {
@@ -202,6 +208,62 @@ export default function BlogPostagemUsuarioLogado() {
         listarPostagensUsuarioLogado();
         setIsLoading(false);
       });
+  }
+
+  function visualizarEditarPostagem(postagem) {
+    setMsgModal("");
+
+    setPostagemId(postagem.id);
+    setTitulo(postagem.titulo);
+    setSubtitulo(postagem.subtitulo);
+    setConteudo(postagem.conteudo);
+    setImagem(postagem.imagem);
+
+    let listaTags = [];
+
+    if (postagem.tags != null && postagem.tags.length > 0) {
+      listaTags = postagem.tags.map((tag) => tag.tag);
+    }
+
+    setListaTagsSelecionadas(listaTags);
+
+    setAbrirModalEditarPostagem(true);
+  }
+
+  function editarPostagem(postagemId) {
+    setMsgModal("");
+    window.scrollTo(0, 0);
+
+    if (validaCampos()) {
+      setIsLoading(true);
+      Api.post(
+        `blog/atualizar/postagem/${postagemId}`,
+        {
+          titulo: titulo,
+          subtitulo: subtitulo,
+          conteudo: conteudo,
+          imagem: imagem === "" ? null : imagem,
+          tags: listaTagsSelecionadas.length > 0 ? listaTagsSelecionadas : null,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+        .then(({ data }) => {
+          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          limparCampos();
+        })
+        .catch(({ response }) => {
+          setarMensagem(response.data.message, null);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          listarPostagensUsuarioLogado();
+        });
+    }
   }
 
   return (
@@ -254,7 +316,9 @@ export default function BlogPostagemUsuarioLogado() {
                               <ButtonGroup className="ms-auto my-auto">
                                 <Button
                                   variant="outline-primary"
-                                  // onClick={() => visualizarEditarPostagem(postagem)}
+                                  onClick={() =>
+                                    visualizarEditarPostagem(postagem)
+                                  }
                                 >
                                   <BsPencil />
                                 </Button>
@@ -279,10 +343,131 @@ export default function BlogPostagemUsuarioLogado() {
       </>
 
       {/* MODAL CADASTRAR POSTAGEM */}
-      <Modal show={abrirModalCadastrarPostagem} onHide={limparCampos}>
+      <Modal
+        show={abrirModalCadastrarPostagem}
+        onHide={limparCampos}
+        fullscreen={true}
+      >
         <Modal.Header closeButton>
           <Modal.Title className="fw-bold text-primary">
             Cadastro de Postagem
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Mensagem mensagem={msgModal} mensagemTipo="warning" />
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="titulo">
+              Título
+            </Form.Label>
+            <Form.Control
+              id="titulo"
+              type="text"
+              placeholder="Digite um título"
+              value={titulo}
+              required
+              autoFocus
+              onChange={(e) => setTitulo(e.target.value)}
+              autoComplete="off"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="subtitulo">
+              Subtítulo
+            </Form.Label>
+            <Form.Control
+              id="subtitulo"
+              type="text"
+              placeholder="Digite um subtítulo"
+              value={subtitulo}
+              required
+              onChange={(e) => setSubtitulo(e.target.value)}
+              autoComplete="off"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="imagem">
+              Imagem
+            </Form.Label>
+            <Form.Control
+              id="imagem"
+              type="file"
+              onChange={(e) => setImagem(e.target.files[0])}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="editor">
+              Conteúdo da Postagem
+            </Form.Label>
+            <JoditEditor
+              id="editor"
+              ref={editor}
+              value={conteudo}
+              config={config}
+              tabIndex={1} // tabIndex da área de texto
+              onBlur={(newContent) => setConteudo(newContent)} // preferiu usar apenas esta opção para atualizar o conteúdo por motivos de desempenho
+              onChange={(newContent) => {}}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="tipoLink">
+              Tag
+            </Form.Label>
+            <Form.Select onChange={handleSelectTag} value={tag} id="tag">
+              <option value="0" className="fw-bold" disabled>
+                Selecione uma tag
+              </option>
+
+              {listaTags.map((tag) => (
+                <option key={tag.id} value={tag.nome} name={tag.tag}>
+                  {tag.tag}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
+          <Button className="mb-3" onClick={addListaTagsSelecionadas}>
+            Adicionar Tag
+          </Button>
+
+          {listaTagsSelecionadas.length > 0 && (
+            <div className="mb-3">
+              {listaTagsSelecionadas.map((tag) => (
+                <button
+                  key={tag.id}
+                  type="button"
+                  className="btn btn-primary me-1"
+                  onClick={() => removeListaTagsSelecionadas(tag)}
+                >
+                  {tag} <span className="badge">x</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={limparCampos}>
+            Cancelar
+          </Button>
+          <Button variant="success" onClick={cadastrarPostagem}>
+            Cadastrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODAL EDITAR POSTAGEM */}
+      <Modal
+        show={abrirModalEditarPostagem}
+        onHide={limparCampos}
+        fullscreen={true}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="fw-bold text-primary">
+            Editar Postagem
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -368,7 +553,6 @@ export default function BlogPostagemUsuarioLogado() {
             <div className="mb-3">
               {listaTagsSelecionadas.map((tag) => (
                 <button
-                  key={tag.id}
                   type="button"
                   className="btn btn-primary me-1"
                   onClick={() => removeListaTagsSelecionadas(tag)}
@@ -383,8 +567,8 @@ export default function BlogPostagemUsuarioLogado() {
           <Button variant="secondary" onClick={limparCampos}>
             Cancelar
           </Button>
-          <Button variant="success" onClick={cadastrarPostagem}>
-            Cadastrar
+          <Button variant="success" onClick={() => editarPostagem(postagemId)}>
+            Editar
           </Button>
         </Modal.Footer>
       </Modal>

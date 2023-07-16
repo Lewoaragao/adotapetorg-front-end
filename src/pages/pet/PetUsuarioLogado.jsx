@@ -11,7 +11,10 @@ import {
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { CarregamentoLista } from "../../components/Carregamento";
-import { MENSAGEM_NENHUM_PET_CADASTRADO } from "../../components/Constantes";
+import {
+  MENSAGEM_NENHUM_PET_CADASTRADO,
+  MENSAGEM_TIPO_SUCESSO,
+} from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
@@ -24,10 +27,14 @@ export default function PetUsuarioLogado() {
   const { setarMensagem } = useContext(MessageContext);
   const [isLoading, setIsLoading] = useState(false);
   const [listaPets, setListaPets] = useState([]);
+  const [listaPetTipos, setListaPetTipos] = useState([]);
+  const [listaRacas, setListaRacas] = useState([]);
   const [msgModal, setMsgModal] = useState("");
   const [abrirModalCadastrarPet, setAbrirModalCadastrarPet] = useState(false);
+  // const [abrirModalEditarPet, setAbrirModalEditarPet] = useState(false);
 
-  const handleFecharModalCadastrarPet = () => setAbrirModalCadastrarPet(false);
+  const handleFecharModalCadastrarPet = () => limparCampos();
+  const handleFecharModalEditarPet = () => limparCampos();
 
   useEffect(() => {
     listarPetsUsuarioLogado();
@@ -40,7 +47,9 @@ export default function PetUsuarioLogado() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        setListaPets(data.data);
+        setListaPets(data.pets.data);
+        setListaPetTipos(data.tipos);
+        setListaRacas(data.racas);
       })
       .catch(({ response }) => {
         setListaPets(null);
@@ -54,6 +63,37 @@ export default function PetUsuarioLogado() {
   function limparCampos() {
     setMsgModal("");
     handleFecharModalCadastrarPet();
+    handleFecharModalEditarPet();
+  }
+
+  function deletarPet(idPet) {
+    setIsLoading(true);
+    Api.post(`pets/deletar/${idPet}`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(({ data }) => {
+        setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+        limparCampos();
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        listarPetsUsuarioLogado();
+      });
+  }
+
+  function listarRacas(idPetTipo) {
+    Api.post(`pets/racas/${idPetTipo}`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(({ data }) => {
+        setListaRacas(data);
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {});
   }
 
   return (
@@ -107,7 +147,7 @@ export default function PetUsuarioLogado() {
                             </Button>
                             <Button
                               variant="outline-danger"
-                              // onClick={() => deletarPet(pet.id)}
+                              onClick={() => deletarPet(pet.id)}
                             >
                               <BsTrash />
                             </Button>
@@ -121,7 +161,7 @@ export default function PetUsuarioLogado() {
             )}
           </Row>
 
-          {/* MODAL CADASTRAR LINK */}
+          {/* MODAL CADASTRAR PET */}
           <Modal
             show={abrirModalCadastrarPet}
             onHide={handleFecharModalCadastrarPet}

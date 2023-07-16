@@ -48,6 +48,7 @@ export const FALSE_PHP = 0;
  * Back-end
  * Constantes link tipos
  */
+export const LINK_TIPO_SELECIONE_UM_LINK = 0;
 export const LINK_TIPO_EXTERNO = 1;
 export const LINK_TIPO_INSTAGRAM = 2;
 export const LINK_TIPO_TIK_TOK = 3;
