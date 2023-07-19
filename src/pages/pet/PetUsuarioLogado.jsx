@@ -9,7 +9,8 @@ import {
   Row,
 } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BsPencil, BsTrash } from "react-icons/bs";
+import { RxSize } from "react-icons/rx";
+import { BsCalendarEvent, BsPencil, BsTrash } from "react-icons/bs";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUM_PET_CADASTRADO,
@@ -21,6 +22,7 @@ import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
+import { formataDataDDMMYYYY, formataTamanhoPet } from "../../utils/Mask";
 
 export default function PetUsuarioLogado() {
   const { token } = useContext(AuthContext);
@@ -127,8 +129,14 @@ export default function PetUsuarioLogado() {
                         />
                       </div>
                       <Card.Body>
-                        <Card.Title>{pet.nome}</Card.Title>
-                        <Card.Text>{pet.raca}</Card.Text>
+                        <Card.Title>
+                          {pet.nome} ({pet.apelido})
+                        </Card.Title>
+                        <Card.Text>
+                          <RxSize /> {formataTamanhoPet(pet.tamanho)}{" "}
+                          <BsCalendarEvent />{" "}
+                          {formataDataDDMMYYYY(pet.data_nascimento)}
+                        </Card.Text>
                       </Card.Body>
                       <Card.Footer className="d-flex justify-content-between align-items-center">
                         <div>
