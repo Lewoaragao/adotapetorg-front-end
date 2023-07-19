@@ -7,7 +7,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { CgCloseR } from "react-icons/cg";
-import { MENSAGEM_TIPO_ALERTA } from "../components/Constantes";
+import { TIPO_ALERTA } from "../components/Constantes";
 import "../styles/Mensagem.css";
 import { horaAtual } from "../utils/Util";
 
@@ -15,7 +15,7 @@ export const MessageContext = createContext();
 
 export const MessageProvider = ({ children }) => {
   const [mensagem, setMensagem] = useState("");
-  const [mensagemTipo, setMensagemTipo] = useState(MENSAGEM_TIPO_ALERTA);
+  const [mensagemTipo, setMensagemTipo] = useState(TIPO_ALERTA);
   const [isVisible, setIsVisible] = useState(false);
   const [className, setClassName] = useState("");
 
@@ -53,7 +53,7 @@ export const MessageProvider = ({ children }) => {
 
     mensagemTipo !== null
       ? setMensagemTipo(mensagemTipo)
-      : setMensagemTipo(MENSAGEM_TIPO_ALERTA);
+      : setMensagemTipo(TIPO_ALERTA);
 
     switch (mensagemTipo) {
       case "success":

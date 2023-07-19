@@ -108,7 +108,7 @@ function Inicio({ logo }) {
           <CarregamentoLista />
         ) : (
           <>
-            {listaPets == null ? (
+            {listaPets == null || listaPets.length == 0 ? (
               <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
             ) : (
               <>
@@ -203,7 +203,7 @@ function Inicio({ logo }) {
           <CarregamentoLista />
         ) : (
           <>
-            {listaPostagens == null ? (
+            {listaPostagens == null || (listaPostagens == null) == 0 ? (
               <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
             ) : (
               <>

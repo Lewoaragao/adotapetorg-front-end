@@ -11,13 +11,15 @@ import {
 } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
-import { CarregamentoLista } from "../../components/Carregamento";
+import {
+  CarregamentoBotao,
+  CarregamentoLista,
+} from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
-  MENSAGEM_TIPO_SUCESSO,
+  TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
-import Mensagem from "../../components/mensagem/Mensagem";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
@@ -35,7 +37,7 @@ export default function BlogPostagemUsuarioLogado() {
   const { token } = useContext(AuthContext);
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [msgModal, setMsgModal] = useState("");
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [subtitulo, setSubtitulo] = useState("");
   const [conteudo, setConteudo] = useState("");
@@ -108,14 +110,13 @@ export default function BlogPostagemUsuarioLogado() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        console.log(data);
         setListaPostagens(data.postagens.data);
         setListaTags(data.tags);
       })
       .catch(({ response }) => {
         setListaPostagens(null);
         setarMensagem(response.data.message, null);
-        setMsgModal(response.data.message);
+        setListaTags(response.data.tags);
       })
       .finally(() => {
         setIsLoading(false);
@@ -124,17 +125,17 @@ export default function BlogPostagemUsuarioLogado() {
 
   function validaCampos() {
     if (titulo === "" || titulo === null) {
-      setMsgModal("Preencha o campo título");
+      setarMensagem("Preencha o campo título", null);
       return false;
     }
 
     if (subtitulo === "" || subtitulo === null) {
-      setMsgModal("Preencha o campo subtítulo");
+      setarMensagem("Preencha o campo subtítulo", null);
       return false;
     }
 
     if (conteudo === "" || conteudo === null) {
-      setMsgModal("Preencha o campo conteúdo da postagem");
+      setarMensagem("Preencha o campo conteúdo da postagem", null);
       return false;
     }
 
@@ -145,7 +146,6 @@ export default function BlogPostagemUsuarioLogado() {
     setTitulo("");
     setSubtitulo("");
     setConteudo("");
-    setMsgModal("");
     setTag(0);
     setListaTagsSelecionadas([]);
     handleFecharModalCadastrarPostagem();
@@ -153,11 +153,8 @@ export default function BlogPostagemUsuarioLogado() {
   }
 
   function cadastrarPostagem() {
-    setMsgModal("");
-    console.log(tag);
-
     if (validaCampos()) {
-      setIsLoading(true);
+      setIsLoadingButton(true);
       Api.post(
         "blog/cadastrar/postagem",
         {
@@ -175,7 +172,7 @@ export default function BlogPostagemUsuarioLogado() {
         }
       )
         .then(({ data }) => {
-          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          setarMensagem(data.message, TIPO_SUCESSO);
           limparCampos();
         })
         .catch(({ response }) => {
@@ -183,14 +180,12 @@ export default function BlogPostagemUsuarioLogado() {
         })
         .finally(() => {
           listarPostagensUsuarioLogado();
-          setIsLoading(false);
+          setIsLoadingButton(false);
         });
     }
   }
 
   function deletarPostagem(idPostagem) {
-    setMsgModal("");
-
     setIsLoading(true);
     Api.post(`blog/deletar/${idPostagem}`, null, {
       headers: {
@@ -198,7 +193,7 @@ export default function BlogPostagemUsuarioLogado() {
       },
     })
       .then(({ data }) => {
-        setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+        setarMensagem(data.message, TIPO_SUCESSO);
         limparCampos();
       })
       .catch(({ response }) => {
@@ -211,8 +206,6 @@ export default function BlogPostagemUsuarioLogado() {
   }
 
   function visualizarEditarPostagem(postagem) {
-    setMsgModal("");
-
     setPostagemId(postagem.id);
     setTitulo(postagem.titulo);
     setSubtitulo(postagem.subtitulo);
@@ -231,11 +224,10 @@ export default function BlogPostagemUsuarioLogado() {
   }
 
   function editarPostagem(postagemId) {
-    setMsgModal("");
     window.scrollTo(0, 0);
 
     if (validaCampos()) {
-      setIsLoading(true);
+      setIsLoadingButton(true);
       Api.post(
         `blog/atualizar/postagem/${postagemId}`,
         {
@@ -253,14 +245,14 @@ export default function BlogPostagemUsuarioLogado() {
         }
       )
         .then(({ data }) => {
-          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          setarMensagem(data.message, TIPO_SUCESSO);
           limparCampos();
         })
         .catch(({ response }) => {
           setarMensagem(response.data.message, null);
         })
         .finally(() => {
-          setIsLoading(false);
+          setIsLoadingButton(false);
           listarPostagensUsuarioLogado();
         });
     }
@@ -354,8 +346,6 @@ export default function BlogPostagemUsuarioLogado() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Mensagem mensagem={msgModal} mensagemTipo="warning" />
-
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="titulo">
               Título
@@ -454,7 +444,11 @@ export default function BlogPostagemUsuarioLogado() {
             Cancelar
           </Button>
           <Button variant="success" onClick={cadastrarPostagem}>
-            Cadastrar
+            {isLoadingButton ? (
+              <CarregamentoBotao variant="dark" />
+            ) : (
+              "Cadastrar"
+            )}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -471,8 +465,6 @@ export default function BlogPostagemUsuarioLogado() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Mensagem mensagem={msgModal} mensagemTipo="warning" />
-
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="titulo">
               Título
@@ -553,6 +545,7 @@ export default function BlogPostagemUsuarioLogado() {
             <div className="mb-3">
               {listaTagsSelecionadas.map((tag) => (
                 <button
+                  key={tag}
                   type="button"
                   className="btn btn-primary me-1"
                   onClick={() => removeListaTagsSelecionadas(tag)}
@@ -568,7 +561,7 @@ export default function BlogPostagemUsuarioLogado() {
             Cancelar
           </Button>
           <Button variant="success" onClick={() => editarPostagem(postagemId)}>
-            Editar
+            {isLoadingButton ? <CarregamentoBotao variant="dark" /> : "Editar"}
           </Button>
         </Modal.Footer>
       </Modal>

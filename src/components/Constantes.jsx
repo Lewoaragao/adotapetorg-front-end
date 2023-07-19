@@ -58,12 +58,12 @@ export const LINK_TIPO_FACEBOOK = 6;
 export const LINK_TIPO_YOUTUBE = 7;
 
 /**
- * Tipos de mensagem baseados
+ * Tipos de texto baseados
  * nas classes do bootstrap
  */
-export const MENSAGEM_TIPO_SUCESSO = "success";
-export const MENSAGEM_TIPO_ALERTA = "warning";
-export const MENSAGEM_TIPO_ERRO = "danger";
+export const TIPO_SUCESSO = "success";
+export const TIPO_ALERTA = "warning";
+export const TIPO_ERRO = "danger";
 
 /**
  * Tipos de mensagem de

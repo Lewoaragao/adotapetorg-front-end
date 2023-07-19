@@ -53,7 +53,7 @@ export default function Blog() {
           <CarregamentoLista />
         ) : (
           <>
-            {listaPostagens == null ? (
+            {listaPostagens == null || listaPostagens.length == 0 ? (
               <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
             ) : (
               <>

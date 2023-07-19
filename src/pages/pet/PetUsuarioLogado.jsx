@@ -13,7 +13,7 @@ import { BsPencil, BsTrash } from "react-icons/bs";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUM_PET_CADASTRADO,
-  MENSAGEM_TIPO_SUCESSO,
+  TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
@@ -72,7 +72,7 @@ export default function PetUsuarioLogado() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+        setarMensagem(data.message, TIPO_SUCESSO);
         limparCampos();
       })
       .catch(({ response }) => {

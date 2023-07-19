@@ -38,7 +38,6 @@ export default function BlogPostagemUsuarioLogadoFavoritos() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        console.log(data);
         setListaPostagens(data.data);
       })
       .catch(({ response }) => {

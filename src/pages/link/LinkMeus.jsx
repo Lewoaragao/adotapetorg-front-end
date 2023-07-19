@@ -21,7 +21,7 @@ import {
   LINK_TIPO_TIK_TOK,
   LINK_TIPO_YOUTUBE,
   MENSAGEM_NENHUM_LINK_CADASTRADO,
-  MENSAGEM_TIPO_SUCESSO,
+  TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import Mensagem from "../../components/mensagem/Mensagem";
@@ -118,7 +118,6 @@ export default function LinkMeus() {
         setListaLinkTipos(data.link_tipos);
       })
       .catch(({ response }) => {
-        setListaLinks(null);
         setListaLinkTipos(response.data.link_tipos);
         setarMensagem(response.data.message, null);
       })
@@ -169,7 +168,7 @@ export default function LinkMeus() {
         }
       )
         .then(({ data }) => {
-          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          setarMensagem(data.message, TIPO_SUCESSO);
           limparCampos();
         })
         .catch(({ response }) => {
@@ -204,7 +203,7 @@ export default function LinkMeus() {
         }
       )
         .then(({ data }) => {
-          setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+          setarMensagem(data.message, TIPO_SUCESSO);
           limparCampos();
         })
         .catch(({ response }) => {
@@ -249,7 +248,7 @@ export default function LinkMeus() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
-        setarMensagem(data.message, MENSAGEM_TIPO_SUCESSO);
+        setarMensagem(data.message, TIPO_SUCESSO);
       })
       .catch(({ response }) => {
         setarMensagem(response.data.message, null);
@@ -274,7 +273,7 @@ export default function LinkMeus() {
 
   function copiarLinkUsuarioLogado() {
     navigator.clipboard.writeText(usuarioLogado.link);
-    setarMensagem("Link copiado", MENSAGEM_TIPO_SUCESSO);
+    setarMensagem("Link copiado", TIPO_SUCESSO);
   }
 
   return (
@@ -310,7 +309,7 @@ export default function LinkMeus() {
       ) : (
         <>
           <ListGroup>
-            {listaLinks == null ? (
+            {listaLinks == null || listaLinks.length == 0 ? (
               <div className="mb-3">{MENSAGEM_NENHUM_LINK_CADASTRADO}</div>
             ) : (
               <>
