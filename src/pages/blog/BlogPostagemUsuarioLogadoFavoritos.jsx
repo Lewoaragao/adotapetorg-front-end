@@ -76,7 +76,7 @@ export default function BlogPostagemUsuarioLogadoFavoritos() {
           <CarregamentoLista />
         ) : (
           <>
-            {listaPostagens == null ? (
+            {listaPostagens === null ? (
               <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA}</div>
             ) : (
               <>

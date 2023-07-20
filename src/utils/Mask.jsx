@@ -20,6 +20,12 @@ export function formataCelular(celular) {
   return celular;
 }
 
+/**
+ * Recebe um link e remove
+ * os prefiros http ou https
+ * @param {string} link
+ * @returns {string} linkFormatado
+ */
 export function formataLink(link) {
   if (!link) return null;
 
@@ -133,4 +139,17 @@ export function formataPrimeiroUltimoNome(nomeCompleto) {
   const primeiroNome = partesNome[0];
   const ultimoNome = partesNome[partesNome.length - 1];
   return `${primeiroNome} ${ultimoNome}`;
+}
+
+/**
+ * É usada uma exxpressão regular
+ * para encontrar a hora no formato hh:mm:ss
+ * no texto e removê-la do mesmo
+ * @param {string} texto
+ * @returns {string} textoSemHora
+ */
+export function formataRemovendoHora(texto) {
+  const regexHora = /\b\d{2}:\d{2}:\d{2}\b/g;
+  const textoSemHora = texto.replace(regexHora, "");
+  return textoSemHora;
 }

@@ -44,7 +44,7 @@ export default function PetTodos() {
         <CarregamentoLista />
       ) : (
         <>
-          {listaPets == null || listaPets.length == 0 ? (
+          {listaPets === null || listaPets.length === 0 ? (
             <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
           ) : (
             <>

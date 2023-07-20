@@ -10,6 +10,7 @@ import { CgCloseR } from "react-icons/cg";
 import { TIPO_ALERTA } from "../components/Constantes";
 import "../styles/Mensagem.css";
 import { horaAtual } from "../utils/Util";
+import { formataRemovendoHora } from "../utils/Mask";
 
 export const MessageContext = createContext();
 
@@ -49,6 +50,12 @@ export const MessageProvider = ({ children }) => {
    * @param {string} mensagemTipo
    */
   function setarMensagem(mensagem, mensagemTipo) {
+    /**
+     * Usado a hora atual como ID da mensagem
+     * para que ela sempre seja mostrada na tela
+     * pois ocorria que ao ser a mesma mensagem
+     * ela não era exibida na tela
+     */
     setMensagem(`${mensagem} ${horaAtual()}`);
 
     mensagemTipo !== null
@@ -77,7 +84,7 @@ export const MessageProvider = ({ children }) => {
       {isVisible && (
         <div className={className} onClick={handleMessageVisible}>
           <Alert variant={mensagemTipo}>
-            {mensagem}{" "}
+            {formataRemovendoHora(mensagem)}{" "}
             <span className="ms-2 fs-5">
               <CgCloseR />
             </span>

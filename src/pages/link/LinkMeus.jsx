@@ -24,7 +24,6 @@ import {
   TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
-import Mensagem from "../../components/mensagem/Mensagem";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
@@ -47,16 +46,10 @@ export default function LinkMeus() {
   const [link, setLink] = useState("");
   const [linkId, setLinkId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [msgModal, setMsgModal] = useState("");
   const [listaLinkTipos, setListaLinkTipos] = useState([]);
   const [listaLinks, setListaLinks] = useState([]);
   const [abrirModalCadastrarLink, setAbrirModalCadastrarLink] = useState(false);
   const [abrirModalEditarLink, setAbrirModalEditarLink] = useState(false);
-
-  const handleFecharModalCadastrarLink = () =>
-    setAbrirModalCadastrarLink(false);
-
-  const handleFecharModalEditarLink = () => setAbrirModalEditarLink(false);
 
   const handleSelectTipoLinkChange = (e) => {
     setTipoLink(e.target.value);
@@ -101,9 +94,6 @@ export default function LinkMeus() {
         break;
     }
   };
-  const handleFileImagemChange = (e) => {
-    setImagem(e.target.files[0]);
-  };
 
   useEffect(() => {
     listarLinksUsuarioLogado();
@@ -123,22 +113,23 @@ export default function LinkMeus() {
       })
       .finally(() => {
         setIsLoading(false);
+        limparCampos();
       });
   }
 
   function validaCampos() {
     if (tipoLink === 0) {
-      setMsgModal("Escolha o tipo de link");
+      setarMensagem("Escolha o tipo de link", null);
       return false;
     }
 
     if (tituloLink === "" || tituloLink === null) {
-      setMsgModal("Preencha o campo título do link");
+      setarMensagem("Preencha o campo título do link", null);
       return false;
     }
 
     if (link === "" || link === null) {
-      setMsgModal("Preencha o campo link");
+      setarMensagem("Preencha o campo link", null);
       return false;
     }
 
@@ -147,8 +138,6 @@ export default function LinkMeus() {
 
   function cadastrarLink(e) {
     e.preventDefault();
-    setarMensagem("");
-    setMsgModal("");
 
     if (validaCampos()) {
       setIsLoading(true);
@@ -169,20 +158,17 @@ export default function LinkMeus() {
       )
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
-          limparCampos();
         })
         .catch(({ response }) => {
-          setMsgModal(response.data.message);
+          setarMensagem(response.data.message, null);
         })
         .finally(() => {
-          setIsLoading(false);
           listarLinksUsuarioLogado();
         });
     }
   }
 
   function editarLink(linkId) {
-    setMsgModal("");
     window.scrollTo(0, 0);
 
     if (validaCampos()) {
@@ -204,13 +190,11 @@ export default function LinkMeus() {
       )
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
-          limparCampos();
         })
         .catch(({ response }) => {
-          setMsgModal(response.data.message);
+          setarMensagem(response.data.message, null);
         })
         .finally(() => {
-          setIsLoading(false);
           listarLinksUsuarioLogado();
         });
     }
@@ -221,13 +205,12 @@ export default function LinkMeus() {
     setImagem("");
     setTituloLink("");
     setLink("");
-    setMsgModal("");
-    handleFecharModalCadastrarLink();
-    handleFecharModalEditarLink();
+    setAbrirModalCadastrarLink(false);
+    setAbrirModalEditarLink(false);
   }
 
   function setarLink(e) {
-    var linkAux = e.target.value;
+    let linkAux = e.target.value;
 
     if (linkAux.includes("https://")) {
       linkAux = linkAux.replace("https://", "");
@@ -260,14 +243,11 @@ export default function LinkMeus() {
   }
 
   function visualizarEditarLink(link) {
-    setMsgModal("");
-
     setLinkId(link.id);
     setTipoLink(link.link_tipo_id);
     setTituloLink(link.titulo_link);
     setImagem(link.imagem);
     setLink(link.link);
-
     setAbrirModalEditarLink(true);
   }
 
@@ -286,7 +266,7 @@ export default function LinkMeus() {
       <Col md={6}>
         <InputGroup className="mb-3">
           <Form.Control
-            placeholder={usuarioLogado.link == null ? "" : usuarioLogado.link}
+            placeholder={usuarioLogado.link === null ? "" : usuarioLogado.link}
             readOnly
             disabled
           />
@@ -309,7 +289,7 @@ export default function LinkMeus() {
       ) : (
         <>
           <ListGroup>
-            {listaLinks == null || listaLinks.length == 0 ? (
+            {listaLinks === null || listaLinks.length === 0 ? (
               <div className="mb-3">{MENSAGEM_NENHUM_LINK_CADASTRADO}</div>
             ) : (
               <>
@@ -318,7 +298,6 @@ export default function LinkMeus() {
                     as="li"
                     className="d-flex align-items-start"
                     action
-                    variant="warning"
                     key={link.id}
                   >
                     <div className="my-auto">
@@ -374,7 +353,6 @@ export default function LinkMeus() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Mensagem mensagem={msgModal} mensagemTipo="warning" />
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="tipoLink">
@@ -407,7 +385,7 @@ export default function LinkMeus() {
                   <Form.Control
                     id="imagem"
                     type="file"
-                    onChange={handleFileImagemChange}
+                    onChange={(e) => setImagem(e.target.files[0])}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -456,7 +434,6 @@ export default function LinkMeus() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Mensagem mensagem={msgModal} mensagemTipo="warning" />
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="tipoLinkEdit">
@@ -489,7 +466,7 @@ export default function LinkMeus() {
                   <Form.Control
                     id="imagemEdit"
                     type="file"
-                    onChange={handleFileImagemChange}
+                    onChange={(e) => setImagem(e.target.files[0])}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">

@@ -62,7 +62,7 @@ export default function BlogPostagem() {
       });
   }
 
-  function verPostagemUserAuth(slug) {
+  function verPostagemUserAuth(slug, token) {
     setIsLoading(true);
     Api.post(`blog/${slug}`, null, {
       headers: {
@@ -127,7 +127,7 @@ export default function BlogPostagem() {
       ) : (
         <>
           <TituloPagina
-            titulo={postagem.titulo == null ? "" : postagem.titulo}
+            titulo={postagem.titulo === null ? "" : postagem.titulo}
           />
           <h4 className="uppercase-first-letter">{postagem.subtitulo}</h4>
           <p className="text-muted d-flex gap-3">
@@ -182,7 +182,7 @@ export default function BlogPostagem() {
 
           <Row className="mb-3">
             <span className="d-flex gap-3 text-muted">
-              {tags == null || tags.length === 0 ? (
+              {tags === null || tags.length === 0 ? (
                 <div>Nenhum tag cadastrada</div>
               ) : (
                 <div className="d-flex justify-content-center align-items-center gap-3">

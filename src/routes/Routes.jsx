@@ -6,7 +6,6 @@ import {
   TELA_BLOG_POSTAGEM,
   TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
   TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
-  TELA_CADASTRO_PET,
   TELA_CADASTRO_USUARIO,
   TELA_ERRO_404,
   TELA_INFORMACOES_PET,
@@ -26,7 +25,6 @@ import Error404 from "../pages/error/Error404";
 import Inicio from "../pages/inicio/Inicio";
 import LinkMeus from "../pages/link/LinkMeus";
 import Links from "../pages/link/Links";
-import PetCadastrar from "../pages/pet/PetCadastrar";
 import PetInformacao from "../pages/pet/PetInformacao";
 import PetUsuarioLogado from "../pages/pet/PetUsuarioLogado";
 import PetUsuarioLogadoFavoritos from "../pages/pet/PetUsuarioLogadoFavoritos";
@@ -60,10 +58,6 @@ export const Routes = createBrowserRouter([
       { path: TELA_USUARIO_ENTRAR, element: <UsuarioEntrar /> },
       // ROTAS PET
       { path: TELA_TODOS_PET, element: <PetTodos /> },
-      {
-        path: TELA_CADASTRO_PET,
-        element: <PrivateRoute element={<PetCadastrar />} />,
-      },
       { path: TELA_INFORMACOES_PET, element: <PetInformacao /> },
       {
         path: TELA_PETS_USUARIO_LOGADO,
