@@ -47,6 +47,7 @@ export default function PetUsuarioLogado() {
   const [listaRacas, setListaRacas] = useState([]);
   const [listaCores, setListaCores] = useState([]);
   const [listaCoresSelecionadas, setListaCoresSelecionadas] = useState([]);
+  const [petId, setPetId] = useState(0);
   const [tipo, setTipo] = useState(0);
   const [raca, setRaca] = useState(0);
   const [cor, setCor] = useState(0);
@@ -58,7 +59,9 @@ export default function PetUsuarioLogado() {
   const [flgNecessidadesEspeciais, setFlgNecessidadesEspeciais] =
     useState(false);
   const [sexo, setSexo] = useState("0");
+  const [flgAdotado, setFlgAdotado] = useState(false);
   const [necessidadesEspeciais, setNecessidadesEspeciais] = useState("");
+  const [modoEditar, setModoEditar] = useState(false);
   const [abrirModalCadastrarPet, setAbrirModalCadastrarPet] = useState(false);
 
   useEffect(() => {
@@ -99,9 +102,11 @@ export default function PetUsuarioLogado() {
     setTamanho("0");
     setDataNascimento("");
     setNecessidadesEspeciais("");
+    setFlgAdotado(false);
     setFlgNecessidadesEspeciais(false);
     setListaCoresSelecionadas([]);
     setAbrirModalCadastrarPet(false);
+    setModoEditar(false);
   }
 
   function validaCampos() {
@@ -153,8 +158,10 @@ export default function PetUsuarioLogado() {
 
     if (validaCampos()) {
       setIsLoading(true);
+      let flgAdotadoValidado = flgAdotado === true ? TRUE_PHP : FALSE_PHP;
+
       Api.post(
-        "pets",
+        modoEditar ? `pets/${petId}` : "pets",
         {
           user_id: usuarioLogado.id,
           pet_tipos_id: tipo,
@@ -163,13 +170,15 @@ export default function PetUsuarioLogado() {
           raca_id: raca,
           data_nascimento: dataNascimento,
           cores: listaCoresSelecionadas,
-          imagem: imagem,
+          imagem: imagem === "" ? null : imagem,
           tamanho: tamanho,
           flg_necessidades_especiais:
             flgNecessidadesEspeciais === true ? TRUE_PHP : FALSE_PHP,
           necessidades_especiais:
             flgNecessidadesEspeciais === true ? necessidadesEspeciais : null,
           sexo: sexo,
+          flg_adotado: modoEditar ? flgAdotadoValidado : null,
+          flg_ativo: modoEditar ? TRUE_PHP : null,
         },
         {
           headers: {
@@ -229,10 +238,6 @@ export default function PetUsuarioLogado() {
     listarRacas(valueSelectedInteger);
   };
 
-  function mudarFlgNecessidadesEspeciais() {
-    setFlgNecessidadesEspeciais(!flgNecessidadesEspeciais);
-  }
-
   function addListaCoresSelecionadas() {
     if (cor !== 0 && !listaCoresSelecionadas.includes(cor)) {
       setListaCoresSelecionadas([...listaCoresSelecionadas, cor]);
@@ -244,6 +249,25 @@ export default function PetUsuarioLogado() {
     const updatedCores = listaCoresSelecionadas.filter((item) => item !== cor);
     setListaCoresSelecionadas(updatedCores);
   };
+
+  function visualizarEditarPet(pet) {
+    setModoEditar(true);
+
+    // setCor(pet.cor)
+    setPetId(pet.id);
+    setNome(pet.nome);
+    setRaca(pet.raca_id);
+    setTamanho(pet.tamanho);
+    setImagem(pet.imagem);
+    setSexo(pet.sexo);
+    setTipo(pet.pet_tipos_id);
+    listarRacas(pet.pet_tipos_id);
+    setApelido(pet.apelido);
+    setDataNascimento(pet.data_nascimento);
+    setFlgNecessidadesEspeciais(pet.flg_necessidades_especiais);
+    setNecessidadesEspeciais(pet.necessidades_especiais);
+    setAbrirModalCadastrarPet(true);
+  }
 
   return (
     <>
@@ -328,7 +352,7 @@ export default function PetUsuarioLogado() {
                           <ButtonGroup className="ms-auto my-auto">
                             <Button
                               variant="outline-primary"
-                              // onClick={() => visualizarEditarPet(pet)}
+                              onClick={() => visualizarEditarPet(pet)}
                             >
                               <BsPencil />
                             </Button>
@@ -348,7 +372,7 @@ export default function PetUsuarioLogado() {
             )}
           </Row>
 
-          {/* MODAL CADASTRAR PET */}
+          {/* MODAL CADASTRAR EDITAR PET */}
           <Modal
             show={abrirModalCadastrarPet}
             onHide={limparCampos}
@@ -361,6 +385,17 @@ export default function PetUsuarioLogado() {
             </Modal.Header>
             <Modal.Body>
               <Form>
+                {modoEditar && (
+                  <Form.Check
+                    className="mb-3"
+                    onChange={() => setFlgAdotado(!flgAdotado)}
+                    checked={flgAdotado}
+                    variant="secondary"
+                    id="flgAdotado"
+                    label="O pet foi adotado?"
+                  ></Form.Check>
+                )}
+
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="raca">
                     Tipo
@@ -507,7 +542,10 @@ export default function PetUsuarioLogado() {
 
                 <Form.Check
                   className="mb-3"
-                  onChange={mudarFlgNecessidadesEspeciais}
+                  onChange={() =>
+                    setFlgNecessidadesEspeciais(!flgNecessidadesEspeciais)
+                  }
+                  checked={flgNecessidadesEspeciais}
                   variant="secondary"
                   id="flgNecessidadesEspeciais"
                   label="Tem necessidades especiais?"
@@ -574,7 +612,7 @@ export default function PetUsuarioLogado() {
                 Cancelar
               </Button>
               <Button variant="success" onClick={cadastrarPet}>
-                Cadastrar
+                {modoEditar ? "Editar" : "Cadastrar"}
               </Button>
             </Modal.Footer>
           </Modal>
