@@ -32,7 +32,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import {
-  formataDataDDMMYYYY,
   formataMostrandoIdade,
   formataSexoPet,
   formataTamanhoPet,
