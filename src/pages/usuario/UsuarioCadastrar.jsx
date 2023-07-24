@@ -403,7 +403,7 @@ function UsuarioCadastrar() {
                   value={telefone}
                   required
                   onChange={(e) => setTelefone(e.target.value)}
-                  maxLength={8}
+                  minLength={8}
                 />
               </Form.Group>
             </Col>
@@ -433,7 +433,7 @@ function UsuarioCadastrar() {
                   value={celular}
                   required
                   onChange={(e) => setCelular(e.target.value)}
-                  maxLength={11}
+                  minLength={11}
                 />
               </Form.Group>
             </Col>

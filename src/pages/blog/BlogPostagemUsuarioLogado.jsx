@@ -413,7 +413,7 @@ export default function BlogPostagemUsuarioLogado() {
               </option>
 
               {listaTags.map((tag) => (
-                <option key={tag.id} value={tag.nome} name={tag.tag}>
+                <option key={tag.id} value={tag.tag} name={tag.tag}>
                   {tag.tag}
                 </option>
               ))}
@@ -530,7 +530,7 @@ export default function BlogPostagemUsuarioLogado() {
               </option>
 
               {listaTags.map((tag) => (
-                <option key={tag.id} value={tag.nome} name={tag.tag}>
+                <option key={tag.id} value={tag.tag} name={tag.tag}>
                   {tag.tag}
                 </option>
               ))}

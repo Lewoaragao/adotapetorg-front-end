@@ -153,3 +153,42 @@ export function formataRemovendoHora(texto) {
   const textoSemHora = texto.replace(regexHora, "");
   return textoSemHora;
 }
+
+/**
+ * Recebe o parametro data nascimento
+ * e retorna a idade no formato
+ * anos, meses e dias
+ * @param {string} dataNascimento
+ * @returns {string} idade
+ */
+export function formataMostrandoIdade(dataNascimento) {
+  const hoje = new Date();
+  const nascimento = new Date(dataNascimento);
+
+  let anos = hoje.getFullYear() - nascimento.getFullYear();
+  let meses = hoje.getMonth() - nascimento.getMonth();
+  let dias = hoje.getDate() - nascimento.getDate();
+
+  // Verificar se o dia de aniversário já ocorreu este mês
+  if (meses < 0 || (meses === 0 && dias < 0)) {
+    anos--;
+    if (hoje.getMonth() === nascimento.getMonth()) {
+      meses = 0;
+    } else {
+      meses += 12;
+    }
+  }
+
+  // Tratar dias negativos ou zero
+  if (dias <= 0) {
+    const ultimoDiaMesAnterior = new Date(
+      hoje.getFullYear(),
+      hoje.getMonth(),
+      0
+    ).getDate();
+    meses--;
+    dias += ultimoDiaMesAnterior;
+  }
+
+  return `${anos}a ${meses}m ${dias}d`;
+}

@@ -33,6 +33,7 @@ import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import {
   formataDataDDMMYYYY,
+  formataMostrandoIdade,
   formataSexoPet,
   formataTamanhoPet,
 } from "../../utils/Mask";
@@ -140,6 +141,14 @@ export default function PetUsuarioLogado() {
       return false;
     }
 
+    if (
+      (flgNecessidadesEspeciais === true && necessidadesEspeciais === null) ||
+      necessidadesEspeciais === ""
+    ) {
+      setarMensagem("Preencha o campo necessidades especiais", null);
+      return false;
+    }
+
     if (tamanho === "0" || tamanho === null) {
       setarMensagem("Selecione um tamanho", null);
       return false;
@@ -153,7 +162,7 @@ export default function PetUsuarioLogado() {
     return true;
   }
 
-  function cadastrarPet(e) {
+  function cadastrarEditarPet(e) {
     e.preventDefault();
 
     if (validaCampos()) {
@@ -169,8 +178,9 @@ export default function PetUsuarioLogado() {
           apelido: apelido,
           raca_id: raca,
           data_nascimento: dataNascimento,
-          cores: listaCoresSelecionadas,
-          imagem: imagem === "" ? null : imagem,
+          cores:
+            listaCoresSelecionadas.length > 0 ? listaCoresSelecionadas : null,
+          imagem: imagem,
           tamanho: tamanho,
           flg_necessidades_especiais:
             flgNecessidadesEspeciais === true ? TRUE_PHP : FALSE_PHP,
@@ -252,8 +262,8 @@ export default function PetUsuarioLogado() {
 
   function visualizarEditarPet(pet) {
     setModoEditar(true);
+    listarRacas(pet.pet_tipos_id);
 
-    // setCor(pet.cor)
     setPetId(pet.id);
     setNome(pet.nome);
     setRaca(pet.raca_id);
@@ -261,11 +271,23 @@ export default function PetUsuarioLogado() {
     setImagem(pet.imagem);
     setSexo(pet.sexo);
     setTipo(pet.pet_tipos_id);
-    listarRacas(pet.pet_tipos_id);
     setApelido(pet.apelido);
     setDataNascimento(pet.data_nascimento);
-    setFlgNecessidadesEspeciais(pet.flg_necessidades_especiais);
-    setNecessidadesEspeciais(pet.necessidades_especiais);
+
+    let listaCores = [];
+
+    if (pet.cores != null && pet.cores.length > 0) {
+      listaCores = pet.cores.map((cor) => cor.cor);
+    }
+
+    setListaCoresSelecionadas(listaCores);
+
+    setFlgNecessidadesEspeciais(
+      pet.flg_necessidades_especiais === TRUE_PHP ? true : false
+    );
+    setNecessidadesEspeciais(
+      pet.necessidades_especiais === null ? "" : pet.flg_necessidades_especiais
+    );
     setAbrirModalCadastrarPet(true);
   }
 
@@ -338,7 +360,7 @@ export default function PetUsuarioLogado() {
                           </span>{" "}
                           <br />
                           <BsCalendarEvent />{" "}
-                          {formataDataDDMMYYYY(pet.data_nascimento)} <br />
+                          {formataMostrandoIdade(pet.data_nascimento)} <br />
                         </Card.Text>
                       </Card.Body>
                       <Card.Footer className="d-flex justify-content-between align-items-center">
@@ -611,7 +633,7 @@ export default function PetUsuarioLogado() {
               <Button variant="secondary" onClick={limparCampos}>
                 Cancelar
               </Button>
-              <Button variant="success" onClick={cadastrarPet}>
+              <Button variant="success" onClick={cadastrarEditarPet}>
                 {modoEditar ? "Editar" : "Cadastrar"}
               </Button>
             </Modal.Footer>
