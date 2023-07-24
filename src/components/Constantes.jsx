@@ -10,20 +10,24 @@
 // ROTAS GERAL
 export const TELA_INICIAL = "/";
 export const TELA_SOBRE = "/sobre";
-export const TELA_BLOG = "/blog";
-export const TELA_BLOG_POSTAGEM = "/blog/postagem/:slug";
 export const TELA_POLITICA_PRIVACIDADE = "/politica/privacidade";
 // ROTAS USUÁRIO
 export const TELA_CADASTRO_USUARIO = "/cadastrar/usuario";
 export const TELA_USUARIO_ENTRAR = "/usuario/entrar";
 // ROTAS PET
-export const TELA_CADASTRO_PET = "/cadastrar/pet";
+export const TELA_TODOS_PET = "/todos/pets";
 export const TELA_INFORMACOES_PET = "/informacoes/pet/:id";
 export const TELA_PETS_USUARIO_LOGADO = "/meus/pets";
 export const TELA_PETS_USUARIO_LOGADO_FAVORITOS = "/pets/favoritos";
 // ROTAS LINK
 export const TELA_MEUS_LINKS = "/meus/links";
 export const TELA_LINKS = "/link/:nomeUsuario";
+// ROTAS BLOG
+export const TELA_BLOG = "/blog";
+export const TELA_BLOG_POSTAGEM = "/blog/postagem/:slug";
+export const TELA_BLOG_POSTAGEM_USUARIO_LOGADO = "/minhas/postagens";
+export const TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS =
+  "/postagens/favoritas";
 // ROTAS ERRO
 export const TELA_ERRO_404 = "/*";
 
@@ -43,6 +47,7 @@ export const FALSE_PHP = 0;
  * Back-end
  * Constantes link tipos
  */
+export const LINK_TIPO_SELECIONE_UM_LINK = 0;
 export const LINK_TIPO_EXTERNO = 1;
 export const LINK_TIPO_INSTAGRAM = 2;
 export const LINK_TIPO_TIK_TOK = 3;
@@ -52,9 +57,28 @@ export const LINK_TIPO_FACEBOOK = 6;
 export const LINK_TIPO_YOUTUBE = 7;
 
 /**
- * Tipos de mensagem baseados
+ * Tipos de texto baseados
  * nas classes do bootstrap
  */
-export const MENSAGEM_TIPO_SUCESSO = "success";
-export const MENSAGEM_TIPO_ALERTA = "warning";
-export const MENSAGEM_TIPO_ERRO = "danger";
+export const TIPO_SUCESSO = "success";
+export const TIPO_ALERTA = "warning";
+export const TIPO_ERRO = "danger";
+
+/**
+ * Tipos de mensagem de
+ * nenhum item cadastrado
+ * pelo usuário
+ */
+export const MENSAGEM_NENHUM_LINK_CADASTRADO = "Nenhum link cadastrado";
+export const MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA =
+  "Nenhuma postagem cadastrada";
+export const MENSAGEM_NENHUM_PET_CADASTRADO = "Nenhum pet cadastrado";
+
+/**
+ * Tipos de mensagem de
+ * nenhum item favoritado
+ * pelo usuário
+ */
+export const MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA =
+  "Nenhuma postagem favoritada";
+export const MENSAGEM_NENHUM_PET_FAVORITADO = "Nenhum pet favoritado";

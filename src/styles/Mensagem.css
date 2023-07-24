@@ -2,7 +2,7 @@
   position: fixed;
   top: 60px;
   right: 10px;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .mensagem-global .alert {

@@ -2,10 +2,31 @@ import { Dropdown, Image } from "react-bootstrap";
 import { AiOutlineLink } from "react-icons/ai";
 import { FaDog } from "react-icons/fa";
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
+import { IoMdBook } from "react-icons/io";
 
 function NavBarUsuarioLogado({ usuarioLogado, logout }) {
   return (
     <>
+      <div className="d-flex justify-content-center align-items-center">
+        <Dropdown>
+          <Dropdown.Toggle className="bg-light text-secondary nav nav-link d-flex justify-content-center align-items-center gap-1">
+            <IoMdBook /> Blog
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <NavLinkToTop className="dropdown-item" to="/blog">
+              Todas as Postagens
+            </NavLinkToTop>
+            <NavLinkToTop className="dropdown-item" to="/minhas/postagens">
+              Minhas Postagens
+            </NavLinkToTop>
+            <NavLinkToTop className="dropdown-item" to="/postagens/favoritas">
+              Minhas Postagens Favoritas
+            </NavLinkToTop>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+
       <div className="d-flex justify-content-center align-items-center">
         <Dropdown>
           <Dropdown.Toggle className="btn btn-warning d-flex justify-content-center align-items-center gap-1">
@@ -13,6 +34,9 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
+            <NavLinkToTop className="dropdown-item" to="/todos/pets">
+              Todos os Pets
+            </NavLinkToTop>
             <NavLinkToTop className="dropdown-item" to="/meus/pets">
               Meus Pets
             </NavLinkToTop>

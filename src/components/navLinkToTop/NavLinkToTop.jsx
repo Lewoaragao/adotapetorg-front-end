@@ -21,7 +21,7 @@ export default function NavLinkToTop({
 
   return (
     <NavLink
-      disabled={disabled == null ? false : disabled === "false" ? false : true}
+      disabled={disabled === null || disabled === "false" ? false : true}
       to={to}
       className={className}
       title={title}

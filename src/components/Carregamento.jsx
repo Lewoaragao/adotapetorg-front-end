@@ -1,6 +1,6 @@
 import { Card, Col, Row } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import placeholderPet from "../images/placeholder-pet.jpg";
+import placeholder from "../images/placeholder-imagem.jpg";
 import NavLinkToTop from "./navLinkToTop/NavLinkToTop";
 
 export default function CarregamentoTela() {
@@ -23,19 +23,21 @@ export function CarregamentoBotao({ variant }) {
   );
 }
 
-export function CarregamentoListaPet() {
-  const numeroPetsPorPagina = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+export function CarregamentoLista() {
+  const numeroElementosPorPagina = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   return (
     <>
       <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-        {numeroPetsPorPagina.map((n) => (
+        {numeroElementosPorPagina.map((n) => (
           <Col key={n}>
             <Card>
-              <Card.Img
-                variant="top"
-                src={placeholderPet}
-                alt={`foto carregamento lista pet`}
-              />
+              <div className="image-container">
+                <Card.Img
+                  variant="top"
+                  src={placeholder}
+                  alt={`foto carregamento lista`}
+                />
+              </div>
               <Card.Body>
                 <Card.Title>Carregando...</Card.Title>
                 <Card.Text>Carregando...</Card.Text>

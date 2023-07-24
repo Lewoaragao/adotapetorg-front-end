@@ -1,9 +1,11 @@
+import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from "react-bootstrap";
-import TituloPagina from "./../../components/TituloPagina";
+import { CarregamentoLista } from "../../components/Carregamento";
+import { MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA } from "../../components/Constantes";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
-import { useEffect, useState } from "react";
+import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { CarregamentoListaPet } from "../../components/Carregamento";
+import TituloPagina from "./../../components/TituloPagina";
 
 /**
  * Aqui será a pagina geral do blog
@@ -21,7 +23,7 @@ import { CarregamentoListaPet } from "../../components/Carregamento";
 export default function Blog() {
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [mensagem, setMensagem] = useState(false);
+  const { setarMensagem } = useContext(MessageContext);
 
   useEffect(() => {
     listarTodasPostagens();
@@ -31,10 +33,11 @@ export default function Blog() {
   function listarTodasPostagens() {
     Api.get(`blog/todas/postagens`)
       .then(({ data }) => {
-        setListaPostagens(data);
+        setListaPostagens(data.data);
       })
       .catch(({ response }) => {
-        setMensagem(response.data.message);
+        setListaPostagens(null);
+        setarMensagem(response.data.message, null);
       })
       .finally(() => {
         setIsLoading(false);
@@ -45,28 +48,29 @@ export default function Blog() {
     <>
       <TituloPagina titulo="Blog" />
 
-      <div className="mb-3">
+      <>
         {isLoading ? (
-          <CarregamentoListaPet />
+          <CarregamentoLista />
         ) : (
           <>
-            {listaPostagens == null ? (
-              <div>{mensagem}</div>
+            {listaPostagens === null || listaPostagens.length === 0 ? (
+              <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
             ) : (
               <>
-                <h2>Blog: Postagens</h2>
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                   <>
                     {listaPostagens.map((postagem) => (
                       <Col key={postagem.id}>
                         <Card>
-                          <Card.Img
-                            variant="top"
-                            src={
-                              process.env.REACT_APP_API_URL + postagem.imagem
-                            }
-                            alt={`foto principal da postagem ${postagem.titulo}`}
-                          />
+                          <div className="image-container">
+                            <Card.Img
+                              variant="top"
+                              src={
+                                process.env.REACT_APP_API_URL + postagem.imagem
+                              }
+                              alt={`foto principal da postagem ${postagem.titulo}`}
+                            />
+                          </div>
                           <Card.Body>
                             <Card.Title>{postagem.titulo}</Card.Title>
                             <Card.Text>{postagem.subtitulo}</Card.Text>
@@ -87,7 +91,7 @@ export default function Blog() {
             )}
           </>
         )}
-      </div>
+      </>
     </>
   );
 }

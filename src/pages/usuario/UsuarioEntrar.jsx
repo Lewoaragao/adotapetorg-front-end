@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { InputGroup, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -21,6 +21,12 @@ function UsuarioEntrar() {
   const { setarMensagem } = useContext(MessageContext);
   const { setarUsuarioLogado } = useContext(AuthContext);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token") != null) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   function validaCampos() {
     if (email === "" || email === null) {

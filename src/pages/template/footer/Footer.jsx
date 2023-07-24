@@ -11,6 +11,14 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
+import {
+  TELA_BLOG,
+  TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
+  TELA_INICIAL,
+  TELA_MEUS_LINKS,
+  TELA_POLITICA_PRIVACIDADE,
+  TELA_SOBRE,
+} from "./../../../components/Constantes";
 
 function Footer({ logo }) {
   const [aposAnoInicio, setAposAnoInicio] = useState(false);
@@ -101,8 +109,8 @@ function Footer({ logo }) {
               <p>{process.env.REACT_APP_SITE_DESCRIPTION}</p>
             </div>
 
-            <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Serviços</h6>
+            <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">Utilidade</h6>
               <p>
                 <NavLinkToTop
                   to="/cadastrar/pet"
@@ -113,19 +121,35 @@ function Footer({ logo }) {
               </p>
               <p>
                 <NavLinkToTop
-                  to="/meus/links"
+                  to={TELA_BLOG_POSTAGEM_USUARIO_LOGADO}
+                  className="text-reset text-underline-hover"
+                >
+                  Cadastrar Postagem
+                </NavLinkToTop>
+              </p>
+              <p>
+                <NavLinkToTop
+                  to={TELA_MEUS_LINKS}
                   className="text-reset text-underline-hover"
                 >
                   Link na Bio
                 </NavLinkToTop>
               </p>
+              <p>
+                <NavLinkToTop
+                  to={TELA_POLITICA_PRIVACIDADE}
+                  className="text-reset text-underline-hover"
+                >
+                  Política de privacidade
+                </NavLinkToTop>
+              </p>
             </div>
 
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Links úteis</h6>
+              <h6 className="text-uppercase fw-bold mb-4">Navegação</h6>
               <p>
                 <NavLinkToTop
-                  to="/"
+                  to={TELA_INICIAL}
                   className="text-reset text-underline-hover"
                 >
                   Início
@@ -133,7 +157,7 @@ function Footer({ logo }) {
               </p>
               <p>
                 <NavLinkToTop
-                  to="/sobre"
+                  to={TELA_SOBRE}
                   className="text-reset text-underline-hover"
                 >
                   Sobre
@@ -141,10 +165,10 @@ function Footer({ logo }) {
               </p>
               <p>
                 <NavLinkToTop
-                  to="/politica/privacidade"
+                  to={TELA_BLOG}
                   className="text-reset text-underline-hover"
                 >
-                  Política de privacidade
+                  Blog
                 </NavLinkToTop>
               </p>
             </div>

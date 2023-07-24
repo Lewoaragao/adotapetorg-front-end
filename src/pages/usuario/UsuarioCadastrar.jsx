@@ -100,6 +100,13 @@ function UsuarioCadastrar() {
   function cadastrarUsuario(e) {
     e.preventDefault();
     window.scrollTo(0, 0);
+
+    let validaFlgCelulargWhats =
+      celular === "" || !flgCelularWhatsapp ? FALSE_PHP : TRUE_PHP;
+
+    let validaFlgTelefoneWhats =
+      telefone === "" || flgTelefoneWhatsapp ? FALSE_PHP : TRUE_PHP;
+
     if (validaCampos()) {
       setIsLoading(true);
       Api.post(
@@ -118,19 +125,9 @@ function UsuarioCadastrar() {
           endereco_estado: enderecoEstado,
           endereco_pais: enderecoPais,
           telefone: telefone === "" ? null : telefone,
-          flg_telefone_whatsapp:
-            telefone === ""
-              ? FALSE_PHP
-              : flgTelefoneWhatsapp
-              ? TRUE_PHP
-              : FALSE_PHP,
+          flg_telefone_whatsapp: validaFlgTelefoneWhats,
           celular: celular === "" ? null : celular,
-          flg_celular_whatsapp:
-            celular === ""
-              ? FALSE_PHP
-              : flgCelularWhatsapp
-              ? TRUE_PHP
-              : FALSE_PHP,
+          flg_celular_whatsapp: validaFlgCelulargWhats,
         },
         {
           headers: {
@@ -158,16 +155,15 @@ function UsuarioCadastrar() {
         .catch(({ response }) => {
           setarMensagem(response.data.message, null);
           setIsLoading(false);
-          return;
         });
     }
   }
 
-  function mudarflgTelefoneWhatsapp() {
+  function mudarFlgTelefoneWhatsapp() {
     setFlgTelefoneWhatsapp(!flgTelefoneWhatsapp);
   }
 
-  function mudarflgCelularWhatsapp() {
+  function mudarFlgCelularWhatsapp() {
     setFlgCelularWhatsapp(!flgCelularWhatsapp);
   }
 
@@ -407,7 +403,7 @@ function UsuarioCadastrar() {
                   value={telefone}
                   required
                   onChange={(e) => setTelefone(e.target.value)}
-                  maxLength={8}
+                  minLength={8}
                 />
               </Form.Group>
             </Col>
@@ -416,7 +412,7 @@ function UsuarioCadastrar() {
               className="d-flex justify-content-start align-items-center py-3"
             >
               <Form.Check
-                onChange={mudarflgTelefoneWhatsapp}
+                onChange={mudarFlgTelefoneWhatsapp}
                 variant="secondary"
                 id="flgTelefoneWhatsapp"
                 label="Telefone é whatsapp?"
@@ -437,7 +433,7 @@ function UsuarioCadastrar() {
                   value={celular}
                   required
                   onChange={(e) => setCelular(e.target.value)}
-                  maxLength={11}
+                  minLength={11}
                 />
               </Form.Group>
             </Col>
@@ -446,7 +442,7 @@ function UsuarioCadastrar() {
               className="d-flex justify-content-start align-items-center py-3"
             >
               <Form.Check
-                onChange={mudarflgCelularWhatsapp}
+                onChange={mudarFlgCelularWhatsapp}
                 variant="secondary"
                 id="flgCelularWhatsapp"
                 label="Celular é whatsapp?"
