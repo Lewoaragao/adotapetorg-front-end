@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -10,6 +10,8 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();
@@ -175,8 +177,56 @@ function UsuarioCadastrar() {
     setIsPessoa(!isPessoa);
   }
 
+    // TESTE GOOGLE AUTH
+    const [name, setName] = useState("");
+    const [profilePic, setProfilePic] = useState("");
+    const [isLoggedIn, setIsLoggedIn] = useState("");
+  
+    const responseGoogle = (response) => {
+      console.log(response);
+
+      const {
+        profileObj: { name, email, imageUrl },
+      } = response;
+
+      setName(name);
+      setEmail(email);
+      setProfilePic(imageUrl);
+      setIsLoggedIn(true);
+    };
+
+    useEffect(() => {
+      function start() {
+        gapi.client.init({
+          clientId: "260590597996-gstt80pf29kqusj7hh11fv6k3skqvpe4.apps.googleusercontent.com",
+          scope: 'email',
+        });
+      }
+  
+      gapi.load('client:auth2', start);
+    }, []);
+
   return (
     <>
+
+      <GoogleLogin
+				clientId="260590597996-gstt80pf29kqusj7hh11fv6k3skqvpe4.apps.googleusercontent.com"
+				buttonText="Continuar com o Google"
+				onSuccess={responseGoogle}
+				onFailure={responseGoogle}
+			/>
+
+			{isLoggedIn ? (
+				<div style={{ textAlign: "center" }}>
+					<h1>User Information</h1>
+					<img className="img-thumbnail" src={profilePic} alt="Profile" />
+					<p>Name: {name}</p>
+					<p>Email: {email}</p>
+				</div>
+			) : (
+				""
+			)}
+
       {isLoading ? (
         <CarregamentoTela />
       ) : (
