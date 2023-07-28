@@ -9,7 +9,8 @@
 /coverage
 
 # production
-# /build
+# ignorar pois ao enviar pelo git dá conflito, deve ser enviado manual para produção
+/build
 
 # misc
 .DS_Store
