@@ -82,3 +82,6 @@ export const MENSAGEM_NENHUM_PET_CADASTRADO = "Nenhum pet cadastrado";
 export const MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA =
   "Nenhuma postagem favoritada";
 export const MENSAGEM_NENHUM_PET_FAVORITADO = "Nenhum pet favoritado";
+
+// MAPEANDO TIPOS DE LOGIN
+export const LOGIN_EXTERNO_TIPO_GOOGLE = 1;

@@ -12,27 +12,25 @@ import TituloPagina from "./../../components/TituloPagina";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { AuthGoogle } from "../../contexts/AuthGoogle";
 import { FcGoogle } from "react-icons/fc";
+import {
+  formataPrimeiroNome,
+  formataUltimoNome,
+  obterParteAntesDoArroba,
+} from "../../utils/Mask";
+import { gerarNumeroAleatorio } from "../../utils/Util";
+import { LOGIN_EXTERNO_TIPO_GOOGLE } from "../../components/Constantes";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();
-  const [usuario, setUsuario] = useState("");
-  const [primeiroNome, setPrimeiroNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaRepetida, setSenhaRepetida] = useState("");
-  const [imagem, setImagem] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setarMensagem } = useContext(MessageContext);
   const { setarUsuarioLogado } = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
 
   function validaCampos() {
-    if (usuario === "" || usuario === null) {
-      setarMensagem("Preencha o campo usuário", null);
-      return false;
-    }
-
     if (email === "" || email === null) {
       setarMensagem("Preencha o campo email", null);
       return false;
@@ -56,8 +54,7 @@ function UsuarioCadastrar() {
     return true;
   }
 
-  function cadastrarUsuario(e) {
-    e.preventDefault();
+  function cadastrarUsuario() {
     window.scrollTo(0, 0);
 
     if (validaCampos()) {
@@ -65,12 +62,9 @@ function UsuarioCadastrar() {
       Api.post(
         "users",
         {
-          usuario: usuario,
-          primeiro_nome: primeiroNome === "" ? null : primeiroNome,
-          sobrenome: sobrenome === "" ? null : sobrenome,
+          usuario: obterParteAntesDoArroba(email) + gerarNumeroAleatorio(4),
           email: email,
           senha: senha,
-          imagem: imagem,
         },
         {
           headers: {
@@ -102,31 +96,78 @@ function UsuarioCadastrar() {
     }
   }
 
-  const signInGoogle = () =>
+  function cadastrarUsuarioGoogle(
+    primeiroNome,
+    sobrenome,
+    email,
+    googleId,
+    imagem
+  ) {
+    window.scrollTo(0, 0);
+
+    setIsLoading(true);
+    Api.post(
+      "users",
+      {
+        usuario: obterParteAntesDoArroba(email) + gerarNumeroAleatorio(4),
+        primeiro_nome: primeiroNome,
+        sobrenome: sobrenome,
+        email: email,
+        senha: gerarNumeroAleatorio(20),
+        google_id: googleId,
+        imagem_perfil_externo: imagem,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then(() => {
+        window.scrollTo(0, 0);
+        Api.post("login/externo", {
+          email: email,
+          login_externo_tipo: LOGIN_EXTERNO_TIPO_GOOGLE,
+          google_id: googleId,
+        })
+          .then(({ data }) => {
+            setarUsuarioLogado(data.usuario, data.token, true);
+            navigate("/");
+          })
+          .catch(({ response }) => {
+            setarMensagem(response.data.message, null);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+        setIsLoading(false);
+      });
+  }
+
+  const registroComGoogle = async () => {
     signInWithPopup(AuthGoogle, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
+        const primeiroNome = formataPrimeiroNome(result.user.displayName);
+        const sobrenome = formataUltimoNome(result.user.displayName);
+        const email = result.user.email;
+        const googleId = result.user.uid;
+        const imagem = result.user.photoURL;
 
-        console.log(credential);
-        console.log(token);
-        console.log(user);
+        cadastrarUsuarioGoogle(
+          primeiroNome,
+          sobrenome,
+          email,
+          googleId,
+          imagem
+        );
       })
       .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+        setarMensagem("Erro no registro pelo Google " + error.message, null);
       });
+  };
 
   return (
     <div className="mx-auto">
@@ -140,7 +181,7 @@ function UsuarioCadastrar() {
             </Row>
 
             <Row className="mb-3">
-              <Button onClick={signInGoogle}>
+              <Button onClick={registroComGoogle}>
                 <FcGoogle /> Cadastrar-se com o Google
               </Button>
             </Row>
@@ -193,7 +234,11 @@ function UsuarioCadastrar() {
               </Form.Group>
             </Row>
 
-            <Button variant="primary" type="submit" onClick={cadastrarUsuario}>
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={() => cadastrarUsuario()}
+            >
               Cadastrar
             </Button>
 
