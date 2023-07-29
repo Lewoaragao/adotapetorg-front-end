@@ -57,12 +57,6 @@ export function gerarNumeroAleatorio(qtdDigitos) {
   return String(numeroAleatorio);
 }
 
-export function verificaListaNulaVazia(lista) {
-  if (lista === null) {
-    return true;
-  } else if (lista.length === 0) {
-    return true;
-  } else {
-    return false;
-  }
+export function verificaLista(lista) {
+  return lista === null || lista === undefined || lista.length === 0;
 }

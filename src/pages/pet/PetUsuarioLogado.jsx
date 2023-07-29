@@ -36,7 +36,7 @@ import {
   formataSexoPet,
   formataTamanhoPet,
 } from "../../utils/Mask";
-import { verificaListaNulaVazia } from "../../utils/Util";
+import { verificaLista } from "../../utils/Util";
 
 export default function PetUsuarioLogado() {
   const { token, usuarioLogado } = useContext(AuthContext);
@@ -121,7 +121,7 @@ export default function PetUsuarioLogado() {
       return false;
     }
 
-    if (verificaListaNulaVazia(listaCoresSelecionadas)) {
+    if (verificaLista(listaCoresSelecionadas)) {
       setarMensagem("Selecione pelo menos uma cor", null);
       return false;
     }
@@ -307,7 +307,7 @@ export default function PetUsuarioLogado() {
       ) : (
         <>
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {verificaListaNulaVazia(listaPets) ? (
+            {verificaLista(listaPets) ? (
               <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
             ) : (
               <>
@@ -459,7 +459,7 @@ export default function PetUsuarioLogado() {
                       </option>
                     )}
 
-                    {!verificaListaNulaVazia(listaRacas) &&
+                    {!verificaLista(listaRacas) &&
                       listaRacas.map((raca) => (
                         <option key={raca.id} value={raca.id} name={raca.raca}>
                           {raca.raca}

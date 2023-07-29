@@ -6,7 +6,7 @@ import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
-import { verificaListaNulaVazia } from "../../utils/Util";
+import { verificaLista } from "../../utils/Util";
 
 /**
  * Aqui será a pagina geral do blog
@@ -54,7 +54,7 @@ export default function Blog() {
           <CarregamentoLista />
         ) : (
           <>
-            {verificaListaNulaVazia(listaPostagens) ? (
+            {verificaLista(listaPostagens) ? (
               <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
             ) : (
               <>

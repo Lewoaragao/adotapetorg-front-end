@@ -11,7 +11,7 @@ import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { verificaListaNulaVazia } from "../../utils/Util";
+import { verificaLista } from "../../utils/Util";
 
 export default function PetUsuarioLogadoFavoritos() {
   const { token } = useContext(AuthContext);
@@ -69,7 +69,7 @@ export default function PetUsuarioLogadoFavoritos() {
       ) : (
         <>
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {verificaListaNulaVazia(listaPets) ? (
+            {verificaLista(listaPets) ? (
               <div className="mb-3">{MENSAGEM_NENHUM_PET_FAVORITADO}</div>
             ) : (
               <>

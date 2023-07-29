@@ -10,7 +10,7 @@ import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
-import { verificaListaNulaVazia } from "../../utils/Util";
+import { verificaLista } from "../../utils/Util";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -107,7 +107,7 @@ function Inicio({ logo }) {
           <CarregamentoLista />
         ) : (
           <>
-            {verificaListaNulaVazia(listaPets) ? (
+            {verificaLista(listaPets) ? (
               <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
             ) : (
               <>
@@ -140,7 +140,7 @@ function Inicio({ logo }) {
               </>
             )}
 
-            {!verificaListaNulaVazia(listaPets) && (
+            {!verificaLista(listaPets) && (
               <Row className="my-3">
                 <Pagination className="d-flex justify-content-center align-items-center">
                   {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
@@ -202,7 +202,7 @@ function Inicio({ logo }) {
           <CarregamentoLista />
         ) : (
           <>
-            {verificaListaNulaVazia(listaPostagens) ? (
+            {verificaLista(listaPostagens) ? (
               <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA}</div>
             ) : (
               <>

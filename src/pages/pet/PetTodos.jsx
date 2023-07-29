@@ -6,7 +6,7 @@ import TituloPagina from "../../components/TituloPagina";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import { verificaListaNulaVazia } from "../../utils/Util";
+import { verificaLista } from "../../utils/Util";
 
 export default function PetTodos() {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +45,7 @@ export default function PetTodos() {
         <CarregamentoLista />
       ) : (
         <>
-          {verificaListaNulaVazia(listaPets) ? (
+          {verificaLista(listaPets) ? (
             <div className="mb-3">{MENSAGEM_NENHUM_PET_CADASTRADO}</div>
           ) : (
             <>
@@ -78,7 +78,7 @@ export default function PetTodos() {
             </>
           )}
 
-          {!verificaListaNulaVazia(listaPets) && (
+          {!verificaLista(listaPets) && (
             <Row className="mt-3">
               <Pagination className="d-flex justify-content-center align-items-center">
                 {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
