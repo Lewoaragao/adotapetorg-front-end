@@ -11,6 +11,7 @@ import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
+import { verificaListaNulaVazia } from "../../utils/Util";
 
 /**
  * Aqui será a pagina dedicada
@@ -76,7 +77,7 @@ export default function BlogPostagemUsuarioLogadoFavoritos() {
           <CarregamentoLista />
         ) : (
           <>
-            {listaPostagens === null ? (
+            {verificaListaNulaVazia(listaPostagens) ? (
               <div className="mb-3">{MENSAGEM_NENHUMA_POSTAGEM_FAVORITADA}</div>
             ) : (
               <>

@@ -88,12 +88,15 @@ export default function Links() {
             {listaLinks != null && (
               <Col xs={12} sm={8} md={6} className="mx-auto">
                 {listaLinks.map((link) => (
-                  <a className="text-decoration-none" href={link.link}>
+                  <a
+                    key={link.id}
+                    className="text-decoration-none"
+                    href={link.link}
+                  >
                     <ListGroup.Item
                       action
                       variant="primary"
                       className="d-flex justify-content-start align-items-center gap-3 mb-3"
-                      key={link.id}
                     >
                       <div className="my-auto">
                         {link.imagem === "" ? (
