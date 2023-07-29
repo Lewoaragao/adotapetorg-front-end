@@ -530,7 +530,6 @@ export default function PetUsuarioLogado() {
                     id="nome"
                     onChange={(e) => setNome(e.target.value)}
                     value={nome}
-                    autoComplete="off"
                   />
                 </Form.Group>
 
@@ -544,7 +543,6 @@ export default function PetUsuarioLogado() {
                     id="apelido"
                     onChange={(e) => setApelido(e.target.value)}
                     value={apelido}
-                    autoComplete="off"
                   />
                 </Form.Group>
 
@@ -587,7 +585,6 @@ export default function PetUsuarioLogado() {
                       id="necessidadesEspeciais"
                       onChange={(e) => setNecessidadesEspeciais(e.target.value)}
                       value={necessidadesEspeciais}
-                      autoComplete="off"
                     />
                   </Form.Group>
                 )}

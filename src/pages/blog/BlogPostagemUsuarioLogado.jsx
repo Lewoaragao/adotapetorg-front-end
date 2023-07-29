@@ -421,7 +421,6 @@ export default function BlogPostagemUsuarioLogado() {
               required
               autoFocus
               onChange={(e) => setTitulo(e.target.value)}
-              autoComplete="off"
             />
           </Form.Group>
 
@@ -436,7 +435,6 @@ export default function BlogPostagemUsuarioLogado() {
               value={subtitulo}
               required
               onChange={(e) => setSubtitulo(e.target.value)}
-              autoComplete="off"
             />
           </Form.Group>
 

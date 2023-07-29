@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { Row } from "react-bootstrap";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,6 @@ import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { AuthGoogle } from "../../contexts/AuthGoogle";
-import { FcGoogle } from "react-icons/fc";
 import {
   formataPrimeiroNome,
   formataUltimoNome,
@@ -19,6 +17,7 @@ import {
 } from "../../utils/Mask";
 import { gerarNumeroAleatorio } from "../../utils/Util";
 import { LOGIN_EXTERNO_TIPO_GOOGLE } from "../../components/Constantes";
+import { AiFillGoogleCircle } from "react-icons/ai";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();
@@ -176,63 +175,83 @@ function UsuarioCadastrar() {
       ) : (
         <Form className="d-flex justify-content-center align-items-center">
           <div>
-            <Row>
-              <TituloPagina titulo="Cadastrar Usuário" />
-            </Row>
+            <TituloPagina titulo="Cadastrar Usuário" />
 
-            <Row className="mb-3">
-              <Button onClick={registroComGoogle}>
-                <FcGoogle /> Cadastrar-se com o Google
-              </Button>
-            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label className="text-muted">
+                Ao cadastrar-se você aceita o nosso termo de{" "}
+                <NavLinkToTop
+                  className="text-reset text-underline-hover"
+                  to="/politica/privacidade"
+                >
+                  Politica de Privacidade.
+                </NavLinkToTop>
+              </Form.Label>
+            </Form.Group>
 
-            <Row className="mb-3">
-              <Form.Group>
-                <Form.Label className="fw-bold" htmlFor="email">
-                  E-mail
-                </Form.Label>
-                <Form.Control
-                  id="email"
-                  type="email"
-                  placeholder="Digite seu melhor e-mail"
-                  value={email}
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-            </Row>
+            <Button
+              variant="outline-primary"
+              onClick={registroComGoogle}
+              className="d-flex justify-content-center align-items-center gap-1 mb-3 mx-auto w-100"
+            >
+              <AiFillGoogleCircle />
+              Cadastrar-se com o Google
+            </Button>
 
-            <Row className="mb-3">
-              <Form.Group>
-                <Form.Label className="fw-bold" htmlFor="senha">
-                  Senha
-                </Form.Label>
-                <Form.Control
-                  id="senha"
-                  type="password"
-                  placeholder="Digite sua senha"
-                  value={senha}
-                  required
-                  onChange={(e) => setSenha(e.target.value)}
-                />
-              </Form.Group>
-            </Row>
+            {/* <Button
+              variant="outline-primary"
+              // onClick={registroComFacebook}
+              className="d-flex justify-content-center align-items-center gap-1 mb-3 mx-auto w-100"
+            >
+              <BiLogoFacebookCircle />
+              Cadastrar-se com o Facebook
+            </Button> */}
 
-            <Row className="mb-3">
-              <Form.Group>
-                <Form.Label className="fw-bold" htmlFor="senhaRepetida">
-                  Repetir senha
-                </Form.Label>
-                <Form.Control
-                  id="senhaRepetida"
-                  type="password"
-                  placeholder="Repita a senha"
-                  value={senhaRepetida}
-                  required
-                  onChange={(e) => setSenhaRepetida(e.target.value)}
-                />
-              </Form.Group>
-            </Row>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="email">
+                E-mail
+              </Form.Label>
+              <Form.Control
+                id="email"
+                type="email"
+                placeholder="Digite seu melhor e-mail"
+                value={email}
+                required
+                autoFocus
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="off"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="senha">
+                Senha
+              </Form.Label>
+              <Form.Control
+                id="senha"
+                type="password"
+                placeholder="Digite sua senha"
+                value={senha}
+                required
+                onChange={(e) => setSenha(e.target.value)}
+                autoComplete="off"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="senhaRepetida">
+                Repetir senha
+              </Form.Label>
+              <Form.Control
+                id="senhaRepetida"
+                type="password"
+                placeholder="Repita a senha"
+                value={senhaRepetida}
+                required
+                onChange={(e) => setSenhaRepetida(e.target.value)}
+                autoComplete="off"
+              />
+            </Form.Group>
 
             <Button
               variant="primary"

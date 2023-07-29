@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { InputGroup, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { HiOutlineMail } from "react-icons/hi";
@@ -11,9 +10,11 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
-import { FcGoogle } from "react-icons/fc";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { AuthGoogle } from "../../contexts/AuthGoogle";
+import { LOGIN_EXTERNO_TIPO_GOOGLE } from "../../components/Constantes";
+import { AiFillGoogleCircle } from "react-icons/ai";
+import { InputGroup } from "react-bootstrap";
 
 function UsuarioEntrar() {
   const navigate = useNavigate();
@@ -71,14 +72,13 @@ function UsuarioEntrar() {
 
   function entrarUsuarioGoogle(email, googleId) {
     setIsLoadingButton(true);
-    Api.post("login", {
+    Api.post("login/externo", {
       email: email,
       google_id: googleId,
+      login_externo_tipo: LOGIN_EXTERNO_TIPO_GOOGLE,
     })
       .then(({ data }) => {
-        lembreMe
-          ? localStorage.setItem("token", data.token)
-          : localStorage.removeItem("token");
+        localStorage.setItem("token", data.token);
         setarUsuarioLogado(data.usuario, data.token, true);
         navigate("/");
       })
@@ -105,63 +105,64 @@ function UsuarioEntrar() {
     <>
       <Form className="d-flex justify-content-center align-items-center">
         <div>
-          <TituloPagina titulo="Entrar" />
+          <TituloPagina titulo="Entrar Usuário" />
 
-          <Row className="mb-3">
-            <Button onClick={entrarComGoogle}>
-              <FcGoogle />
-              Entrar com o Google
-            </Button>
-          </Row>
+          <Button
+            variant="outline-primary"
+            onClick={entrarComGoogle}
+            className="d-flex justify-content-center align-items-center gap-1 mb-3 mx-auto w-100"
+          >
+            <AiFillGoogleCircle />
+            Entrar com o Google
+          </Button>
 
-          <Row className="mb-3">
-            <InputGroup>
-              <InputGroup.Text id="email">
-                <HiOutlineMail />
-              </InputGroup.Text>
-              <Form.Control
-                id="email"
-                type="email"
-                placeholder="E-mail"
-                value={email}
-                required
-                autoFocus
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </InputGroup>
-          </Row>
+          {/* <Button
+              variant="outline-primary"
+              // onClick={entrarComFacebook}
+              className="d-flex justify-content-center align-items-center gap-1 mb-3 mx-auto w-100"
+            >
+              <BiLogoFacebookCircle />
+              Entrar com o Facebook
+            </Button> */}
 
-          <Row className="mb-3">
-            <InputGroup>
-              <InputGroup.Text id="senha">
-                <RiLockPasswordFill />
-              </InputGroup.Text>
-              <Form.Control
-                id="senha"
-                type="password"
-                placeholder="Senha"
-                value={senha}
-                required
-                onChange={(e) => {
-                  setSenha(e.target.value);
-                }}
-              />
-            </InputGroup>
-          </Row>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="email">
+              <HiOutlineMail />
+            </InputGroup.Text>
+            <Form.Control
+              id="email"
+              type="email"
+              placeholder="Digite seu e-mail"
+              value={email}
+              required
+              autoFocus
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
+            />
+          </InputGroup>
 
-          <Row>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check
-                type="checkbox"
-                label="Lembre-me"
-                onChange={(e) => {
-                  setLembreMe(e.target.value);
-                }}
-              />
-            </Form.Group>
-          </Row>
+          <InputGroup className="mb-3">
+            <InputGroup.Text id="senha">
+              <RiLockPasswordFill />
+            </InputGroup.Text>
+            <Form.Control
+              id="senha"
+              type="password"
+              placeholder="Digite sua senha"
+              value={senha}
+              required
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete="off"
+            />
+          </InputGroup>
+
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check
+              type="checkbox"
+              label="Lembre-me"
+              onChange={(e) => setLembreMe(e.target.value)}
+            />
+          </Form.Group>
 
           <Button
             className="mb-3"
