@@ -49,3 +49,10 @@ export function dataHoraAtual() {
   const segundos = hoje.getSeconds();
   return `${dia}/${mes}/${ano} - ${horas}:${minutos}:${segundos}`;
 }
+
+export function gerarNumeroAleatorio(qtdDigitos) {
+  const min = 10 ** (qtdDigitos - 1);
+  const max = 10 ** qtdDigitos - 1;
+  const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
+  return String(numeroAleatorio);
+}

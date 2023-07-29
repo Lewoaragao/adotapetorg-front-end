@@ -62,7 +62,11 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
             <Image
               width="20px"
               roundedCircle
-              src={process.env.REACT_APP_API_URL + usuarioLogado.imagem}
+              src={
+                usuarioLogado.imagem.includes("https")
+                  ? usuarioLogado.imagem
+                  : process.env.REACT_APP_API_URL + usuarioLogado.imagem
+              }
               alt={`Foto do usuário ${
                 usuarioLogado.is_pessoa
                   ? usuarioLogado.primeiro_nome

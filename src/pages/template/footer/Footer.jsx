@@ -13,7 +13,6 @@ import {
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import {
   TELA_BLOG,
-  TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
   TELA_INICIAL,
   TELA_MEUS_LINKS,
   TELA_POLITICA_PRIVACIDADE,
@@ -111,22 +110,6 @@ function Footer({ logo }) {
 
             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
               <h6 className="text-uppercase fw-bold mb-4">Utilidade</h6>
-              <p>
-                <NavLinkToTop
-                  to="/cadastrar/pet"
-                  className="text-reset text-underline-hover"
-                >
-                  Cadastrar Pet
-                </NavLinkToTop>
-              </p>
-              <p>
-                <NavLinkToTop
-                  to={TELA_BLOG_POSTAGEM_USUARIO_LOGADO}
-                  className="text-reset text-underline-hover"
-                >
-                  Cadastrar Postagem
-                </NavLinkToTop>
-              </p>
               <p>
                 <NavLinkToTop
                   to={TELA_MEUS_LINKS}

@@ -5,5 +5,7 @@ import { AuthContext } from "../contexts/AuthContext";
 export default function PrivateRoute({ element }) {
   const { isUsuarioLogado } = useContext(AuthContext);
 
-  return <> {isUsuarioLogado ? element : <Navigate to="/usuario/entrar" />}</>;
+  return (
+    <> {isUsuarioLogado ? element : <Navigate to="/usuario/entrar" />}</>
+  );
 }

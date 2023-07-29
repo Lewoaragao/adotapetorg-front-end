@@ -141,6 +141,18 @@ export function formataPrimeiroUltimoNome(nomeCompleto) {
   return `${primeiroNome} ${ultimoNome}`;
 }
 
+export function formataPrimeiroNome(nomeCompleto) {
+  const partesNome = nomeCompleto.split(" ");
+  const primeiroNome = partesNome[0];
+  return `${primeiroNome}`;
+}
+
+export function formataUltimoNome(nomeCompleto) {
+  const partesNome = nomeCompleto.split(" ");
+  const ultimoNome = partesNome[partesNome.length - 1];
+  return `${ultimoNome}`;
+}
+
 /**
  * É usada uma exxpressão regular
  * para encontrar a hora no formato hh:mm:ss
@@ -191,4 +203,17 @@ export function formataMostrandoIdade(dataNascimento) {
   }
 
   return `${anos}a ${meses}m ${dias}d`;
+}
+
+export function obterParteAntesDoArroba(email) {
+  // Verifica se o email é válido
+  if (!email || typeof email !== "string" || !email.includes("@")) {
+    return "";
+  }
+
+  // Divide o email em duas partes usando o "@" como separador
+  const partes = email.split("@");
+
+  // Retorna a primeira parte (antes do "@")
+  return partes.shift();
 }

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { InputGroup, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { HiOutlineMail } from "react-icons/hi";
@@ -11,6 +10,11 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { AuthGoogle } from "../../contexts/AuthGoogle";
+import { LOGIN_EXTERNO_TIPO_GOOGLE } from "../../components/Constantes";
+import { AiFillGoogleCircle } from "react-icons/ai";
+import { InputGroup } from "react-bootstrap";
 
 function UsuarioEntrar() {
   const navigate = useNavigate();
@@ -21,6 +25,7 @@ function UsuarioEntrar() {
   const { setarMensagem } = useContext(MessageContext);
   const { setarUsuarioLogado } = useContext(AuthContext);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const provider = new GoogleAuthProvider();
 
   useEffect(() => {
     if (localStorage.getItem("token") != null) {
@@ -42,9 +47,7 @@ function UsuarioEntrar() {
     return true;
   }
 
-  function entrarUsuario(e) {
-    e.preventDefault();
-
+  function entrarUsuario() {
     if (validaCampos()) {
       setIsLoadingButton(true);
       Api.post("login", {
@@ -67,12 +70,61 @@ function UsuarioEntrar() {
     }
   }
 
+  function entrarUsuarioGoogle(email, googleId) {
+    setIsLoadingButton(true);
+    Api.post("login/externo", {
+      email: email,
+      google_id: googleId,
+      login_externo_tipo: LOGIN_EXTERNO_TIPO_GOOGLE,
+    })
+      .then(({ data }) => {
+        localStorage.setItem("token", data.token);
+        setarUsuarioLogado(data.usuario, data.token, true);
+        navigate("/");
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        setIsLoadingButton(false);
+      });
+  }
+
+  const entrarComGoogle = () =>
+    signInWithPopup(AuthGoogle, provider)
+      .then((result) => {
+        const email = result.user.email;
+        const googleId = result.user.uid;
+        entrarUsuarioGoogle(email, googleId);
+      })
+      .catch((error) => {
+        setarMensagem("Erro no registro pelo Google " + error.message, null);
+      });
+
   return (
     <>
-      <Form className="container col-md-12 col-lg-6">
-        <TituloPagina titulo="Entrar" />
+      <Form className="d-flex justify-content-center align-items-center">
+        <div>
+          <TituloPagina titulo="Entrar Usuário" />
 
-        <Row>
+          <Button
+            variant="outline-primary"
+            onClick={entrarComGoogle}
+            className="d-flex justify-content-center align-items-center gap-1 mb-3 mx-auto w-100"
+          >
+            <AiFillGoogleCircle />
+            Entrar com o Google
+          </Button>
+
+          {/* <Button
+              variant="outline-primary"
+              // onClick={entrarComFacebook}
+              className="d-flex justify-content-center align-items-center gap-1 mb-3 mx-auto w-100"
+            >
+              <BiLogoFacebookCircle />
+              Entrar com o Facebook
+            </Button> */}
+
           <InputGroup className="mb-3">
             <InputGroup.Text id="email">
               <HiOutlineMail />
@@ -80,18 +132,15 @@ function UsuarioEntrar() {
             <Form.Control
               id="email"
               type="email"
-              placeholder="E-mail"
+              placeholder="Digite seu e-mail"
               value={email}
               required
               autoFocus
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
             />
           </InputGroup>
-        </Row>
 
-        <Row>
           <InputGroup className="mb-3">
             <InputGroup.Text id="senha">
               <RiLockPasswordFill />
@@ -99,47 +148,42 @@ function UsuarioEntrar() {
             <Form.Control
               id="senha"
               type="password"
-              placeholder="Senha"
+              placeholder="Digite sua senha"
               value={senha}
               required
-              onChange={(e) => {
-                setSenha(e.target.value);
-              }}
+              onChange={(e) => setSenha(e.target.value)}
+              autoComplete="off"
             />
           </InputGroup>
-        </Row>
 
-        <Row>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check
               type="checkbox"
               label="Lembre-me"
-              onChange={(e) => {
-                setLembreMe(e.target.value);
-              }}
+              onChange={(e) => setLembreMe(e.target.value)}
             />
           </Form.Group>
-        </Row>
 
-        <Button
-          className="mb-3"
-          variant="primary"
-          type="submit"
-          onClick={entrarUsuario}
-          disabled={isLoadingButton}
-        >
-          {isLoadingButton ? <CarregamentoBotao variant="light" /> : "Entrar"}
-        </Button>
-
-        <p>
-          Não possui uma conta?{" "}
-          <NavLinkToTop
-            className="nav-link d-inline text-decoration-underline"
-            to="/cadastrar/usuario"
+          <Button
+            className="mb-3"
+            variant="primary"
+            type="submit"
+            onClick={entrarUsuario}
+            disabled={isLoadingButton}
           >
-            Cadastrar
-          </NavLinkToTop>
-        </p>
+            {isLoadingButton ? <CarregamentoBotao variant="light" /> : "Entrar"}
+          </Button>
+
+          <p>
+            Não possui uma conta?{" "}
+            <NavLinkToTop
+              className="nav-link d-inline text-decoration-underline"
+              to="/cadastrar/usuario"
+            >
+              Cadastrar
+            </NavLinkToTop>
+          </p>
+        </div>
       </Form>
     </>
   );
