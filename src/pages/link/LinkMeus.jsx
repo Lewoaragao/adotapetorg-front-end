@@ -28,6 +28,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { formataLink } from "../../utils/Mask";
+import { verificaListaNulaVazia } from "../../utils/Util";
 
 /**
  * Listar Links do usuário logado
@@ -289,7 +290,7 @@ export default function LinkMeus() {
       ) : (
         <>
           <ListGroup>
-            {listaLinks === null || listaLinks.length === 0 ? (
+            {verificaListaNulaVazia(listaLinks) ? (
               <div className="mb-3">{MENSAGEM_NENHUM_LINK_CADASTRADO}</div>
             ) : (
               <>

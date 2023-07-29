@@ -56,3 +56,13 @@ export function gerarNumeroAleatorio(qtdDigitos) {
   const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
   return String(numeroAleatorio);
 }
+
+export function verificaListaNulaVazia(lista) {
+  if (lista === null) {
+    return true;
+  } else if (lista.length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
