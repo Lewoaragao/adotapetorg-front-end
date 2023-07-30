@@ -104,8 +104,13 @@ function UsuarioEntrar() {
   return (
     <>
       <Form className="d-flex justify-content-center align-items-center">
-        <div>
+        <div style={{ maxWidth: "350px" }}>
           <TituloPagina titulo="Entrar Usuário" />
+
+          <Form.Label className="mb-3 text-muted">
+            Se você se cadastrou através de um login social, <br />
+            utilize o mesmo login para acessar sua conta.
+          </Form.Label>
 
           <Button
             variant="outline-primary"

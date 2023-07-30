@@ -2,7 +2,9 @@ import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
-import CarregamentoTela from "../../components/Carregamento";
+import CarregamentoTela, {
+  CarregamentoBotao,
+} from "../../components/Carregamento";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
@@ -16,8 +18,10 @@ import {
   obterParteAntesDoArroba,
 } from "../../utils/Mask";
 import { gerarNumeroAleatorio } from "../../utils/Util";
-import { LOGIN_EXTERNO_TIPO_GOOGLE } from "../../components/Constantes";
 import { AiFillGoogleCircle } from "react-icons/ai";
+import { InputGroup } from "react-bootstrap";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { HiOutlineMail } from "react-icons/hi";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();
@@ -25,6 +29,7 @@ function UsuarioCadastrar() {
   const [senha, setSenha] = useState("");
   const [senhaRepetida, setSenhaRepetida] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
   const { setarMensagem } = useContext(MessageContext);
   const { setarUsuarioLogado } = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
@@ -53,11 +58,12 @@ function UsuarioCadastrar() {
     return true;
   }
 
-  function cadastrarUsuario() {
+  function cadastrarUsuario(e) {
+    e.preventDefault();
     window.scrollTo(0, 0);
 
     if (validaCampos()) {
-      setIsLoading(true);
+      setIsLoadingButton(true);
       Api.post(
         "users",
         {
@@ -85,12 +91,14 @@ function UsuarioCadastrar() {
               setarMensagem(response.data.message, null);
             })
             .finally(() => {
-              setIsLoading(false);
+              setIsLoadingButton(false);
             });
         })
         .catch(({ response }) => {
           setarMensagem(response.data.message, null);
-          setIsLoading(false);
+        })
+        .finally(() => {
+          setIsLoadingButton(false);
         });
     }
   }
@@ -126,7 +134,6 @@ function UsuarioCadastrar() {
         window.scrollTo(0, 0);
         Api.post("login/externo", {
           email: email,
-          login_externo_tipo: LOGIN_EXTERNO_TIPO_GOOGLE,
           google_id: googleId,
         })
           .then(({ data }) => {
@@ -174,20 +181,18 @@ function UsuarioCadastrar() {
         <CarregamentoTela />
       ) : (
         <Form className="d-flex justify-content-center align-items-center">
-          <div>
+          <div style={{ maxWidth: "350px" }}>
             <TituloPagina titulo="Cadastrar Usuário" />
 
-            <Form.Group className="mb-3">
-              <Form.Label className="text-muted">
-                Ao cadastrar-se você aceita o nosso termo de{" "}
-                <NavLinkToTop
-                  className="text-reset text-underline-hover"
-                  to="/politica/privacidade"
-                >
-                  Politica de Privacidade.
-                </NavLinkToTop>
-              </Form.Label>
-            </Form.Group>
+            <Form.Label className="text-muted mb-3">
+              Ao cadastrar-se você aceita o nosso termo de <br />
+              <NavLinkToTop
+                className="text-reset text-underline-hover"
+                to="/politica/privacidade"
+              >
+                Politica de Privacidade.
+              </NavLinkToTop>
+            </Form.Label>
 
             <Button
               variant="outline-primary"
@@ -207,10 +212,10 @@ function UsuarioCadastrar() {
               Cadastrar-se com o Facebook
             </Button> */}
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="email">
-                E-mail
-              </Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="email">
+                <HiOutlineMail />
+              </InputGroup.Text>
               <Form.Control
                 id="email"
                 type="email"
@@ -221,12 +226,12 @@ function UsuarioCadastrar() {
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="off"
               />
-            </Form.Group>
+            </InputGroup>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="senha">
-                Senha
-              </Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="senha">
+                <RiLockPasswordFill />
+              </InputGroup.Text>
               <Form.Control
                 id="senha"
                 type="password"
@@ -236,12 +241,12 @@ function UsuarioCadastrar() {
                 onChange={(e) => setSenha(e.target.value)}
                 autoComplete="off"
               />
-            </Form.Group>
+            </InputGroup>
 
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold" htmlFor="senhaRepetida">
-                Repetir senha
-              </Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="senhaRepetida">
+                <RiLockPasswordFill />²
+              </InputGroup.Text>
               <Form.Control
                 id="senhaRepetida"
                 type="password"
@@ -251,14 +256,20 @@ function UsuarioCadastrar() {
                 onChange={(e) => setSenhaRepetida(e.target.value)}
                 autoComplete="off"
               />
-            </Form.Group>
+            </InputGroup>
 
             <Button
+              className="mb-3"
               variant="primary"
               type="submit"
-              onClick={() => cadastrarUsuario()}
+              onClick={(e) => cadastrarUsuario(e)}
+              disabled={isLoadingButton}
             >
-              Cadastrar
+              {isLoadingButton ? (
+                <CarregamentoBotao variant="light" />
+              ) : (
+                "Cadastrar"
+              )}
             </Button>
 
             <p className="mt-3">
