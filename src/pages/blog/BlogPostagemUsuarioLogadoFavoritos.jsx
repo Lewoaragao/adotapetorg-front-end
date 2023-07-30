@@ -12,6 +12,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { verificaLista } from "../../utils/Util";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 /**
  * Aqui será a pagina dedicada
@@ -102,9 +103,10 @@ export default function BlogPostagemUsuarioLogadoFavoritos() {
                           <Card.Footer className="d-flex justify-content-between align-items-center">
                             <div>
                               <NavLinkToTop
+                                className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
                                 to={`/blog/postagem/${postagem.slug}`}
                               >
-                                Ler mais
+                                <AiOutlineInfoCircle /> Ler mais
                               </NavLinkToTop>
                             </div>
 
