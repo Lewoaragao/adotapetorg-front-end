@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.940aac37.css",
+    "main.js": "/static/js/main.f6e5b7cc.js",
+    "static/js/787.3c07e379.chunk.js": "/static/js/787.3c07e379.chunk.js",
+    "static/media/logo-adotapetorg.jpg": "/static/media/logo-adotapetorg.1ee0b7bd1d67aa9ff009.jpg",
+    "index.html": "/index.html",
+    "main.940aac37.css.map": "/static/css/main.940aac37.css.map",
+    "main.f6e5b7cc.js.map": "/static/js/main.f6e5b7cc.js.map",
+    "787.3c07e379.chunk.js.map": "/static/js/787.3c07e379.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.940aac37.css",
+    "static/js/main.f6e5b7cc.js"
+  ]
+}
