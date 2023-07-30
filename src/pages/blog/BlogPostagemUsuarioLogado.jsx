@@ -1,7 +1,7 @@
 import JoditEditor from "jodit-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineInfoCircle, AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import {
   CarregamentoBotao,
@@ -40,7 +40,7 @@ export default function BlogPostagemUsuarioLogado() {
   const [listaTags, setListaTags] = useState([]);
   const [listaTagsSelecionadas, setListaTagsSelecionadas] = useState([]);
   const [tag, setTag] = useState(0);
-  const [postagemId, setPostagemId] = useState(0);
+  const [idPostagem, setIdPostagem] = useState(0);
   const [nomeBotao, setNomeBotao] = useState("");
   const [
     abrirModalCadastrarEditarPostagem,
@@ -161,13 +161,13 @@ export default function BlogPostagemUsuarioLogado() {
       setIsLoadingButton(true);
       Api.post(
         modoEditar
-          ? `blog/atualizar/postagem/${postagemId}`
+          ? `blog/atualizar/postagem/${idPostagem}`
           : "blog/cadastrar/postagem",
         {
           titulo: titulo,
           subtitulo: subtitulo,
           conteudo: conteudo,
-          imagem: imagem === "" ? null : imagem,
+          imagem: imagem,
           tags: listaTagsSelecionadas.length > 0 ? listaTagsSelecionadas : null,
         },
         {
@@ -191,11 +191,11 @@ export default function BlogPostagemUsuarioLogado() {
     }
   }
 
-  function deletarPostagem(postagemId) {
+  function deletarPostagem(idPostagem) {
     window.scrollTo(0, 0);
 
     setIsLoading(true);
-    Api.post(`blog/deletar/${postagemId}`, null, {
+    Api.post(`blog/deletar/${idPostagem}`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -209,7 +209,6 @@ export default function BlogPostagemUsuarioLogado() {
       })
       .finally(() => {
         listarPostagensUsuarioLogado();
-        setIsLoading(false);
       });
   }
 
@@ -217,7 +216,7 @@ export default function BlogPostagemUsuarioLogado() {
     setNomeBotao("Editar");
     setModoEditar(true);
     setImagem("");
-    setPostagemId(postagem.id);
+    setIdPostagem(postagem.id);
     setTitulo(postagem.titulo);
     setSubtitulo(postagem.subtitulo);
     setConteudo(postagem.conteudo);
@@ -244,7 +243,7 @@ export default function BlogPostagemUsuarioLogado() {
     if (validaCamposAtualizaImagem()) {
       setIsLoadingButton(true);
       Api.post(
-        `blog/atualizar/imagem/${postagemId}`,
+        `blog/atualizar/imagem/${idPostagem}`,
         {
           imagem: imagem,
         },
@@ -269,9 +268,9 @@ export default function BlogPostagemUsuarioLogado() {
     }
   }
 
-  function removerImagemPostagem(postagemId) {
+  function removerImagemPostagem(idPostagem) {
     setIsLoading(true);
-    Api.post(`blog/deletar/imagem/${postagemId}`, null, {
+    Api.post(`blog/deletar/imagem/${idPostagem}`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -329,9 +328,10 @@ export default function BlogPostagemUsuarioLogado() {
                           <Card.Footer className="d-flex justify-content-between align-items-center">
                             <div>
                               <NavLinkToTop
+                                className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
                                 to={`/blog/postagem/${postagem.slug}`}
                               >
-                                Ler mais
+                                <AiOutlineInfoCircle /> Ler mais
                               </NavLinkToTop>
                             </div>
 
@@ -360,14 +360,14 @@ export default function BlogPostagemUsuarioLogado() {
                                       if (result) deletarPostagem(postagem.id);
                                     }}
                                   >
-                                    <BsTrash /> Excluir postagem
+                                    <BsTrash /> Deletar Postagem
                                   </Button>
 
                                   <Button
                                     className="dropdown-item"
                                     onClick={() => {
                                       setImagem("");
-                                      setPostagemId(postagem.id);
+                                      setIdPostagem(postagem.id);
                                       setAbrirModalEditarImagem(true);
                                     }}
                                   >
@@ -525,7 +525,7 @@ export default function BlogPostagemUsuarioLogado() {
         </Modal.Footer>
       </Modal>
 
-      {/* MODAL PARA USUARIO EDITAR IMAGEM */}
+      {/* MODAL EDITAR IMAGEM POSTAGEM */}
       <Modal show={abrirModalEditarImagem} onHide={limparCampos}>
         <Modal.Header closeButton>
           <Modal.Title className="fw-bold text-primary">

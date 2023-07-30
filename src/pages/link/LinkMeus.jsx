@@ -202,10 +202,11 @@ export default function LinkMeus() {
   }
 
   function limparCampos() {
-    setTipoLink("");
+    setTipoLink(0);
     setImagem("");
     setTituloLink("");
     setLink("");
+    setDesabilitarTituloLink(true);
     setAbrirModalCadastrarLink(false);
     setAbrirModalEditarLink(false);
   }

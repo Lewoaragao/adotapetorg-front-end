@@ -121,7 +121,7 @@ export default function BlogPostagem() {
   }
 
   return (
-    <div className="mx-auto" style={{ maxWidth: "600px" }}>
+    <div style={{ maxWidth: "600px" }} className="mx-auto">
       {isLoading ? (
         <CarregamentoTela />
       ) : (

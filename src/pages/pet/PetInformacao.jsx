@@ -113,7 +113,7 @@ function PetInformacao() {
           <div className="d-flex justify-content-center align-items-center flex-wrap gap-5">
             <img
               className="img-thumbnail"
-              style={{ maxWidth: "300px" }}
+              style={{ maxWidth: "350px" }}
               src={process.env.REACT_APP_API_URL + pet.imagem}
               alt={`foto pet ${pet.nome}`}
             />

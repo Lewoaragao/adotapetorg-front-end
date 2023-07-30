@@ -11,6 +11,7 @@ import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 import { verificaLista } from "../../utils/Util";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -128,8 +129,11 @@ function Inicio({ logo }) {
                             <Card.Text>{pet.raca}</Card.Text>
                           </Card.Body>
                           <Card.Footer>
-                            <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                              Informações
+                            <NavLinkToTop
+                              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+                              to={`/informacoes/pet/${pet.id}`}
+                            >
+                              <AiOutlineInfoCircle /> Info
                             </NavLinkToTop>
                           </Card.Footer>
                         </Card>
@@ -226,9 +230,10 @@ function Inicio({ logo }) {
                           </Card.Body>
                           <Card.Footer>
                             <NavLinkToTop
+                              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
                               to={`/blog/postagem/${postagem.slug}`}
                             >
-                              Ler mais
+                              <AiOutlineInfoCircle /> Ler mais
                             </NavLinkToTop>
                           </Card.Footer>
                         </Card>

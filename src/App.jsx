@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Outlet, useLocation } from "react-router-dom";
 import BtnVoltarTopo from "./components/buttons/BtnVoltarTopo";
@@ -36,7 +36,7 @@ export default function App() {
             logo={logo}
             usuarioLogadoVerificado={usuarioLogadoVerificado}
           />
-          <Container className="my-5">
+          <Container className="my-3">
             <Outlet />
           </Container>
           <BtnVoltarTopo />

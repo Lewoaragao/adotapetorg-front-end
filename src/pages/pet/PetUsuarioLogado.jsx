@@ -2,14 +2,18 @@ import { useContext, useEffect, useState } from "react";
 import {
   Badge,
   Button,
-  ButtonGroup,
   Card,
   Col,
+  Dropdown,
   Form,
   Modal,
   Row,
 } from "react-bootstrap";
-import { AiFillIdcard, AiOutlinePlus } from "react-icons/ai";
+import {
+  AiFillIdcard,
+  AiOutlineInfoCircle,
+  AiOutlinePlus,
+} from "react-icons/ai";
 import { RxSize } from "react-icons/rx";
 import {
   BsCalendarEvent,
@@ -18,7 +22,10 @@ import {
   BsPencil,
   BsTrash,
 } from "react-icons/bs";
-import { CarregamentoLista } from "../../components/Carregamento";
+import {
+  CarregamentoBotao,
+  CarregamentoLista,
+} from "../../components/Carregamento";
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_CADASTRADO,
@@ -37,18 +44,20 @@ import {
   formataTamanhoPet,
 } from "../../utils/Mask";
 import { verificaLista } from "../../utils/Util";
+import { GrConfigure } from "react-icons/gr";
 
 export default function PetUsuarioLogado() {
   const { token, usuarioLogado } = useContext(AuthContext);
   const { setarMensagem } = useContext(MessageContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [listaPets, setListaPets] = useState([]);
   const [listaPetTipos, setListaPetTipos] = useState([]);
   const [carregandoRacas, setCarregandoRacas] = useState(true);
   const [listaRacas, setListaRacas] = useState([]);
   const [listaCores, setListaCores] = useState([]);
   const [listaCoresSelecionadas, setListaCoresSelecionadas] = useState([]);
-  const [petId, setPetId] = useState(0);
+  const [idPet, setIdPet] = useState(0);
   const [tipo, setTipo] = useState(0);
   const [raca, setRaca] = useState(0);
   const [cor, setCor] = useState(0);
@@ -64,6 +73,7 @@ export default function PetUsuarioLogado() {
   const [necessidadesEspeciais, setNecessidadesEspeciais] = useState("");
   const [modoEditar, setModoEditar] = useState(false);
   const [abrirModalCadastrarPet, setAbrirModalCadastrarPet] = useState(false);
+  const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
 
   useEffect(() => {
     listarPetsUsuarioLogado();
@@ -83,6 +93,7 @@ export default function PetUsuarioLogado() {
         limparCampos();
       })
       .catch(({ response }) => {
+        setListaPets(null);
         setarMensagem(response.data.message, null);
         setListaPetTipos(response.data.tipos);
         setListaCores(response.data.cores);
@@ -107,6 +118,7 @@ export default function PetUsuarioLogado() {
     setFlgNecessidadesEspeciais(false);
     setListaCoresSelecionadas([]);
     setAbrirModalCadastrarPet(false);
+    setAbrirModalEditarImagem(false);
     setModoEditar(false);
   }
 
@@ -142,8 +154,8 @@ export default function PetUsuarioLogado() {
     }
 
     if (
-      (flgNecessidadesEspeciais === true && necessidadesEspeciais === null) ||
-      necessidadesEspeciais === ""
+      flgNecessidadesEspeciais === true &&
+      (necessidadesEspeciais === null || necessidadesEspeciais === "")
     ) {
       setarMensagem("Preencha o campo necessidades especiais", null);
       return false;
@@ -168,9 +180,11 @@ export default function PetUsuarioLogado() {
     if (validaCampos()) {
       setIsLoading(true);
       let flgAdotadoValidado = flgAdotado === true ? TRUE_PHP : FALSE_PHP;
+      let flgNecessidadesEspeciaisValidado =
+        flgNecessidadesEspeciais === true ? TRUE_PHP : FALSE_PHP;
 
       Api.post(
-        modoEditar ? `pets/${petId}` : "pets",
+        modoEditar ? `pets/${idPet}` : "pets",
         {
           user_id: usuarioLogado.id,
           pet_tipos_id: tipo,
@@ -182,8 +196,7 @@ export default function PetUsuarioLogado() {
             listaCoresSelecionadas.length > 0 ? listaCoresSelecionadas : null,
           imagem: imagem,
           tamanho: tamanho,
-          flg_necessidades_especiais:
-            flgNecessidadesEspeciais === true ? TRUE_PHP : FALSE_PHP,
+          flg_necessidades_especiais: flgNecessidadesEspeciaisValidado,
           necessidades_especiais:
             flgNecessidadesEspeciais === true ? necessidadesEspeciais : null,
           sexo: sexo,
@@ -264,7 +277,7 @@ export default function PetUsuarioLogado() {
     setModoEditar(true);
     listarRacas(pet.pet_tipos_id);
 
-    setPetId(pet.id);
+    setIdPet(pet.id);
     setNome(pet.nome);
     setRaca(pet.raca_id);
     setTamanho(pet.tamanho);
@@ -289,6 +302,66 @@ export default function PetUsuarioLogado() {
       pet.necessidades_especiais === null ? "" : pet.flg_necessidades_especiais
     );
     setAbrirModalCadastrarPet(true);
+  }
+
+  function removerImagemPet(idPet) {
+    setIsLoading(true);
+    Api.post(`pets/deletar/imagem/${idPet}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(({ data }) => {
+        setarMensagem(data.message, TIPO_SUCESSO);
+        limparCampos();
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        listarPetsUsuarioLogado();
+        setIsLoading(false);
+      });
+  }
+
+  function validaCamposAtualizaImagem() {
+    if (imagem === "" || imagem === null) {
+      setarMensagem("Selecione uma imagem", null);
+      return false;
+    }
+
+    return true;
+  }
+
+  function editarImagem() {
+    window.scrollTo(0, 0);
+
+    if (validaCamposAtualizaImagem()) {
+      setIsLoadingButton(true);
+      Api.post(
+        `pets/atualizar/imagem/${idPet}`,
+        {
+          imagem: imagem,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+        .then(({ data }) => {
+          setarMensagem(data.message, TIPO_SUCESSO);
+          limparCampos();
+        })
+        .catch(({ response }) => {
+          setarMensagem(response.data.message, null);
+        })
+        .finally(() => {
+          setIsLoadingButton(false);
+          listarPetsUsuarioLogado();
+        });
+    }
   }
 
   return (
@@ -365,26 +438,66 @@ export default function PetUsuarioLogado() {
                       </Card.Body>
                       <Card.Footer className="d-flex justify-content-between align-items-center">
                         <div>
-                          <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                            Informações
+                          <NavLinkToTop
+                            className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+                            to={`/informacoes/pet/${pet.id}`}
+                          >
+                            <AiOutlineInfoCircle /> Info
                           </NavLinkToTop>
                         </div>
 
                         <div>
-                          <ButtonGroup className="ms-auto my-auto">
-                            <Button
-                              variant="outline-primary"
-                              onClick={() => visualizarEditarPet(pet)}
-                            >
-                              <BsPencil />
-                            </Button>
-                            <Button
-                              variant="outline-danger"
-                              onClick={() => deletarPet(pet.id)}
-                            >
-                              <BsTrash />
-                            </Button>
-                          </ButtonGroup>
+                          <Dropdown>
+                            <Dropdown.Toggle className="btn btn-light d-flex justify-content-center align-items-center gap-1">
+                              <GrConfigure /> Ações
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                              <Button
+                                className="dropdown-item"
+                                onClick={() => {
+                                  visualizarEditarPet(pet);
+                                }}
+                              >
+                                <BsPencil /> Editar Pet
+                              </Button>
+
+                              <Button
+                                className="dropdown-item"
+                                onClick={() => {
+                                  let result = window.confirm(
+                                    "Confirma a ação DELETAR PET?"
+                                  );
+                                  if (result) deletarPet(pet.id);
+                                }}
+                              >
+                                <BsTrash /> Deletar Pet
+                              </Button>
+
+                              <Button
+                                className="dropdown-item"
+                                onClick={() => {
+                                  setImagem("");
+                                  setIdPet(pet.id);
+                                  setAbrirModalEditarImagem(true);
+                                }}
+                              >
+                                <BsPencil /> Editar Imagem
+                              </Button>
+
+                              <Button
+                                className="dropdown-item"
+                                onClick={() => {
+                                  let result = window.confirm(
+                                    "Confirma a ação REMOVER IMAGEM?"
+                                  );
+                                  if (result) removerImagemPet(pet.id);
+                                }}
+                              >
+                                <BsTrash /> Remover imagem
+                              </Button>
+                            </Dropdown.Menu>
+                          </Dropdown>
                         </div>
                       </Card.Footer>
                     </Card>
@@ -402,7 +515,7 @@ export default function PetUsuarioLogado() {
           >
             <Modal.Header closeButton>
               <Modal.Title className="fw-bold text-primary">
-                Cadastro de Pet
+                {modoEditar ? "Editar" : "Cadastrar"} Pet
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -636,6 +749,37 @@ export default function PetUsuarioLogado() {
           </Modal>
         </>
       )}
+
+      {/* MODAL PARA EDITAR IMAGEM PET */}
+      <Modal show={abrirModalEditarImagem} onHide={limparCampos}>
+        <Modal.Header closeButton>
+          <Modal.Title className="fw-bold text-primary">
+            Atualizar imagem
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="imagem">
+              Imagem
+            </Form.Label>
+            <Form.Control
+              id="imagem"
+              type="file"
+              onChange={(e) => setImagem(e.target.files[0])}
+            />
+          </Form.Group>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={limparCampos}>
+            Cancelar
+          </Button>
+          <Button variant="success" onClick={editarImagem}>
+            {isLoadingButton ? <CarregamentoBotao variant="dark" /> : "Editar"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

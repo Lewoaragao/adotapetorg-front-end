@@ -7,6 +7,7 @@ import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import { verificaLista } from "../../utils/Util";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 /**
  * Aqui será a pagina geral do blog
@@ -78,9 +79,10 @@ export default function Blog() {
                           </Card.Body>
                           <Card.Footer>
                             <NavLinkToTop
+                              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
                               to={`/blog/postagem/${postagem.slug}`}
                             >
-                              Ler mais
+                              <AiOutlineInfoCircle /> Ler mais
                             </NavLinkToTop>
                           </Card.Footer>
                         </Card>

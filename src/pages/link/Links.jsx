@@ -33,8 +33,8 @@ export default function Links() {
     Api.get(`links/${nomeUsuario}`)
       .then(({ data }) => {
         setListaLinks(data.user_links);
-        setUserImagem(data.user_imagem);
         setFlgUserCadastrado(data.flg_user_cadastrado);
+        verificaUserImagem(data.user_imagem);
       })
       .catch(({ response }) => {
         setListaLinks(null);
@@ -47,18 +47,35 @@ export default function Links() {
       });
   }
 
+  function verificaUserImagem(userImagem) {
+    let result = userImagem.includes("https");
+
+    if (result) {
+      setUserImagem(userImagem);
+    } else {
+      let result =
+        userImagem === "" || userImagem === null || !flgUserCadastrado;
+
+      if (result) {
+        setUserImagem(logo);
+      } else {
+        setUserImagem(process.env.REACT_APP_API_URL + userImagem);
+      }
+    }
+  }
+
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100 ">
       {isLoading ? (
         <CarregamentoTela />
       ) : (
-        <div className="vw-100 my-auto" align="center">
+        <div
+          style={{ maxWidth: "350px" }}
+          className="vw-100 my-auto"
+          align="center"
+        >
           <img
-            src={
-              userImagem === "" || userImagem === null || !flgUserCadastrado
-                ? logo
-                : process.env.REACT_APP_API_URL + userImagem
-            }
+            src={userImagem}
             width="100"
             height="100"
             className="d-inline-block align-top rounded-circle mt-3"
@@ -67,10 +84,10 @@ export default function Links() {
 
           <TituloPagina titulo={nomeUsuario} />
 
-          <Col lg={4}>
+          <Col>
             {!flgUserCadastrado && (
               <>
-                <p>Nenhum usuário cadastraro com esse nome.</p>
+                <p>Nenhum usuário cadastraro com esse nome</p>
                 <p>
                   Quer se cadastrar com esse usuário?{" "}
                   <NavLinkToTop
@@ -86,7 +103,7 @@ export default function Links() {
 
           <ListGroup>
             {listaLinks != null && (
-              <Col xs={12} sm={8} md={6} className="mx-auto">
+              <Col className="">
                 {listaLinks.map((link) => (
                   <a
                     key={link.id}
@@ -95,8 +112,7 @@ export default function Links() {
                   >
                     <ListGroup.Item
                       action
-                      variant="primary"
-                      className="d-flex justify-content-start align-items-center gap-3 mb-3"
+                      className="btn btn-light d-flex justify-content-start align-items-center gap-3 mb-3"
                     >
                       <div className="my-auto">
                         {link.imagem === "" ? (
@@ -124,7 +140,7 @@ export default function Links() {
               className="text-reset text-underline-hover d-flex justify-content-center align-items-center gap-1 small"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://adotapet.org"
+              href={process.env.REACT_APP_PUBLIC_URL}
             >
               <img
                 className="rounded"

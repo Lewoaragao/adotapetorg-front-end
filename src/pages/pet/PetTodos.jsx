@@ -7,6 +7,7 @@ import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { verificaLista } from "../../utils/Util";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 export default function PetTodos() {
   const [isLoading, setIsLoading] = useState(false);
@@ -66,8 +67,11 @@ export default function PetTodos() {
                           <Card.Text>{pet.raca}</Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                          <NavLinkToTop to={`/informacoes/pet/${pet.id}`}>
-                            Informações
+                          <NavLinkToTop
+                            className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+                            to={`/informacoes/pet/${pet.id}`}
+                          >
+                            <AiOutlineInfoCircle /> Info
                           </NavLinkToTop>
                         </Card.Footer>
                       </Card>

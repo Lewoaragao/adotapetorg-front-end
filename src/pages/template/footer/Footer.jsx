@@ -33,7 +33,7 @@ function Footer({ logo }) {
   }, [anoInicio, anoAtual]);
 
   return (
-    <footer className="text-center text-lg-start bg-light text-muted">
+    <footer className="text-center text-lg-start text-muted">
       <section className="d-flex justify-content-center justify-content-lg-end align-items-center p-4 border-bottom container">
         <div className="me-3 d-none d-lg-block">
           <span>Conecte-se conosco nas redes sociais:</span>
