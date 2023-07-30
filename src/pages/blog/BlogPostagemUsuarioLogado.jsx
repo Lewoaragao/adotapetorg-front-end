@@ -1,14 +1,6 @@
 import JoditEditor from "jodit-react";
 import { useContext, useEffect, useRef, useState } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Col,
-  Form,
-  Modal,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import {
@@ -17,7 +9,6 @@ import {
 } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
-  TIPO_ERRO,
   TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
@@ -26,6 +17,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { verificaLista } from "../../utils/Util";
+import { GrConfigure } from "react-icons/gr";
 
 /**
  * Aqui será a pagina dedicada
@@ -40,6 +32,7 @@ export default function BlogPostagemUsuarioLogado() {
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const [modoEditar, setModoEditar] = useState(false);
   const [titulo, setTitulo] = useState("");
   const [subtitulo, setSubtitulo] = useState("");
   const [conteudo, setConteudo] = useState("");
@@ -47,17 +40,13 @@ export default function BlogPostagemUsuarioLogado() {
   const [listaTags, setListaTags] = useState([]);
   const [listaTagsSelecionadas, setListaTagsSelecionadas] = useState([]);
   const [tag, setTag] = useState(0);
-  const [postagemSelecionada, setPostagemSelecionada] = useState({});
   const [postagemId, setPostagemId] = useState(0);
-  const [abrirModalCadastrarPostagem, setAbrirModalCadastrarPostagem] =
-    useState(false);
-  const [abrirModalEditarPostagem, setAbrirModalEditarPostagem] =
-    useState(false);
+  const [nomeBotao, setNomeBotao] = useState("");
+  const [
+    abrirModalCadastrarEditarPostagem,
+    setAbrirModalCadastrarEditarPostagem,
+  ] = useState(false);
   const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
-  const [abrirModalDeletarImagemPostagem, setAbrirModalDeletarImagemPostagem] =
-    useState(false);
-  const [abrirModalEditarImagemPostagem, setAbrirModalEditarImagemPostagem] =
-    useState(false);
 
   // config editor de texto
   const editor = useRef(null);
@@ -103,7 +92,6 @@ export default function BlogPostagemUsuarioLogado() {
 
   function listarPostagensUsuarioLogado() {
     setIsLoading(true);
-
     Api.post("blog/postagens/cadastradas/user", null, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -137,6 +125,11 @@ export default function BlogPostagemUsuarioLogado() {
       return false;
     }
 
+    if (verificaLista(listaTagsSelecionadas)) {
+      setarMensagem("Selecione pelo menos uma tag", null);
+      return false;
+    }
+
     return true;
   }
 
@@ -150,23 +143,26 @@ export default function BlogPostagemUsuarioLogado() {
   }
 
   function limparCampos() {
+    setModoEditar(false);
     setTitulo("");
     setSubtitulo("");
     setConteudo("");
+    setImagem("");
     setTag(0);
     setListaTagsSelecionadas([]);
-    setAbrirModalCadastrarPostagem(false);
-    setAbrirModalEditarImagemPostagem(false);
-    setAbrirModalEditarPostagem(false);
+    setAbrirModalCadastrarEditarPostagem(false);
     setAbrirModalEditarImagem(false);
-    setAbrirModalDeletarImagemPostagem(false);
   }
 
-  function cadastrarPostagem() {
+  function cadastrarEditarPostagem() {
+    window.scrollTo(0, 0);
+
     if (validaCampos()) {
       setIsLoadingButton(true);
       Api.post(
-        "blog/cadastrar/postagem",
+        modoEditar
+          ? `blog/atualizar/postagem/${postagemId}`
+          : "blog/cadastrar/postagem",
         {
           titulo: titulo,
           subtitulo: subtitulo,
@@ -195,9 +191,11 @@ export default function BlogPostagemUsuarioLogado() {
     }
   }
 
-  function deletarPostagem(idPostagem) {
+  function deletarPostagem(postagemId) {
+    window.scrollTo(0, 0);
+
     setIsLoading(true);
-    Api.post(`blog/deletar/${idPostagem}`, null, {
+    Api.post(`blog/deletar/${postagemId}`, null, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -216,6 +214,9 @@ export default function BlogPostagemUsuarioLogado() {
   }
 
   function visualizarEditarPostagem(postagem) {
+    setNomeBotao("Editar");
+    setModoEditar(true);
+    setImagem("");
     setPostagemId(postagem.id);
     setTitulo(postagem.titulo);
     setSubtitulo(postagem.subtitulo);
@@ -228,45 +229,16 @@ export default function BlogPostagemUsuarioLogado() {
     }
 
     setListaTagsSelecionadas(listaTags);
-
-    setAbrirModalEditarPostagem(true);
+    setAbrirModalCadastrarEditarPostagem(true);
   }
 
-  function editarPostagem(postagemId) {
-    window.scrollTo(0, 0);
-
-    if (validaCampos()) {
-      setIsLoadingButton(true);
-      Api.post(
-        `blog/atualizar/postagem/${postagemId}`,
-        {
-          titulo: titulo,
-          subtitulo: subtitulo,
-          conteudo: conteudo,
-          tags: listaTagsSelecionadas.length > 0 ? listaTagsSelecionadas : null,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-        .then(({ data }) => {
-          setarMensagem(data.message, TIPO_SUCESSO);
-          limparCampos();
-        })
-        .catch(({ response }) => {
-          setarMensagem(response.data.message, null);
-        })
-        .finally(() => {
-          setIsLoadingButton(false);
-          listarPostagensUsuarioLogado();
-        });
-    }
+  function visualizarCadastrarPostagem() {
+    setNomeBotao("Cadastrar");
+    setModoEditar(false);
+    setAbrirModalCadastrarEditarPostagem(true);
   }
 
-  function editarImagem(postagemId) {
+  function editarImagem() {
     window.scrollTo(0, 0);
 
     if (validaCamposAtualizaImagem()) {
@@ -323,7 +295,7 @@ export default function BlogPostagemUsuarioLogado() {
 
       <button
         className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
-        onClick={() => setAbrirModalCadastrarPostagem(true)}
+        onClick={visualizarCadastrarPostagem}
       >
         <AiOutlinePlus /> Cadastrar postagem
       </button>
@@ -364,27 +336,58 @@ export default function BlogPostagemUsuarioLogado() {
                             </div>
 
                             <div>
-                              <ButtonGroup className="ms-auto my-auto">
-                                <Button
-                                  variant="outline-primary"
-                                  onClick={() => {
-                                    setAbrirModalEditarImagemPostagem(true);
-                                    setPostagemSelecionada(postagem);
-                                    setPostagemId(postagem.id);
-                                  }}
-                                >
-                                  <BsPencil />
-                                </Button>
-                                <Button
-                                  variant="outline-danger"
-                                  onClick={() => {
-                                    setAbrirModalDeletarImagemPostagem(true);
-                                    setPostagemId(postagem.id);
-                                  }}
-                                >
-                                  <BsTrash />
-                                </Button>
-                              </ButtonGroup>
+                              <Dropdown>
+                                <Dropdown.Toggle className="btn btn-light d-flex justify-content-center align-items-center gap-1">
+                                  <GrConfigure /> Ações
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                  <Button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                      visualizarEditarPostagem(postagem);
+                                    }}
+                                  >
+                                    <BsPencil /> Editar Postagem
+                                  </Button>
+
+                                  <Button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                      let result = window.confirm(
+                                        "Confirma a ação DELETAR POSTAGEM?"
+                                      );
+                                      if (result) deletarPostagem(postagem.id);
+                                    }}
+                                  >
+                                    <BsTrash /> Excluir postagem
+                                  </Button>
+
+                                  <Button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                      setImagem("");
+                                      setPostagemId(postagem.id);
+                                      setAbrirModalEditarImagem(true);
+                                    }}
+                                  >
+                                    <BsPencil /> Editar Imagem
+                                  </Button>
+
+                                  <Button
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                      let result = window.confirm(
+                                        "Confirma a ação REMOVER IMAGEM?"
+                                      );
+                                      if (result)
+                                        removerImagemPostagem(postagem.id);
+                                    }}
+                                  >
+                                    <BsTrash /> Remover imagem
+                                  </Button>
+                                </Dropdown.Menu>
+                              </Dropdown>
                             </div>
                           </Card.Footer>
                         </Card>
@@ -398,9 +401,9 @@ export default function BlogPostagemUsuarioLogado() {
         )}
       </>
 
-      {/* MODAL CADASTRAR POSTAGEM */}
+      {/* MODAL CADASTRAR EDITAR POSTAGEM */}
       <Modal
-        show={abrirModalCadastrarPostagem}
+        show={abrirModalCadastrarEditarPostagem}
         onHide={limparCampos}
         fullscreen={true}
       >
@@ -422,6 +425,7 @@ export default function BlogPostagemUsuarioLogado() {
               required
               autoFocus
               onChange={(e) => setTitulo(e.target.value)}
+              autoComplete="off"
             />
           </Form.Group>
 
@@ -436,32 +440,7 @@ export default function BlogPostagemUsuarioLogado() {
               value={subtitulo}
               required
               onChange={(e) => setSubtitulo(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="imagem">
-              Imagem
-            </Form.Label>
-            <Form.Control
-              id="imagem"
-              type="file"
-              onChange={(e) => setImagem(e.target.files[0])}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="editor">
-              Conteúdo da Postagem
-            </Form.Label>
-            <JoditEditor
-              id="editor"
-              ref={editor}
-              value={conteudo}
-              config={config}
-              tabIndex={1} // tabIndex da área de texto
-              onBlur={(newContent) => setConteudo(newContent)} // preferiu usar apenas esta opção para atualizar o conteúdo por motivos de desempenho
-              onChange={(newContent) => {}}
+              autoComplete="off"
             />
           </Form.Group>
 
@@ -504,61 +483,19 @@ export default function BlogPostagemUsuarioLogado() {
               ))}
             </div>
           )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={limparCampos}>
-            Cancelar
-          </Button>
-          <Button variant="success" onClick={cadastrarPostagem}>
-            {isLoadingButton ? (
-              <CarregamentoBotao variant="dark" />
-            ) : (
-              "Cadastrar"
-            )}
-          </Button>
-        </Modal.Footer>
-      </Modal>
 
-      {/* MODAL EDITAR POSTAGEM */}
-      <Modal
-        show={abrirModalEditarPostagem}
-        onHide={limparCampos}
-        fullscreen={true}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="fw-bold text-primary">
-            Editar Postagem
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="titulo">
-              Título
-            </Form.Label>
-            <Form.Control
-              id="titulo"
-              type="text"
-              placeholder="Digite um título"
-              value={titulo}
-              required
-              autoFocus
-              onChange={(e) => setTitulo(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="subtitulo">
-              Subtítulo
-            </Form.Label>
-            <Form.Control
-              id="subtitulo"
-              type="text"
-              placeholder="Digite um subtítulo"
-              value={subtitulo}
-              required
-              onChange={(e) => setSubtitulo(e.target.value)}
-            />
-          </Form.Group>
+          {!modoEditar && (
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="imagem">
+                Imagem
+              </Form.Label>
+              <Form.Control
+                id="imagem"
+                type="file"
+                onChange={(e) => setImagem(e.target.files[0])}
+              />
+            </Form.Group>
+          )}
 
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold" htmlFor="editor">
@@ -569,58 +506,21 @@ export default function BlogPostagemUsuarioLogado() {
               ref={editor}
               value={conteudo}
               config={config}
-              tabIndex={1} // tabIndex of textarea
-              onBlur={(newContent) => setConteudo(newContent)} // preferred to use only this option to update the content for performance reasons
+              // tabIndex da área de texto
+              tabIndex={1}
+              // preferiu usar apenas esta opção para atualizar o conteúdo por motivos de desempenho
+              onBlur={(newContent) => setConteudo(newContent)}
               onChange={(newContent) => {}}
+              autoComplete="off"
             />
           </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="tipoLink">
-              Tag
-            </Form.Label>
-            <Form.Select
-              onChange={(e) => setTag(e.target.value)}
-              value={tag}
-              id="tag"
-            >
-              <option value="0" className="fw-bold" disabled>
-                Selecione uma tag
-              </option>
-
-              {listaTags.map((tag) => (
-                <option key={tag.id} value={tag.tag} name={tag.tag}>
-                  {tag.tag}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Button className="mb-3" onClick={addListaTagsSelecionadas}>
-            Adicionar Tag
-          </Button>
-
-          {listaTagsSelecionadas.length > 0 && (
-            <div className="mb-3">
-              {listaTagsSelecionadas.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  className="btn btn-primary me-1"
-                  onClick={() => removeListaTagsSelecionadas(tag)}
-                >
-                  {tag} <span className="badge">x</span>
-                </button>
-              ))}
-            </div>
-          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={limparCampos}>
             Cancelar
           </Button>
-          <Button variant="success" onClick={() => editarPostagem(postagemId)}>
-            {isLoadingButton ? <CarregamentoBotao variant="dark" /> : "Editar"}
+          <Button variant="success" onClick={cadastrarEditarPostagem}>
+            {isLoadingButton ? <CarregamentoBotao variant="dark" /> : nomeBotao}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -650,68 +550,10 @@ export default function BlogPostagemUsuarioLogado() {
           <Button variant="secondary" onClick={limparCampos}>
             Cancelar
           </Button>
-          <Button variant="success" onClick={() => editarImagem(postagemId)}>
+          <Button variant="success" onClick={editarImagem}>
             {isLoadingButton ? <CarregamentoBotao variant="dark" /> : "Editar"}
           </Button>
         </Modal.Footer>
-      </Modal>
-
-      {/* MODAL PARA USUARIO ESCOLHER SE VAI EDITAR IMAGEM OU POSTAGEM */}
-      <Modal show={abrirModalEditarImagemPostagem} onHide={limparCampos}>
-        <Modal.Header closeButton>
-          <Modal.Title className="fw-bold text-primary">
-            Apagar postagem ou remover imagem?
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <ButtonGroup vertical="true">
-            <Button
-              variant={TIPO_SUCESSO}
-              onClick={() => {
-                visualizarEditarPostagem(postagemSelecionada);
-                setAbrirModalEditarImagemPostagem(false);
-              }}
-            >
-              Editar postagem
-            </Button>
-            <Button
-              variant={TIPO_SUCESSO}
-              onClick={() => {
-                setAbrirModalEditarImagem(true);
-                setAbrirModalEditarImagemPostagem(false);
-              }}
-            >
-              Editar imagem
-            </Button>
-          </ButtonGroup>
-        </Modal.Body>
-      </Modal>
-
-      {/* MODAL PARA USUARIO ESCOLHER SE VAI APAGAR IMAGEM OU POSTAGEM */}
-      <Modal show={abrirModalDeletarImagemPostagem} onHide={limparCampos}>
-        <Modal.Header closeButton>
-          <Modal.Title className="fw-bold text-primary">
-            Apagar postagem ou remover imagem?
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body closeButton>
-          <ButtonGroup vertical="true">
-            <Button
-              variant={TIPO_ERRO}
-              onClick={() => deletarPostagem(postagemId)}
-            >
-              Apagar postagem
-            </Button>
-            <Button
-              variant={TIPO_ERRO}
-              onClick={() => removerImagemPostagem(postagemId)}
-            >
-              Remover imagem
-            </Button>
-          </ButtonGroup>
-        </Modal.Body>
       </Modal>
     </>
   );
