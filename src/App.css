@@ -33,3 +33,17 @@ a.disabled {
   height: auto;
   object-fit: cover;
 }
+
+.image-container-slider {
+  max-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

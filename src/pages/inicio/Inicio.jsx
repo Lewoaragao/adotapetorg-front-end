@@ -65,74 +65,42 @@ function Inicio({ logo }) {
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div className="container vw-100">
-        <Carousel pause="hover">
+        <TituloPagina titulo="Início" className="text-center" />
+
+        <Carousel
+          pause="hover"
+          className="bg-dark rounded text-center image-container-slider"
+        >
           <Carousel.Item interval={5000}>
             <Image src={banner01} />
-            <Carousel.Caption>
+            {/* <Carousel.Caption>
               <h3>First slide label</h3>
               <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </Carousel.Caption>
+            </Carousel.Caption> */}
           </Carousel.Item>
 
           <Carousel.Item interval={5000}>
             <Image src={banner02} />
-            <Carousel.Caption>
+            {/* <Carousel.Caption>
               <h3>Second slide label</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </Carousel.Caption>
+            </Carousel.Caption> */}
           </Carousel.Item>
 
           <Carousel.Item interval={5000}>
             <Image src={banner03} />
-            <Carousel.Caption>
+            {/* <Carousel.Caption>
               <h3>Third slide label</h3>
               <p>
                 Praesent commodo cursus magna, vel scelerisque nisl consectetur.
               </p>
-            </Carousel.Caption>
+            </Carousel.Caption> */}
           </Carousel.Item>
         </Carousel>
 
-        <div className="text-center">
-          <img
-            src={logo}
-            className="rounded-circle"
-            width="300px"
-            alt="logo adota pet org"
-          />
-
-          <TituloPagina titulo="Início" />
-
-          <p className="bg-dark text-warning fs-1 fw-bold rounded mt-2">
-            <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
-          </p>
-          <p>
-            <a
-              className="nav-link d-inline mx-2 text-underline-hover fs-4"
-              href="https://github.com/adotapetorg"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Github
-            </a>
-            <a
-              className="nav-link d-inline mx-2 text-underline-hover fs-4"
-              href="https://instagram.com/adotapetorg"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Instagram
-            </a>
-            <a
-              className="nav-link d-inline mx-2 text-underline-hover fs-4"
-              href="https://youtube.com/@adotapetorg"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Youtube
-            </a>
-          </p>
-        </div>
+        <p className="bg-dark text-warning fs-1 fw-bold rounded mt-2 text-center">
+          <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
+        </p>
 
         <h2 className="mb-3">Lista: Pets</h2>
         {isLoadingListaPet ? (

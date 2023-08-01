@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { formataTextoCapitalize } from "../utils/Mask";
 
-export default function TituloPagina({ titulo }) {
+export default function TituloPagina({ titulo, className }) {
   const location = useLocation();
   const locationPathname = location.pathname.replace("/", "");
 
@@ -25,7 +25,9 @@ export default function TituloPagina({ titulo }) {
 
   return (
     <>
-      <h1 className="fw-bold text-primary mb-3 text-capitalize">{titulo}</h1>
+      <h1 className={`${className} fw-bold text-primary mb-3 text-capitalize`}>
+        {titulo}
+      </h1>
       <hr />
     </>
   );
