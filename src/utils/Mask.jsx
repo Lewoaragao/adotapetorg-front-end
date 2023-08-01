@@ -29,7 +29,7 @@ export function formataCelular(celular) {
 export function formataLink(link) {
   if (!link) return null;
 
-  const prefixos = ["http://", "https://"];
+  const prefixos = ["http://", "https://", "http://www.", "https://www."];
 
   for (const prefixo of prefixos) {
     if (link.startsWith(prefixo)) {
@@ -37,7 +37,7 @@ export function formataLink(link) {
     }
   }
 
-  return link;
+  return link.toLowerCase();
 }
 
 export function formataSexoPet(sexo) {

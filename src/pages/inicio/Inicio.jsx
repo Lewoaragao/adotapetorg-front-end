@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Card, Col, Pagination, Row } from "react-bootstrap";
+import { Card, Carousel, Col, Image, Pagination, Row } from "react-bootstrap";
 import { TbAlertTriangle } from "react-icons/tb";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
@@ -12,6 +12,9 @@ import TituloPagina from "./../../components/TituloPagina";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 import { verificaLista } from "../../utils/Util";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import banner01 from "../../images/banner_pet_01.jpg";
+import banner02 from "../../images/banner_pet_02.jpg";
+import banner03 from "../../images/banner_pet_03.jpg";
 
 function Inicio({ logo }) {
   const [listaPets, setListaPets] = useState([]);
@@ -62,6 +65,34 @@ function Inicio({ logo }) {
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div className="container vw-100">
+        <Carousel pause="hover">
+          <Carousel.Item interval={5000}>
+            <Image src={banner01} />
+            <Carousel.Caption>
+              <h3>First slide label</h3>
+              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+
+          <Carousel.Item interval={5000}>
+            <Image src={banner02} />
+            <Carousel.Caption>
+              <h3>Second slide label</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+
+          <Carousel.Item interval={5000}>
+            <Image src={banner03} />
+            <Carousel.Caption>
+              <h3>Third slide label</h3>
+              <p>
+                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+              </p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
+
         <div className="text-center">
           <img
             src={logo}

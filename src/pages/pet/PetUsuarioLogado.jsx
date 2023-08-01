@@ -494,7 +494,7 @@ export default function PetUsuarioLogado() {
                                   if (result) removerImagemPet(pet.id);
                                 }}
                               >
-                                <BsTrash /> Remover imagem
+                                <BsTrash /> Remover Imagem
                               </Button>
                             </Dropdown.Menu>
                           </Dropdown>
