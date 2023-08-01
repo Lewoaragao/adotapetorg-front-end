@@ -102,7 +102,7 @@ export default function Links() {
           </Col>
 
           <ListGroup>
-            {listaLinks != null && (
+            {listaLinks !== null && (
               <Col className="">
                 {listaLinks.map((link) => (
                   <a
@@ -115,7 +115,7 @@ export default function Links() {
                       className="btn btn-light d-flex justify-content-start align-items-center gap-3 mb-3"
                     >
                       <div className="my-auto">
-                        {link.imagem === "" ? (
+                        {link.imagem === null ? (
                           <div style={{ width: "40px", height: "40px" }}></div>
                         ) : (
                           <img

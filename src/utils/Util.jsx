@@ -60,3 +60,15 @@ export function gerarNumeroAleatorio(qtdDigitos) {
 export function verificaLista(lista) {
   return lista === null || lista === undefined || lista.length === 0;
 }
+
+export function separarLinkEUsuario(url) {
+  if (!url || typeof url !== "string") {
+    return null;
+  }
+
+  const partes = url.split("/");
+  const pUsuario = partes.pop();
+  const pLink = partes.join("/") + "/";
+
+  return { pUsuario, pLink };
+}

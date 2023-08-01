@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup,
   Col,
+  Dropdown,
   Form,
   FormLabel,
   InputGroup,
@@ -12,12 +12,14 @@ import {
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsClipboardCheck, BsPencil, BsTrash } from "react-icons/bs";
 import { GoLinkExternal } from "react-icons/go";
-import CarregamentoTela from "../../components/Carregamento";
+import { CarregamentoBotao } from "../../components/Carregamento";
 import {
+  LINK_TIPO_EXTERNO,
   LINK_TIPO_FACEBOOK,
   LINK_TIPO_GITHUB,
   LINK_TIPO_INSTAGRAM,
   LINK_TIPO_LINKEDIN,
+  LINK_TIPO_SELECIONE_UM_LINK,
   LINK_TIPO_TIK_TOK,
   LINK_TIPO_YOUTUBE,
   MENSAGEM_NENHUM_LINK_CADASTRADO,
@@ -27,8 +29,9 @@ import TituloPagina from "../../components/TituloPagina";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
+import { separarLinkEUsuario, verificaLista } from "../../utils/Util";
 import { formataLink } from "../../utils/Mask";
-import { verificaLista } from "../../utils/Util";
+import { GrConfigure } from "react-icons/gr";
 
 /**
  * Listar Links do usuário logado
@@ -42,15 +45,19 @@ export default function LinkMeus() {
   const [tipoLink, setTipoLink] = useState(0);
   const [imagem, setImagem] = useState("");
   const [tituloLink, setTituloLink] = useState("");
-  const [desabilitarTituloLink, setDesabilitarTituloLink] = useState(true);
   const [linkPlaceholder, setLinkPlaceholder] = useState("meu-site.com.br");
   const [link, setLink] = useState("");
-  const [linkId, setLinkId] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [idLink, setIdLink] = useState(0);
+  const [usuario, setUsuario] = useState("");
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const [modoEditar, setModoEditar] = useState(false);
   const [listaLinkTipos, setListaLinkTipos] = useState([]);
   const [listaLinks, setListaLinks] = useState([]);
-  const [abrirModalCadastrarLink, setAbrirModalCadastrarLink] = useState(false);
-  const [abrirModalEditarLink, setAbrirModalEditarLink] = useState(false);
+  const [nomeBotao, setNomeBotao] = useState("");
+  const [desabilitaTituloELink, setDesabilitaTituloELink] = useState(false);
+  const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
+  const [abrirModalCadastrarEditarLink, setAbrirModalCadastrarEditarLink] =
+    useState(false);
 
   const handleSelectTipoLinkChange = (e) => {
     setTipoLink(e.target.value);
@@ -59,39 +66,53 @@ export default function LinkMeus() {
 
     switch (valueSelectedInteger) {
       case LINK_TIPO_INSTAGRAM:
-        setDesabilitarTituloLink(true);
         setTituloLink("Instagram");
-        setLinkPlaceholder("instagram.com/seu-usuario");
+        setLink("instagram.com/");
+        setLinkPlaceholder("instagram.com/");
+        setDesabilitaTituloELink(true);
+        setUsuario("");
         break;
       case LINK_TIPO_TIK_TOK:
-        setDesabilitarTituloLink(true);
         setTituloLink("TikTok");
-        setLinkPlaceholder("tiktok.com/@seu-usuario");
+        setLink("tiktok.com/@");
+        setLinkPlaceholder("tiktok.com/@");
+        setDesabilitaTituloELink(true);
+        setUsuario("");
         break;
       case LINK_TIPO_LINKEDIN:
-        setDesabilitarTituloLink(true);
         setTituloLink("LinkedIn");
-        setLinkPlaceholder("linkedin.com/in/seu-usuario");
+        setLink("linkedin.com/in/");
+        setLinkPlaceholder("linkedin.com/in/");
+        setDesabilitaTituloELink(true);
+        setUsuario("");
         break;
       case LINK_TIPO_GITHUB:
-        setDesabilitarTituloLink(true);
         setTituloLink("GitHub");
-        setLinkPlaceholder("github.com/seu-usuario");
+        setLink("github.com/");
+        setLinkPlaceholder("github.com/");
+        setDesabilitaTituloELink(true);
+        setUsuario("");
         break;
       case LINK_TIPO_FACEBOOK:
-        setDesabilitarTituloLink(true);
         setTituloLink("Facebook");
-        setLinkPlaceholder("facebook.com/seu-usuario");
+        setLink("facebook.com/");
+        setLinkPlaceholder("facebook.com/");
+        setDesabilitaTituloELink(true);
+        setUsuario("");
         break;
       case LINK_TIPO_YOUTUBE:
-        setDesabilitarTituloLink(true);
         setTituloLink("YouTube");
-        setLinkPlaceholder("youtube.com/@seu-usuario");
+        setLink("youtube.com/@");
+        setLinkPlaceholder("youtube.com/@");
+        setDesabilitaTituloELink(true);
+        setUsuario("");
         break;
       default:
-        setDesabilitarTituloLink(false);
         setTituloLink("");
+        setLink("");
         setLinkPlaceholder("meu-site.com.br");
+        setDesabilitaTituloELink(false);
+        setUsuario("");
         break;
     }
   };
@@ -102,18 +123,19 @@ export default function LinkMeus() {
   }, []);
 
   function listarLinksUsuarioLogado() {
-    setIsLoading(true);
+    setIsLoadingButton(true);
     Api.get(`links/${usuarioLogado.usuario}`)
       .then(({ data }) => {
         setListaLinks(data.user_links);
         setListaLinkTipos(data.link_tipos);
       })
       .catch(({ response }) => {
+        setListaLinks(null);
         setListaLinkTipos(response.data.link_tipos);
         setarMensagem(response.data.message, null);
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoadingButton(false);
         limparCampos();
       });
   }
@@ -137,50 +159,18 @@ export default function LinkMeus() {
     return true;
   }
 
-  function cadastrarLink(e) {
+  function cadastrarEditarLink(e) {
     e.preventDefault();
 
     if (validaCampos()) {
-      setIsLoading(true);
+      setIsLoadingButton(true);
       Api.post(
-        "links",
+        modoEditar ? `links/atualizar/${idLink}` : "links",
         {
           link_tipo_id: tipoLink,
-          imagem: imagem,
           titulo_link: tituloLink,
-          link: link,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-        .then(({ data }) => {
-          setarMensagem(data.message, TIPO_SUCESSO);
-        })
-        .catch(({ response }) => {
-          setarMensagem(response.data.message, null);
-        })
-        .finally(() => {
-          listarLinksUsuarioLogado();
-        });
-    }
-  }
-
-  function editarLink(linkId) {
-    window.scrollTo(0, 0);
-
-    if (validaCampos()) {
-      setIsLoading(true);
-      Api.post(
-        `links/atualizar/${linkId}`,
-        {
-          link_tipo_id: tipoLink,
-          imagem: imagem,
-          titulo_link: tituloLink,
-          link: link,
+          link: `http://${formataLink(link)}${usuario}`,
+          imagem: !modoEditar ? imagem : null,
         },
         {
           headers: {
@@ -204,11 +194,14 @@ export default function LinkMeus() {
   function limparCampos() {
     setTipoLink(0);
     setImagem("");
+    setUsuario("");
     setTituloLink("");
     setLink("");
-    setDesabilitarTituloLink(true);
-    setAbrirModalCadastrarLink(false);
-    setAbrirModalEditarLink(false);
+    setModoEditar(false);
+    setDesabilitaTituloELink(true);
+    setLinkPlaceholder("meu-site.com.br");
+    setAbrirModalCadastrarEditarLink(false);
+    setAbrirModalEditarImagem(false);
   }
 
   function setarLink(e) {
@@ -221,15 +214,14 @@ export default function LinkMeus() {
     }
 
     const linkCompleto = "http://" + linkAux;
-
     setLink(linkCompleto);
   }
 
-  function deletarLink(linkId) {
-    setIsLoading(true);
+  function deletarLink(idLink) {
+    setIsLoadingButton(true);
     window.scrollTo(0, 0);
 
-    Api.post(`links/deletar/${linkId}`, null, {
+    Api.post(`links/deletar/${idLink}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
@@ -239,23 +231,100 @@ export default function LinkMeus() {
         setarMensagem(response.data.message, null);
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoadingButton(false);
+        listarLinksUsuarioLogado();
+      });
+  }
+
+  function removerImagemLink(idLink) {
+    setIsLoadingButton(true);
+    window.scrollTo(0, 0);
+
+    Api.post(`links/deletar/imagem/${idLink}`, null, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(({ data }) => {
+        setarMensagem(data.message, TIPO_SUCESSO);
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        setIsLoadingButton(false);
         listarLinksUsuarioLogado();
       });
   }
 
   function visualizarEditarLink(link) {
-    setLinkId(link.id);
+    setNomeBotao("Editar");
+    setModoEditar(true);
+    setIdLink(link.id);
     setTipoLink(link.link_tipo_id);
     setTituloLink(link.titulo_link);
     setImagem(link.imagem);
     setLink(link.link);
-    setAbrirModalEditarLink(true);
+
+    if (link.link_tipo_id !== LINK_TIPO_EXTERNO) {
+      const { pLink, pUsuario } = separarLinkEUsuario(link.link);
+      setLink(pLink);
+      setUsuario(pUsuario);
+      setDesabilitaTituloELink(true);
+    } else {
+      setDesabilitaTituloELink(false);
+    }
+
+    setAbrirModalCadastrarEditarLink(true);
   }
 
   function copiarLinkUsuarioLogado() {
     navigator.clipboard.writeText(usuarioLogado.link);
     setarMensagem("Link copiado", TIPO_SUCESSO);
+  }
+
+  function visualizarCadastrarLink() {
+    limparCampos();
+    setNomeBotao("Cadastrar");
+    setAbrirModalCadastrarEditarLink(true);
+  }
+
+  function validaCamposAtualizaImagem() {
+    if (imagem === "" || imagem === null) {
+      setarMensagem("Selecione uma imagem", null);
+      return false;
+    }
+
+    return true;
+  }
+
+  function editarImagem() {
+    window.scrollTo(0, 0);
+
+    if (validaCamposAtualizaImagem()) {
+      setIsLoadingButton(true);
+      Api.post(
+        `links/atualizar/imagem/${idLink}`,
+        {
+          imagem: imagem,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+        .then(({ data }) => {
+          setarMensagem(data.message, TIPO_SUCESSO);
+          limparCampos();
+        })
+        .catch(({ response }) => {
+          setarMensagem(response.data.message, null);
+        })
+        .finally(() => {
+          setIsLoadingButton(false);
+          listarLinksUsuarioLogado();
+        });
+    }
   }
 
   return (
@@ -267,11 +336,7 @@ export default function LinkMeus() {
       </Col>
       <Col md={6}>
         <InputGroup className="mb-3">
-          <Form.Control
-            placeholder={usuarioLogado.link === null ? "" : usuarioLogado.link}
-            readOnly
-            disabled
-          />
+          <Form.Control placeholder={usuarioLogado.link} readOnly disabled />
           <Button variant="outline-secondary" onClick={copiarLinkUsuarioLogado}>
             <BsClipboardCheck /> Copiar
           </Button>
@@ -281,115 +346,157 @@ export default function LinkMeus() {
       <Button
         className="fw-bold mb-3"
         variant="warning"
-        onClick={() => setAbrirModalCadastrarLink(true)}
+        onClick={visualizarCadastrarLink}
       >
         <AiOutlinePlus /> Cadastrar link
       </Button>
 
-      {isLoading ? (
-        <CarregamentoTela />
-      ) : (
-        <>
-          <ListGroup>
-            {verificaLista(listaLinks) ? (
-              <div className="mb-3">{MENSAGEM_NENHUM_LINK_CADASTRADO}</div>
-            ) : (
-              <>
-                {listaLinks.map((link) => (
-                  <ListGroup.Item
-                    as="li"
-                    className="d-flex align-items-start"
-                    action
-                    key={link.id}
-                  >
-                    <div className="my-auto">
-                      {link.imagem === "" ? (
-                        <div style={{ width: "40px", height: "40px" }}></div>
-                      ) : (
-                        <img
-                          className="rounded"
-                          width="40px"
-                          height="40px"
-                          src={process.env.REACT_APP_API_URL + link.imagem}
-                          alt={`Foto do link: ${link.titulo_link}`}
-                        />
-                      )}
-                    </div>
-                    <div className="ms-3">
-                      <div className="fw-bold">{link.titulo_link}</div>
-                      <a
-                        className="text-reset text-underline-hover"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={link.link}
-                      >
-                        {formataLink(link.link)} <GoLinkExternal />
-                      </a>
-                    </div>
+      <ListGroup>
+        {verificaLista(listaLinks) ? (
+          <div className="mb-3">{MENSAGEM_NENHUM_LINK_CADASTRADO}</div>
+        ) : (
+          <>
+            {listaLinks.map((link) => (
+              <ListGroup.Item
+                as="li"
+                className="d-flex align-items-start flex-wrap"
+                action
+                key={link.id}
+              >
+                <div className="my-auto">
+                  {link.imagem === null ? (
+                    <div style={{ width: "40px", height: "40px" }}></div>
+                  ) : (
+                    <img
+                      className="rounded"
+                      width="40px"
+                      height="40px"
+                      src={process.env.REACT_APP_API_URL + link.imagem}
+                      alt={`Foto do link: ${link.titulo_link}`}
+                    />
+                  )}
+                </div>
 
-                    <ButtonGroup className="ms-auto my-auto">
+                <div className="ms-3">
+                  <div className="fw-bold">{link.titulo_link}</div>
+                  <a
+                    className="text-reset text-underline-hover"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={link.link}
+                  >
+                    <GoLinkExternal /> {formataLink(link.link)}
+                  </a>
+                </div>
+
+                <div className="ms-auto my-auto">
+                  <Dropdown>
+                    <Dropdown.Toggle className="btn btn-light d-flex justify-content-center align-items-center gap-1">
+                      <GrConfigure /> Ações
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
                       <Button
-                        variant="outline-primary"
-                        onClick={() => visualizarEditarLink(link)}
+                        className="dropdown-item"
+                        onClick={() => {
+                          visualizarEditarLink(link);
+                        }}
                       >
-                        <BsPencil />
+                        <BsPencil /> Editar Link
                       </Button>
+
                       <Button
-                        variant="outline-danger"
-                        onClick={() => deletarLink(link.id)}
+                        className="dropdown-item"
+                        onClick={() => {
+                          let result = window.confirm(
+                            "Confirma a ação DELETAR LINK?"
+                          );
+                          if (result) deletarLink(link.id);
+                        }}
                       >
-                        <BsTrash />
+                        <BsTrash /> Deletar Link
                       </Button>
-                    </ButtonGroup>
-                  </ListGroup.Item>
+
+                      <Button
+                        className="dropdown-item"
+                        onClick={() => {
+                          setImagem("");
+                          setIdLink(link.id);
+                          setAbrirModalEditarImagem(true);
+                        }}
+                      >
+                        <BsPencil /> Editar Imagem
+                      </Button>
+
+                      <Button
+                        className="dropdown-item"
+                        onClick={() => {
+                          let result = window.confirm(
+                            "Confirma a ação REMOVER IMAGEM?"
+                          );
+                          if (result) removerImagemLink(link.id);
+                        }}
+                      >
+                        <BsTrash /> Remover Imagem
+                      </Button>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </ListGroup.Item>
+            ))}
+          </>
+        )}
+      </ListGroup>
+
+      {/* MODAL CADASTRAR EDITAR LINK */}
+      <Modal show={abrirModalCadastrarEditarLink} onHide={limparCampos}>
+        <Modal.Header closeButton>
+          <Modal.Title className="fw-bold text-primary">
+            {modoEditar ? "Editar" : "Cadastro"} Link na Bio
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label className="fw-bold" htmlFor="tipoLink">
+                Tipo de Link
+              </Form.Label>
+              <Form.Select
+                onChange={handleSelectTipoLinkChange}
+                value={tipoLink}
+                id="tipoLink"
+              >
+                <option value="0" className="fw-bold" disabled>
+                  Selecione um tipo
+                </option>
+
+                {listaLinkTipos.map((linkTipo) => (
+                  <option
+                    key={linkTipo.id}
+                    value={linkTipo.id}
+                    name={linkTipo.tipo}
+                  >
+                    {linkTipo.tipo}
+                  </option>
                 ))}
-              </>
-            )}
-          </ListGroup>
+              </Form.Select>
+            </Form.Group>
 
-          {/* MODAL CADASTRAR LINK */}
-          <Modal show={abrirModalCadastrarLink} onHide={limparCampos}>
-            <Modal.Header closeButton>
-              <Modal.Title className="fw-bold text-primary">
-                Cadastro de Link na Bio
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="tipoLink">
-                    Tipo de Link
-                  </Form.Label>
-                  <Form.Select
-                    onChange={handleSelectTipoLinkChange}
-                    value={tipoLink}
-                    id="tipoLink"
-                  >
-                    <option value="0" className="fw-bold" disabled>
-                      Selecione um tipo
-                    </option>
+            {!desabilitaTituloELink && (
+              <>
+                {!modoEditar && (
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold" htmlFor="imagem">
+                      Imagem
+                    </Form.Label>
+                    <Form.Control
+                      id="imagem"
+                      type="file"
+                      onChange={(e) => setImagem(e.target.files[0])}
+                    />
+                  </Form.Group>
+                )}
 
-                    {listaLinkTipos.map((linkTipo) => (
-                      <option
-                        key={linkTipo.id}
-                        value={linkTipo.id}
-                        name={linkTipo.tipo}
-                      >
-                        {linkTipo.tipo}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="imagem">
-                    Imagem
-                  </Form.Label>
-                  <Form.Control
-                    id="imagem"
-                    type="file"
-                    onChange={(e) => setImagem(e.target.files[0])}
-                  />
-                </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="tituloLink">
                     Título do Link
@@ -401,115 +508,84 @@ export default function LinkMeus() {
                     id="tituloLink"
                     onChange={(e) => setTituloLink(e.target.value)}
                     value={tituloLink}
-                    disabled={desabilitarTituloLink}
+                    disabled={desabilitaTituloELink}
                   />
                 </Form.Group>
+
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="linkEdit">
                     Link
                   </Form.Label>
                   <Form.Control
-                    type="text"
+                    type="url"
                     placeholder={linkPlaceholder}
                     id="linkEdit"
                     onChange={setarLink}
                     value={formataLink(link)}
+                    disabled={desabilitaTituloELink}
+                    autoComplete="false"
                   />
                 </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={limparCampos}>
-                Cancelar
-              </Button>
-              <Button variant="success" onClick={cadastrarLink}>
-                Cadastrar
-              </Button>
-            </Modal.Footer>
-          </Modal>
+              </>
+            )}
 
-          {/* MODAL EDITAR LINK */}
-          <Modal show={abrirModalEditarLink} onHide={limparCampos}>
-            <Modal.Header closeButton>
-              <Modal.Title className="fw-bold text-primary">
-                Editar Link na Bio
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
+            {desabilitaTituloELink &&
+              tipoLink !== LINK_TIPO_SELECIONE_UM_LINK && (
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="tipoLinkEdit">
-                    Tipo de Link
-                  </Form.Label>
-                  <Form.Select
-                    onChange={handleSelectTipoLinkChange}
-                    value={tipoLink}
-                    id="tipoLinkEdit"
-                  >
-                    <option value="0" className="fw-bold">
-                      Selecione um tipo
-                    </option>
-
-                    {listaLinkTipos.map((linkTipo) => (
-                      <option
-                        key={linkTipo.id}
-                        value={linkTipo.id}
-                        name={linkTipo.tipo}
-                      >
-                        {linkTipo.tipo}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="imagemEdit">
-                    Imagem
-                  </Form.Label>
-                  <Form.Control
-                    id="imagemEdit"
-                    type="file"
-                    onChange={(e) => setImagem(e.target.files[0])}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="tituloLinkEdit">
-                    Título do Link
+                  <Form.Label className="fw-bold" htmlFor="usuario">
+                    Usuário
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Meu Site Pessoal"
-                    autoFocus
-                    id="tituloLinkEdit"
-                    onChange={(e) => setTituloLink(e.target.value)}
-                    value={tituloLink}
-                    disabled={desabilitarTituloLink}
+                    placeholder="Seu usuário da rede social selecionada"
+                    id="usuario"
+                    onChange={(e) => setUsuario(e.target.value)}
+                    value={usuario}
                   />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="linkEdit">
-                    Link
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder={linkPlaceholder}
-                    id="linkEdit"
-                    onChange={setarLink}
-                    value={formataLink(link)}
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={limparCampos}>
-                Cancelar
-              </Button>
-              <Button variant="success" onClick={() => editarLink(linkId)}>
-                Editar
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-      )}
+              )}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={limparCampos}>
+            Cancelar
+          </Button>
+          <Button variant="success" onClick={cadastrarEditarLink}>
+            {isLoadingButton ? <CarregamentoBotao variant="dark" /> : nomeBotao}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODAL PARA EDITAR IMAGEM LINK */}
+      <Modal show={abrirModalEditarImagem} onHide={limparCampos}>
+        <Modal.Header closeButton>
+          <Modal.Title className="fw-bold text-primary">
+            Atualizar imagem
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold" htmlFor="imagem">
+              Imagem
+            </Form.Label>
+            <Form.Control
+              id="imagem"
+              type="file"
+              onChange={(e) => setImagem(e.target.files[0])}
+            />
+          </Form.Group>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={limparCampos}>
+            Cancelar
+          </Button>
+          <Button variant="success" onClick={editarImagem}>
+            {isLoadingButton ? <CarregamentoBotao variant="dark" /> : "Editar"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
