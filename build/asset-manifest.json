@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.110175bd.css",
-    "main.js": "/static/js/main.135fa2d1.js",
+    "main.js": "/static/js/main.5899d51e.js",
     "static/js/787.3c07e379.chunk.js": "/static/js/787.3c07e379.chunk.js",
     "static/media/banner_pet_02.jpg": "/static/media/banner_pet_02.ebc3e5adaa27a8a43cc6.jpg",
     "static/media/banner_pet_03.jpg": "/static/media/banner_pet_03.e5a56da4b6c90784afde.jpg",
@@ -9,11 +9,11 @@
     "static/media/logo-adotapetorg.jpg": "/static/media/logo-adotapetorg.1ee0b7bd1d67aa9ff009.jpg",
     "index.html": "/index.html",
     "main.110175bd.css.map": "/static/css/main.110175bd.css.map",
-    "main.135fa2d1.js.map": "/static/js/main.135fa2d1.js.map",
+    "main.5899d51e.js.map": "/static/js/main.5899d51e.js.map",
     "787.3c07e379.chunk.js.map": "/static/js/787.3c07e379.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.110175bd.css",
-    "static/js/main.135fa2d1.js"
+    "static/js/main.5899d51e.js"
   ]
 }
