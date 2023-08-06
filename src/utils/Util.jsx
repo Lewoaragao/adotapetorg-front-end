@@ -57,6 +57,12 @@ export function gerarNumeroAleatorio(qtdDigitos) {
   return String(numeroAleatorio);
 }
 
+/**
+ * Verifica se a lista está
+ * null, undefined ou com tamanho zero
+ * @param {Array} lista
+ * @returns boolean
+ */
 export function verificaLista(lista) {
   return lista === null || lista === undefined || lista.length === 0;
 }

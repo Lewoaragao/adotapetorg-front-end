@@ -7,6 +7,7 @@ import { MessageContext } from "../../contexts/MessageContext";
 import logo from "../../images/logo-adotapetorg.jpg";
 import Api from "../../services/Api";
 import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
+import { verificaLista } from "../../utils/Util";
 
 /**
  * Página onde serão exibidos os links
@@ -53,8 +54,7 @@ export default function Links() {
     if (result) {
       setUserImagem(userImagem);
     } else {
-      let result =
-        userImagem === "" || userImagem === null || !flgUserCadastrado;
+      let result = userImagem === "" || userImagem === null;
 
       if (result) {
         setUserImagem(logo);
@@ -74,13 +74,23 @@ export default function Links() {
           className="vw-100 my-auto"
           align="center"
         >
-          <img
-            src={userImagem}
-            width="100"
-            height="100"
-            className="d-inline-block align-top rounded-circle mt-3"
-            alt="logo adota pet org"
-          />
+          {flgUserCadastrado ? (
+            <img
+              src={userImagem}
+              width="100"
+              height="100"
+              className="d-inline-block align-top rounded-circle mt-3"
+              alt="logo adota pet org"
+            />
+          ) : (
+            <img
+              src={logo}
+              width="100"
+              height="100"
+              className="d-inline-block align-top rounded-circle mt-3"
+              alt="logo adota pet org"
+            />
+          )}
 
           <TituloPagina titulo={nomeUsuario} />
 
@@ -102,7 +112,7 @@ export default function Links() {
           </Col>
 
           <ListGroup>
-            {listaLinks !== null && (
+            {!verificaLista(listaLinks) && (
               <Col className="">
                 {listaLinks.map((link) => (
                   <a
