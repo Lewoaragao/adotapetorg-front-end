@@ -1,8 +1,18 @@
-import { Dropdown, Image } from "react-bootstrap";
+import { Button, Dropdown, Image } from "react-bootstrap";
 import { AiOutlineLink } from "react-icons/ai";
 import { FaDog } from "react-icons/fa";
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import { IoMdBook } from "react-icons/io";
+import {
+  TELA_BLOG,
+  TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
+  TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
+  TELA_EDITAR_PERFIL_USUARIO,
+  TELA_MEUS_LINKS,
+  TELA_PETS_USUARIO_LOGADO,
+  TELA_PETS_USUARIO_LOGADO_FAVORITOS,
+  TELA_TODOS_PET,
+} from "../../../components/Constantes";
 
 function NavBarUsuarioLogado({ usuarioLogado, logout }) {
   return (
@@ -14,13 +24,19 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLinkToTop className="dropdown-item" to="/blog">
+            <NavLinkToTop className="dropdown-item" to={TELA_BLOG}>
               Todas as Postagens
             </NavLinkToTop>
-            <NavLinkToTop className="dropdown-item" to="/minhas/postagens">
+            <NavLinkToTop
+              className="dropdown-item"
+              to={TELA_BLOG_POSTAGEM_USUARIO_LOGADO}
+            >
               Minhas Postagens
             </NavLinkToTop>
-            <NavLinkToTop className="dropdown-item" to="/postagens/favoritas">
+            <NavLinkToTop
+              className="dropdown-item"
+              to={TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS}
+            >
               Minhas Postagens Favoritas
             </NavLinkToTop>
           </Dropdown.Menu>
@@ -34,13 +50,19 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLinkToTop className="dropdown-item" to="/todos/pets">
+            <NavLinkToTop className="dropdown-item" to={TELA_TODOS_PET}>
               Todos os Pets
             </NavLinkToTop>
-            <NavLinkToTop className="dropdown-item" to="/meus/pets">
+            <NavLinkToTop
+              className="dropdown-item"
+              to={TELA_PETS_USUARIO_LOGADO}
+            >
               Meus Pets
             </NavLinkToTop>
-            <NavLinkToTop className="dropdown-item" to="/pets/favoritos">
+            <NavLinkToTop
+              className="dropdown-item"
+              to={TELA_PETS_USUARIO_LOGADO_FAVORITOS}
+            >
               Meus Pets Favoritos
             </NavLinkToTop>
           </Dropdown.Menu>
@@ -50,7 +72,7 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
       <div className="d-flex justify-content-center align-items-center">
         <NavLinkToTop
           className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
-          to="/meus/links"
+          to={TELA_MEUS_LINKS}
         >
           <AiOutlineLink /> Link na Bio
         </NavLinkToTop>
@@ -82,24 +104,22 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            {/* <NavLinkToTop className="dropdown-item disabled" to="/usuario/perfil">
+            <NavLinkToTop
+              className="dropdown-item"
+              to={`/usuario/${usuarioLogado.usuario}`}
+            >
               Perfil
             </NavLinkToTop>
             <NavLinkToTop
-              className="dropdown-item disabled"
-              to="/usuario/editar/perfil"
+              className="dropdown-item"
+              to={TELA_EDITAR_PERFIL_USUARIO}
             >
               Editar perfil
             </NavLinkToTop>
-            <NavLinkToTop
-              className="dropdown-item disabled"
-              to="/usuario/editar/senha"
-            >
-              Mudar senha
-            </NavLinkToTop> */}
-            <button className="dropdown-item" onClick={logout}>
+            {/* <Button className="dropdown-item">Mudar senha</Button> */}
+            <Button className="dropdown-item" onClick={logout}>
               Sair
-            </button>
+            </Button>
           </Dropdown.Menu>
         </Dropdown>
       </div>

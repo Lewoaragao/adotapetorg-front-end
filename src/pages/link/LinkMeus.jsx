@@ -417,28 +417,32 @@ export default function LinkMeus() {
                         <BsTrash /> Deletar Link
                       </Button>
 
-                      <Button
-                        className="dropdown-item"
-                        onClick={() => {
-                          setImagem("");
-                          setIdLink(link.id);
-                          setAbrirModalEditarImagem(true);
-                        }}
-                      >
-                        <BsPencil /> Editar Imagem
-                      </Button>
+                      {link.link_tipo_id === LINK_TIPO_EXTERNO && (
+                        <>
+                          <Button
+                            className="dropdown-item"
+                            onClick={() => {
+                              setImagem("");
+                              setIdLink(link.id);
+                              setAbrirModalEditarImagem(true);
+                            }}
+                          >
+                            <BsPencil /> Editar Imagem
+                          </Button>
 
-                      <Button
-                        className="dropdown-item"
-                        onClick={() => {
-                          let result = window.confirm(
-                            "Confirma a ação REMOVER IMAGEM?"
-                          );
-                          if (result) removerImagemLink(link.id);
-                        }}
-                      >
-                        <BsTrash /> Remover Imagem
-                      </Button>
+                          <Button
+                            className="dropdown-item"
+                            onClick={() => {
+                              let result = window.confirm(
+                                "Confirma a ação REMOVER IMAGEM?"
+                              );
+                              if (result) removerImagemLink(link.id);
+                            }}
+                          >
+                            <BsTrash /> Remover Imagem
+                          </Button>
+                        </>
+                      )}
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>

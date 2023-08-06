@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import {
@@ -7,6 +6,7 @@ import {
   TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
   TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
   TELA_CADASTRO_USUARIO,
+  TELA_EDITAR_PERFIL_USUARIO,
   TELA_ERRO_404,
   TELA_INFORMACOES_PET,
   TELA_INICIAL,
@@ -18,6 +18,7 @@ import {
   TELA_SOBRE,
   TELA_TODOS_PET,
   TELA_USUARIO_ENTRAR,
+  TELA_VISUALIZAR_PERFIL_USUARIO,
 } from "../components/Constantes";
 import logo from "../images/logo-adotapetorg.jpg";
 import Blog from "../pages/blog/Blog";
@@ -37,6 +38,8 @@ import BlogPostagem from "../pages/blog/BlogPostagem";
 import PetTodos from "../pages/pet/PetTodos";
 import BlogPostagemUsuarioLogado from "../pages/blog/BlogPostagemUsuarioLogado";
 import BlogPostagemUsuarioLogadoFavoritos from "../pages/blog/BlogPostagemUsuarioLogadoFavoritos";
+import UsuarioEditar from "./../pages/usuario/UsuarioEditar";
+import UsuarioPerfil from "../pages/usuario/UsuarioPerfil";
 
 /**
  * Mapa de todas as rotas
@@ -56,6 +59,11 @@ export const Routes = createBrowserRouter([
       // ROTAS USUÁRIO
       { path: TELA_CADASTRO_USUARIO, element: <UsuarioCadastrar /> },
       { path: TELA_USUARIO_ENTRAR, element: <UsuarioEntrar /> },
+      { path: TELA_VISUALIZAR_PERFIL_USUARIO, element: <UsuarioPerfil /> },
+      {
+        path: TELA_EDITAR_PERFIL_USUARIO,
+        element: <PrivateRoute element={<UsuarioEditar />} />,
+      },
       // ROTAS PET
       { path: TELA_TODOS_PET, element: <PetTodos /> },
       { path: TELA_INFORMACOES_PET, element: <PetInformacao /> },
@@ -79,7 +87,6 @@ export const Routes = createBrowserRouter([
       // ROTAS BLOG
       { path: TELA_BLOG, element: <Blog /> },
       { path: TELA_BLOG_POSTAGEM, element: <BlogPostagem /> },
-
       {
         path: TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
         element: <PrivateRoute element={<BlogPostagemUsuarioLogado />} />,

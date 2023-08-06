@@ -82,7 +82,7 @@ export default function Blog() {
                               className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
                               to={`/blog/postagem/${postagem.slug}`}
                             >
-                              <AiOutlineInfoCircle /> Ler mais
+                              <AiOutlineInfoCircle /> Ler
                             </NavLinkToTop>
                           </Card.Footer>
                         </Card>

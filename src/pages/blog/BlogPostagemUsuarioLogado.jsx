@@ -331,7 +331,7 @@ export default function BlogPostagemUsuarioLogado() {
                                 className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
                                 to={`/blog/postagem/${postagem.slug}`}
                               >
-                                <AiOutlineInfoCircle /> Ler mais
+                                <AiOutlineInfoCircle /> Ler
                               </NavLinkToTop>
                             </div>
 
@@ -445,7 +445,7 @@ export default function BlogPostagemUsuarioLogado() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label className="fw-bold" htmlFor="tipoLink">
+            <Form.Label className="fw-bold" htmlFor="tag">
               Tag
             </Form.Label>
             <Form.Select
