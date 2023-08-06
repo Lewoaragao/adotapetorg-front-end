@@ -14,6 +14,8 @@ export const TELA_POLITICA_PRIVACIDADE = "/politica/privacidade";
 // ROTAS USUÁRIO
 export const TELA_CADASTRO_USUARIO = "/cadastrar/usuario";
 export const TELA_USUARIO_ENTRAR = "/usuario/entrar";
+export const TELA_EDITAR_PERFIL_USUARIO = "/usuario/editar/perfil";
+export const TELA_VISUALIZAR_PERFIL_USUARIO = "/usuario/:usuario";
 // ROTAS PET
 export const TELA_TODOS_PET = "/todos/pets";
 export const TELA_INFORMACOES_PET = "/informacoes/pet/:id";
@@ -85,3 +87,7 @@ export const MENSAGEM_NENHUM_PET_FAVORITADO = "Nenhum pet favoritado";
 
 // MAPEANDO TIPOS DE LOGIN
 export const LOGIN_EXTERNO_TIPO_GOOGLE = 1;
+
+// IBGE
+export const ID_PAIS_BRASIL = "23";
+export const PAIS_BRASIL = "Brasil";

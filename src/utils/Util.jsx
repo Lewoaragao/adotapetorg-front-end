@@ -72,3 +72,7 @@ export function separarLinkEUsuario(url) {
 
   return { pUsuario, pLink };
 }
+
+export function obterSomenteNumeros(celularFormatado) {
+  return celularFormatado.replace(/\D/g, "");
+}

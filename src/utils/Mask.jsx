@@ -21,6 +21,19 @@ export function formataCelular(celular) {
 }
 
 /**
+ * Formata o telefone vindo como número
+ * e retorna como texto formatado
+ * @param {integer} telefone
+ * @returns {string} telefone 9999-9999
+ */
+export function formataTelefone(telefone) {
+  if (!telefone) return null;
+  telefone = telefone.replace(/\D/g, "");
+  telefone = telefone.replace(/(\d{4})(\d)/, "$1-$2");
+  return telefone;
+}
+
+/**
  * Recebe um link e remove
  * os prefiros http ou https
  * @param {string} link

@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }) => {
         setarUsuarioLogado,
         token,
         verificaUsuarioLogado,
+        setUsuarioLogado,
       }}
     >
       {children}

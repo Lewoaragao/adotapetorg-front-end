@@ -4,7 +4,7 @@
  * @since 06/06/2023 11:10:30
  * @author Leonardo Aragão
  */
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { CgCloseR } from "react-icons/cg";
 import { TIPO_ALERTA } from "../components/Constantes";
