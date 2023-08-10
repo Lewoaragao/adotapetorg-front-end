@@ -383,6 +383,7 @@ export default function UsuarioEditar() {
               width="200px"
               height="200px"
               className="mb-3 me-3"
+              style={{ filter: "drop-shadow(2px 4px 6px black)" }}
               roundedCircle
               src={
                 usuarioLogado.imagem.includes("https")
@@ -398,6 +399,7 @@ export default function UsuarioEditar() {
 
             <ButtonGroup vertical className="mb-3">
               <Button
+                className="fw-bold"
                 variant="warning"
                 onClick={() => {
                   let result = window.confirm(
@@ -409,6 +411,7 @@ export default function UsuarioEditar() {
                 Remover Imagem
               </Button>
               <Button
+                className="fw-bold"
                 variant="warning"
                 onClick={() => {
                   setImagem("");

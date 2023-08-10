@@ -67,12 +67,16 @@ function Inicio({ logo }) {
       <div className="container vw-100">
         <TituloPagina titulo="Início" className="text-center" />
 
+        <p className="bg-dark text-warning fs-3 fw-bold rounded text-center">
+          <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
+        </p>
+
         <Carousel
           pause="hover"
-          className="bg-dark rounded text-center image-container-slider"
+          className="bg-dark rounded text-center image-container-slider mb-3"
         >
           <Carousel.Item interval={5000}>
-            <Image src={banner01} />
+            <Image className="w-100" src={banner01} />
             {/* <Carousel.Caption>
               <h3>First slide label</h3>
               <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
@@ -80,7 +84,7 @@ function Inicio({ logo }) {
           </Carousel.Item>
 
           <Carousel.Item interval={5000}>
-            <Image src={banner02} />
+            <Image className="w-100" src={banner02} />
             {/* <Carousel.Caption>
               <h3>Second slide label</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -88,7 +92,7 @@ function Inicio({ logo }) {
           </Carousel.Item>
 
           <Carousel.Item interval={5000}>
-            <Image src={banner03} />
+            <Image className="w-100" src={banner03} />
             {/* <Carousel.Caption>
               <h3>Third slide label</h3>
               <p>
@@ -97,10 +101,6 @@ function Inicio({ logo }) {
             </Carousel.Caption> */}
           </Carousel.Item>
         </Carousel>
-
-        <p className="bg-dark text-warning fs-1 fw-bold rounded mt-2 text-center">
-          <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
-        </p>
 
         <h2 className="mb-3">Lista: Pets</h2>
         {isLoadingListaPet ? (
