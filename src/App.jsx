@@ -32,13 +32,11 @@ export default function App() {
       // Renderiza o conteúdo padrão com o header e o footer
       return (
         <>
-          <Header
-            logo={logo}
-            usuarioLogadoVerificado={usuarioLogadoVerificado}
-          />
+          <Header usuarioLogadoVerificado={usuarioLogadoVerificado} />
           <Container className="my-3">
             <Outlet />
           </Container>
+          {/* <h2 className="text-center">Patrocinadores</h2> */}
           <BtnVoltarTopo />
           <Footer logo={logo} />
         </>

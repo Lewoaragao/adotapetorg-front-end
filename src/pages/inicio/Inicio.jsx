@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Carousel, Col, Image, Pagination, Row } from "react-bootstrap";
-import { TbAlertTriangle } from "react-icons/tb";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
@@ -16,28 +15,30 @@ import banner01 from "../../images/banner_pet_01.jpg";
 import banner02 from "../../images/banner_pet_02.jpg";
 import banner03 from "../../images/banner_pet_03.jpg";
 
-function Inicio({ logo }) {
+function Inicio() {
   const [listaPets, setListaPets] = useState([]);
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoadingListaPet, setIsLoadingListaPet] = useState(false);
   const [isLoadingBlogPostagens, setIsLoadingBlogPostagens] = useState(false);
   const { setarMensagem } = useContext(MessageContext);
-  const [data, setData] = useState([]);
-  const [pagina, setPagina] = useState(1);
+  const [dataPet, setDataPet] = useState([]);
+  const [dataPostagem, setDataPostagem] = useState([]);
+  const [paginaPet, setPaginaPet] = useState(1);
+  const [paginaPostagem, setPaginaPostagem] = useState(1);
 
   useEffect(() => {
-    listarTodosPets(pagina);
-    listarTodasPostagens();
+    listarTodosPets(paginaPet);
+    listarTodasPostagens(paginaPostagem);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function listarTodosPets(numeroPagina) {
-    setPagina(numeroPagina);
+  function listarTodosPets(numeroPaginaPet) {
+    setPaginaPet(numeroPaginaPet);
     setIsLoadingListaPet(true);
 
-    Api.get(`pets?page=${pagina}`)
+    Api.get(`pets?page=${numeroPaginaPet}`)
       .then(({ data }) => {
-        setData(data);
+        setDataPet(data);
         setListaPets(data.data);
       })
       .catch(({ response }) => {
@@ -48,10 +49,13 @@ function Inicio({ logo }) {
       });
   }
 
-  function listarTodasPostagens() {
+  function listarTodasPostagens(numeroPaginaPostagem) {
+    setPaginaPostagem(numeroPaginaPostagem);
     setIsLoadingBlogPostagens(true);
-    Api.get(`blog/todas/postagens`)
+
+    Api.get(`blog/todas/postagens?page=${numeroPaginaPostagem}`)
       .then(({ data }) => {
+        setDataPostagem(data);
         setListaPostagens(data.data);
       })
       .catch(({ response }) => {
@@ -66,10 +70,6 @@ function Inicio({ logo }) {
     <div className="d-flex justify-content-center align-items-center">
       <div className="container vw-100">
         <TituloPagina titulo="Início" className="text-center" />
-
-        <p className="bg-dark text-warning fs-3 fw-bold rounded text-center">
-          <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
-        </p>
 
         <Carousel
           pause="hover"
@@ -102,7 +102,7 @@ function Inicio({ logo }) {
           </Carousel.Item>
         </Carousel>
 
-        <h2 className="mb-3">Lista: Pets</h2>
+        <h2 className="mb-3 text-center">Lista: Pets</h2>
         {isLoadingListaPet ? (
           <CarregamentoLista />
         ) : (
@@ -148,51 +148,53 @@ function Inicio({ logo }) {
                 <Pagination className="d-flex justify-content-center align-items-center">
                   {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
                   <Pagination.First
-                    onClick={() => listarTodosPets(data.first_page)}
+                    onClick={() => listarTodosPets(dataPet.first_page)}
                   />
 
                   {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
                   <Pagination.Prev
-                    onClick={() => listarTodosPets(data.current_page - 1)}
+                    onClick={() => listarTodosPets(dataPet.current_page - 1)}
                   />
 
                   {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+                  {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
                   {/* PÁGINA ATUAL MENOS UM */}
-                  {data.current_page >= 2 && (
+                  {dataPet.current_page >= 2 && (
                     <Pagination.Item
-                      onClick={() => listarTodosPets(data.current_page - 1)}
+                      onClick={() => listarTodosPets(dataPet.current_page - 1)}
                     >
-                      {data.current_page - 1}
+                      {dataPet.current_page - 1}
                     </Pagination.Item>
                   )}
 
                   {/* PÁGINA ATUAL */}
-                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+                  <Pagination.Item active>
+                    {dataPet.current_page}
+                  </Pagination.Item>
 
                   {/* PÁGINA ATUAL MAIS UM */}
-                  {data.current_page + 1 <= data.last_page && (
+                  {dataPet.current_page + 1 <= dataPet.last_page && (
                     <Pagination.Item
-                      onClick={() => listarTodosPets(data.current_page + 1)}
+                      onClick={() => listarTodosPets(dataPet.current_page + 1)}
                     >
-                      {data.current_page + 1}
+                      {dataPet.current_page + 1}
                     </Pagination.Item>
                   )}
 
                   {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                  {data.current_page + 1 < data.last_page && (
+                  {dataPet.current_page + 1 < dataPet.last_page && (
                     <Pagination.Ellipsis disabled />
                   )}
 
                   {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
                   <Pagination.Next
-                    onClick={() => listarTodosPets(data.current_page + 1)}
+                    onClick={() => listarTodosPets(dataPet.current_page + 1)}
                   />
 
                   {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
                   <Pagination.Last
-                    onClick={() => listarTodosPets(data.last_page)}
+                    onClick={() => listarTodosPets(dataPet.last_page)}
                   />
                 </Pagination>
               </Row>
@@ -200,7 +202,7 @@ function Inicio({ logo }) {
           </>
         )}
 
-        <h2 className="mb-3">Blog: Postagens</h2>
+        <h2 className="mb-3 text-center">Blog: Postagens</h2>
         {isLoadingBlogPostagens ? (
           <CarregamentoLista />
         ) : (
@@ -244,6 +246,75 @@ function Inicio({ logo }) {
             )}
           </>
         )}
+
+        {!verificaLista(listaPets) && (
+          <Row className="my-3">
+            <Pagination className="d-flex justify-content-center align-items-center">
+              {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+              <Pagination.First
+                onClick={() => listarTodasPostagens(dataPostagem.first_page)}
+              />
+
+              {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+              <Pagination.Prev
+                onClick={() =>
+                  listarTodasPostagens(dataPostagem.current_page - 1)
+                }
+              />
+
+              {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+              {dataPostagem.current_page > 2 && (
+                <Pagination.Ellipsis disabled />
+              )}
+
+              {/* PÁGINA ATUAL MENOS UM */}
+              {dataPostagem.current_page >= 2 && (
+                <Pagination.Item
+                  onClick={() =>
+                    listarTodasPostagens(dataPostagem.current_page - 1)
+                  }
+                >
+                  {dataPostagem.current_page - 1}
+                </Pagination.Item>
+              )}
+
+              {/* PÁGINA ATUAL */}
+              <Pagination.Item active>
+                {dataPostagem.current_page}
+              </Pagination.Item>
+
+              {/* PÁGINA ATUAL MAIS UM */}
+              {dataPostagem.current_page + 1 <= dataPostagem.last_page && (
+                <Pagination.Item
+                  onClick={() =>
+                    listarTodasPostagens(dataPostagem.current_page + 1)
+                  }
+                >
+                  {dataPostagem.current_page + 1}
+                </Pagination.Item>
+              )}
+
+              {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+              {dataPostagem.current_page + 1 < dataPostagem.last_page && (
+                <Pagination.Ellipsis disabled />
+              )}
+
+              {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+              <Pagination.Next
+                onClick={() =>
+                  listarTodasPostagens(dataPostagem.current_page + 1)
+                }
+              />
+
+              {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+              <Pagination.Last
+                onClick={() => listarTodasPostagens(dataPostagem.last_page)}
+              />
+            </Pagination>
+          </Row>
+        )}
+
+        {/* <h2 className="mb-3 text-center">Apoiadores</h2> */}
       </div>
     </div>
   );
