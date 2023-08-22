@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Carousel, Col, Image, Pagination, Row } from "react-bootstrap";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
   MENSAGEM_NENHUM_PET_CADASTRADO,
 } from "../../components/Constantes";
 import { MessageContext } from "../../contexts/MessageContext";
-import Api from "../../services/Api";
-import TituloPagina from "./../../components/TituloPagina";
-import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
-import { verificaLista } from "../../utils/Util";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 import banner01 from "../../images/banner_pet_01.jpg";
 import banner02 from "../../images/banner_pet_02.jpg";
 import banner03 from "../../images/banner_pet_03.jpg";
+import Api from "../../services/Api";
+import { verificaLista } from "../../utils/Util";
+import TituloPagina from "./../../components/TituloPagina";
+import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 
 function Inicio() {
   const [listaPets, setListaPets] = useState([]);
@@ -69,7 +69,8 @@ function Inicio() {
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div className="container vw-100">
-        <TituloPagina titulo="Início" className="text-center" />
+        {/* PASSANDO NULL PARA VIR SOMENTE O NOME ADOTA PET ORG */}
+        <TituloPagina titulo={null} />
 
         <Carousel
           pause="hover"

@@ -1,7 +1,6 @@
 import { Button, Dropdown, Image } from "react-bootstrap";
 import { AiOutlineLink } from "react-icons/ai";
 import { FaDog } from "react-icons/fa";
-import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import { IoMdBook } from "react-icons/io";
 import {
   TELA_BLOG,
@@ -13,6 +12,7 @@ import {
   TELA_PETS_USUARIO_LOGADO_FAVORITOS,
   TELA_TODOS_PET,
 } from "../../../components/Constantes";
+import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 
 function NavBarUsuarioLogado({ usuarioLogado, logout }) {
   return (
@@ -27,12 +27,14 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
             <NavLinkToTop className="dropdown-item" to={TELA_BLOG}>
               Todas as Postagens
             </NavLinkToTop>
+
             <NavLinkToTop
               className="dropdown-item"
               to={TELA_BLOG_POSTAGEM_USUARIO_LOGADO}
             >
               Minhas Postagens
             </NavLinkToTop>
+
             <NavLinkToTop
               className="dropdown-item"
               to={TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS}
@@ -53,12 +55,14 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
             <NavLinkToTop className="dropdown-item" to={TELA_TODOS_PET}>
               Todos os Pets
             </NavLinkToTop>
+
             <NavLinkToTop
               className="dropdown-item"
               to={TELA_PETS_USUARIO_LOGADO}
             >
               Meus Pets
             </NavLinkToTop>
+
             <NavLinkToTop
               className="dropdown-item"
               to={TELA_PETS_USUARIO_LOGADO_FAVORITOS}
@@ -110,13 +114,16 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
             >
               Perfil
             </NavLinkToTop>
+
             <NavLinkToTop
               className="dropdown-item"
               to={TELA_EDITAR_PERFIL_USUARIO}
             >
               Editar perfil
             </NavLinkToTop>
+
             {/* <Button className="dropdown-item">Mudar senha</Button> */}
+
             <Button className="dropdown-item" onClick={logout}>
               Sair
             </Button>

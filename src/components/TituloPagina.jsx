@@ -8,8 +8,10 @@ export default function TituloPagina({ titulo, className, style }) {
 
   useEffect(() => {
     document.title = `${formataTextoCapitalize(
-      titulo !== null && titulo !== undefined ? titulo : ""
-    )} - ${process.env.REACT_APP_SITE_TITLE}`;
+      titulo !== null && titulo !== undefined
+        ? titulo + " - " + process.env.REACT_APP_SITE_TITLE
+        : process.env.REACT_APP_SITE_TITLE
+    )}`;
 
     // adicionando meta tag canonica dinâmicamente dependendo da url da página
     let relCanonical = !!document.querySelector("link[rel='canonical']")
