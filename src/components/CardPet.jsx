@@ -1,4 +1,4 @@
-import { Badge, Card } from "react-bootstrap";
+import { Badge, Card, Col } from "react-bootstrap";
 import { AiFillIdcard, AiOutlineInfoCircle } from "react-icons/ai";
 import { BsCalendarEvent, BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { RxSize } from "react-icons/rx";
@@ -19,7 +19,7 @@ import NavLinkToTop from "./navLinkToTop/NavLinkToTop";
  */
 export default function CardPet({ pet }) {
   return (
-    <>
+    <Col>
       <Card>
         <div className="image-container">
           <Card.Img
@@ -66,6 +66,6 @@ export default function CardPet({ pet }) {
           </div>
         </Card.Footer>
       </Card>
-    </>
+    </Col>
   );
 }

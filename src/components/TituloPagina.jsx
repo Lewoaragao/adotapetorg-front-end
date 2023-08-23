@@ -33,7 +33,7 @@ export default function TituloPagina({ titulo, className, style }) {
       >
         {titulo}
       </h1>
-      <hr />
+      <hr className={titulo == null ? "d-none" : "d-block"} />
     </>
   );
 }
