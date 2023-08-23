@@ -91,3 +91,6 @@ export const LOGIN_EXTERNO_TIPO_GOOGLE = 1;
 // IBGE
 export const ID_PAIS_BRASIL = "23";
 export const PAIS_BRASIL = "Brasil";
+
+// PAGINAÇÃO
+export const REGISTROS_PAGINACAO = 12;

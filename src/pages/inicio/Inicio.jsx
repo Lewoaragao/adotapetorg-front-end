@@ -1,43 +1,46 @@
 import { useContext, useEffect, useState } from "react";
 import { Card, Carousel, Col, Image, Pagination, Row } from "react-bootstrap";
-import { TbAlertTriangle } from "react-icons/tb";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
   MENSAGEM_NENHUM_PET_CADASTRADO,
+  REGISTROS_PAGINACAO,
 } from "../../components/Constantes";
 import { MessageContext } from "../../contexts/MessageContext";
-import Api from "../../services/Api";
-import TituloPagina from "./../../components/TituloPagina";
-import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
-import { verificaLista } from "../../utils/Util";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 import banner01 from "../../images/banner_pet_01.jpg";
 import banner02 from "../../images/banner_pet_02.jpg";
 import banner03 from "../../images/banner_pet_03.jpg";
+import Api from "../../services/Api";
+import { verificaLista } from "../../utils/Util";
+import TituloPagina from "./../../components/TituloPagina";
+import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
+import CardPet from "../../components/CardPet";
 
-function Inicio({ logo }) {
+function Inicio() {
   const [listaPets, setListaPets] = useState([]);
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoadingListaPet, setIsLoadingListaPet] = useState(false);
   const [isLoadingBlogPostagens, setIsLoadingBlogPostagens] = useState(false);
   const { setarMensagem } = useContext(MessageContext);
-  const [data, setData] = useState([]);
-  const [pagina, setPagina] = useState(1);
+  const [dataPet, setDataPet] = useState([]);
+  const [dataPostagem, setDataPostagem] = useState([]);
+  const [paginaPet, setPaginaPet] = useState(1);
+  const [paginaPostagem, setPaginaPostagem] = useState(1);
 
   useEffect(() => {
-    listarTodosPets(pagina);
-    listarTodasPostagens();
+    listarTodosPets(paginaPet);
+    listarTodasPostagens(paginaPostagem);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function listarTodosPets(numeroPagina) {
-    setPagina(numeroPagina);
+  function listarTodosPets(numeroPaginaPet) {
+    setPaginaPet(numeroPaginaPet);
     setIsLoadingListaPet(true);
 
-    Api.get(`pets?page=${pagina}`)
+    Api.get(`pets?page=${numeroPaginaPet}`)
       .then(({ data }) => {
-        setData(data);
+        setDataPet(data);
         setListaPets(data.data);
       })
       .catch(({ response }) => {
@@ -48,10 +51,13 @@ function Inicio({ logo }) {
       });
   }
 
-  function listarTodasPostagens() {
+  function listarTodasPostagens(numeroPaginaPostagem) {
+    setPaginaPostagem(numeroPaginaPostagem);
     setIsLoadingBlogPostagens(true);
-    Api.get(`blog/todas/postagens`)
+
+    Api.get(`blog/todas/postagens?page=${numeroPaginaPostagem}`)
       .then(({ data }) => {
+        setDataPostagem(data);
         setListaPostagens(data.data);
       })
       .catch(({ response }) => {
@@ -65,11 +71,8 @@ function Inicio({ logo }) {
   return (
     <div className="d-flex justify-content-center align-items-center">
       <div className="container vw-100">
-        <TituloPagina titulo="Início" className="text-center" />
-
-        <p className="bg-dark text-warning fs-3 fw-bold rounded text-center">
-          <TbAlertTriangle /> Em desenvolvimento <TbAlertTriangle />
-        </p>
+        {/* PASSANDO NULL PARA VIR SOMENTE O NOME ADOTA PET ORG */}
+        <TituloPagina titulo={null} />
 
         <Carousel
           pause="hover"
@@ -102,7 +105,8 @@ function Inicio({ logo }) {
           </Carousel.Item>
         </Carousel>
 
-        <h2 className="mb-3">Lista: Pets</h2>
+        <h2 className="mb-3 text-center">Lista: Pets</h2>
+        <hr />
         {isLoadingListaPet ? (
           <CarregamentoLista />
         ) : (
@@ -114,93 +118,81 @@ function Inicio({ logo }) {
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4 mb-3">
                   <>
                     {listaPets.map((pet) => (
-                      <Col key={pet.id}>
-                        <Card>
-                          <div className="image-container">
-                            <Card.Img
-                              variant="top"
-                              src={process.env.REACT_APP_API_URL + pet.imagem}
-                              alt={`foto pet ${pet.nome}`}
-                            />
-                          </div>
-                          <Card.Body>
-                            <Card.Title>{pet.nome}</Card.Title>
-                            <Card.Text>{pet.raca}</Card.Text>
-                          </Card.Body>
-                          <Card.Footer>
-                            <NavLinkToTop
-                              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
-                              to={`/informacoes/pet/${pet.id}`}
-                            >
-                              <AiOutlineInfoCircle /> Info
-                            </NavLinkToTop>
-                          </Card.Footer>
-                        </Card>
-                      </Col>
+                      <CardPet key={pet.id} pet={pet} />
                     ))}
                   </>
                 </Row>
               </>
             )}
 
-            {!verificaLista(listaPets) && (
-              <Row className="my-3">
-                <Pagination className="d-flex justify-content-center align-items-center">
-                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-                  <Pagination.First
-                    onClick={() => listarTodosPets(data.first_page)}
-                  />
+            {!verificaLista(listaPets) &&
+              listaPets.length > REGISTROS_PAGINACAO && (
+                <Row className="my-3">
+                  <Pagination className="d-flex justify-content-center align-items-center">
+                    {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                    <Pagination.First
+                      onClick={() => listarTodosPets(dataPet.first_page)}
+                    />
 
-                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-                  <Pagination.Prev
-                    onClick={() => listarTodosPets(data.current_page - 1)}
-                  />
+                    {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                    <Pagination.Prev
+                      onClick={() => listarTodosPets(dataPet.current_page - 1)}
+                    />
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+                    {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                    {dataPet.current_page > 2 && (
+                      <Pagination.Ellipsis disabled />
+                    )}
 
-                  {/* PÁGINA ATUAL MENOS UM */}
-                  {data.current_page >= 2 && (
-                    <Pagination.Item
-                      onClick={() => listarTodosPets(data.current_page - 1)}
-                    >
-                      {data.current_page - 1}
+                    {/* PÁGINA ATUAL MENOS UM */}
+                    {dataPet.current_page >= 2 && (
+                      <Pagination.Item
+                        onClick={() =>
+                          listarTodosPets(dataPet.current_page - 1)
+                        }
+                      >
+                        {dataPet.current_page - 1}
+                      </Pagination.Item>
+                    )}
+
+                    {/* PÁGINA ATUAL */}
+                    <Pagination.Item active>
+                      {dataPet.current_page}
                     </Pagination.Item>
-                  )}
 
-                  {/* PÁGINA ATUAL */}
-                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+                    {/* PÁGINA ATUAL MAIS UM */}
+                    {dataPet.current_page + 1 <= dataPet.last_page && (
+                      <Pagination.Item
+                        onClick={() =>
+                          listarTodosPets(dataPet.current_page + 1)
+                        }
+                      >
+                        {dataPet.current_page + 1}
+                      </Pagination.Item>
+                    )}
 
-                  {/* PÁGINA ATUAL MAIS UM */}
-                  {data.current_page + 1 <= data.last_page && (
-                    <Pagination.Item
-                      onClick={() => listarTodosPets(data.current_page + 1)}
-                    >
-                      {data.current_page + 1}
-                    </Pagination.Item>
-                  )}
+                    {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                    {dataPet.current_page + 1 < dataPet.last_page && (
+                      <Pagination.Ellipsis disabled />
+                    )}
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                  {data.current_page + 1 < data.last_page && (
-                    <Pagination.Ellipsis disabled />
-                  )}
+                    {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                    <Pagination.Next
+                      onClick={() => listarTodosPets(dataPet.current_page + 1)}
+                    />
 
-                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-                  <Pagination.Next
-                    onClick={() => listarTodosPets(data.current_page + 1)}
-                  />
-
-                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-                  <Pagination.Last
-                    onClick={() => listarTodosPets(data.last_page)}
-                  />
-                </Pagination>
-              </Row>
-            )}
+                    {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                    <Pagination.Last
+                      onClick={() => listarTodosPets(dataPet.last_page)}
+                    />
+                  </Pagination>
+                </Row>
+              )}
           </>
         )}
 
-        <h2 className="mb-3">Blog: Postagens</h2>
+        <h2 className="mb-3 text-center">Blog: Postagens</h2>
+        <hr />
         {isLoadingBlogPostagens ? (
           <CarregamentoLista />
         ) : (
@@ -244,6 +236,76 @@ function Inicio({ logo }) {
             )}
           </>
         )}
+
+        {!verificaLista(listaPostagens) &&
+          listaPostagens.length > REGISTROS_PAGINACAO && (
+            <Row className="my-3">
+              <Pagination className="d-flex justify-content-center align-items-center">
+                {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                <Pagination.First
+                  onClick={() => listarTodasPostagens(dataPostagem.first_page)}
+                />
+
+                {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                <Pagination.Prev
+                  onClick={() =>
+                    listarTodasPostagens(dataPostagem.current_page - 1)
+                  }
+                />
+
+                {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                {dataPostagem.current_page > 2 && (
+                  <Pagination.Ellipsis disabled />
+                )}
+
+                {/* PÁGINA ATUAL MENOS UM */}
+                {dataPostagem.current_page >= 2 && (
+                  <Pagination.Item
+                    onClick={() =>
+                      listarTodasPostagens(dataPostagem.current_page - 1)
+                    }
+                  >
+                    {dataPostagem.current_page - 1}
+                  </Pagination.Item>
+                )}
+
+                {/* PÁGINA ATUAL */}
+                <Pagination.Item active>
+                  {dataPostagem.current_page}
+                </Pagination.Item>
+
+                {/* PÁGINA ATUAL MAIS UM */}
+                {dataPostagem.current_page + 1 <= dataPostagem.last_page && (
+                  <Pagination.Item
+                    onClick={() =>
+                      listarTodasPostagens(dataPostagem.current_page + 1)
+                    }
+                  >
+                    {dataPostagem.current_page + 1}
+                  </Pagination.Item>
+                )}
+
+                {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                {dataPostagem.current_page + 1 < dataPostagem.last_page && (
+                  <Pagination.Ellipsis disabled />
+                )}
+
+                {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                <Pagination.Next
+                  onClick={() =>
+                    listarTodasPostagens(dataPostagem.current_page + 1)
+                  }
+                />
+
+                {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                <Pagination.Last
+                  onClick={() => listarTodasPostagens(dataPostagem.last_page)}
+                />
+              </Pagination>
+            </Row>
+          )}
+
+        {/* <h2 className="mb-3 text-center">Apoiadores</h2> */}
       </div>
     </div>
   );

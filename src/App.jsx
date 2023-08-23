@@ -39,6 +39,7 @@ export default function App() {
           <Container className="my-3">
             <Outlet />
           </Container>
+          {/* <h2 className="text-center">Patrocinadores</h2> */}
           <BtnVoltarTopo />
           <Footer logo={logo} />
         </>

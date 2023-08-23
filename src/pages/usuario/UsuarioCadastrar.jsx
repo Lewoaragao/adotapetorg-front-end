@@ -1,27 +1,26 @@
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useContext, useState } from "react";
+import { InputGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { AiFillGoogleCircle } from "react-icons/ai";
+import { HiOutlineMail } from "react-icons/hi";
+import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import CarregamentoTela, {
   CarregamentoBotao,
 } from "../../components/Carregamento";
 import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { AuthContext } from "../../contexts/AuthContext";
+import { AuthGoogle } from "../../contexts/AuthGoogle";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
-import TituloPagina from "./../../components/TituloPagina";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { AuthGoogle } from "../../contexts/AuthGoogle";
+import { formataPrimeiroNome, formataUltimoNome } from "../../utils/Mask";
 import {
-  formataPrimeiroNome,
-  formataUltimoNome,
+  gerarNumeroAleatorio,
   obterParteAntesDoArroba,
-} from "../../utils/Mask";
-import { gerarNumeroAleatorio } from "../../utils/Util";
-import { AiFillGoogleCircle } from "react-icons/ai";
-import { InputGroup } from "react-bootstrap";
-import { RiLockPasswordFill } from "react-icons/ri";
-import { HiOutlineMail } from "react-icons/hi";
+} from "../../utils/Util";
+import TituloPagina from "./../../components/TituloPagina";
 
 function UsuarioCadastrar() {
   const navigate = useNavigate();

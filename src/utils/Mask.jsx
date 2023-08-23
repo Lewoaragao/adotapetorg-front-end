@@ -217,16 +217,3 @@ export function formataMostrandoIdade(dataNascimento) {
 
   return `${anos}a ${meses}m ${dias}d`;
 }
-
-export function obterParteAntesDoArroba(email) {
-  // Verifica se o email é válido
-  if (!email || typeof email !== "string" || !email.includes("@")) {
-    return "";
-  }
-
-  // Divide o email em duas partes usando o "@" como separador
-  const partes = email.split("@");
-
-  // Retorna a primeira parte (antes do "@")
-  return partes.shift();
-}

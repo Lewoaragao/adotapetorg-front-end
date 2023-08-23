@@ -5,7 +5,6 @@ import {
   FaGithub,
   FaHome,
   FaInstagram,
-  FaLinkedin,
   FaTwitter,
   FaWhatsapp,
   FaYoutube,
@@ -56,14 +55,14 @@ function Footer({ logo }) {
           >
             <FaGithub />
           </a>
-          <a
+          {/* <a
             className="btn btn-warning mx-1"
             target="_blank"
             rel="noopener noreferrer"
             href="https://linkedin.com/company/adotapetorg"
           >
             <FaLinkedin />
-          </a>
+          </a> */}
           <a
             className="btn btn-warning mx-1"
             target="_blank"
