@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { BsStar, BsStarFill } from "react-icons/bs";
+import { BsStar, BsStarFill, BsWhatsapp } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { MessageContext } from "../../contexts/MessageContext";
@@ -8,6 +8,7 @@ import {
   formataCelular,
   formataSexoPet,
   formataTamanhoPet,
+  formataTelefone,
 } from "../../utils/Mask";
 import formataData from "../../utils/Util";
 import CarregamentoTela, {
@@ -121,6 +122,34 @@ function PetInformacao() {
             <div>
               <TituloPagina titulo="Informações do Pet" />
 
+              <div className="mb-2">
+                {petFavoritado ? (
+                  <button
+                    className="btn btn-warning"
+                    disabled={!isUsuarioLogado || isLoadingButton}
+                    onClick={() => desfavoritarPet(pet.id)}
+                  >
+                    {isLoadingButton ? (
+                      <CarregamentoBotao variant="dark" />
+                    ) : (
+                      <BsStarFill />
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-warning"
+                    disabled={!isUsuarioLogado || isLoadingButton}
+                    onClick={() => favoritarPet(pet.id)}
+                  >
+                    {isLoadingButton ? (
+                      <CarregamentoBotao variant="dark" />
+                    ) : (
+                      <BsStar />
+                    )}
+                  </button>
+                )}
+              </div>
+
               <p>
                 <span className="fw-bold">Nome:</span> {pet.nome}
               </p>
@@ -152,37 +181,44 @@ function PetInformacao() {
                 <span className="fw-bold">País:</span>{" "}
                 {usuarioResponsavel.endereco_pais}
               </p>
-              <p>
-                <span className="fw-bold">Contato:</span>{" "}
-                {formataCelular(usuarioResponsavel.telefone)}
-              </p>
-              <div>
-                {petFavoritado ? (
-                  <button
-                    className="btn btn-warning"
-                    disabled={!isUsuarioLogado || isLoadingButton}
-                    onClick={() => desfavoritarPet(pet.id)}
+              {usuarioResponsavel.flg_celular_telefone ? (
+                <p>
+                  <span className="fw-bold">Celular:</span>{" "}
+                  {formataCelular(usuarioResponsavel.celular)}
+                  <a
+                    className="fw-bold btn btn-success ms-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://api.whatsapp.com/send?phone=${usuarioResponsavel.telefone}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
                   >
-                    {isLoadingButton ? (
-                      <CarregamentoBotao variant="dark" />
-                    ) : (
-                      <BsStarFill />
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-warning"
-                    disabled={!isUsuarioLogado || isLoadingButton}
-                    onClick={() => favoritarPet(pet.id)}
+                    <BsWhatsapp />
+                  </a>
+                </p>
+              ) : (
+                <p>
+                  <span className="fw-bold">Telefone:</span>{" "}
+                  {formataTelefone(usuarioResponsavel.telefone)}
+                </p>
+              )}
+              {usuarioResponsavel.flg_celular_whatsapp ? (
+                <p>
+                  <span className="fw-bold">Celular:</span>{" "}
+                  {formataCelular(usuarioResponsavel.celular)}
+                  <a
+                    className="fw-bold btn btn-success ms-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={`https://api.whatsapp.com/send?phone=${usuarioResponsavel.celular}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
                   >
-                    {isLoadingButton ? (
-                      <CarregamentoBotao variant="dark" />
-                    ) : (
-                      <BsStar />
-                    )}
-                  </button>
-                )}
-              </div>
+                    <BsWhatsapp />
+                  </a>
+                </p>
+              ) : (
+                <p>
+                  <span className="fw-bold">Celular:</span>{" "}
+                  {formataCelular(usuarioResponsavel.celular)}
+                </p>
+              )}
             </div>
           </div>
         </>
