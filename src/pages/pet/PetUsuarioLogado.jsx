@@ -7,6 +7,7 @@ import {
   Dropdown,
   Form,
   Modal,
+  Pagination,
   Row,
 } from "react-bootstrap";
 import {
@@ -29,6 +30,7 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_CADASTRADO,
+  REGISTROS_PAGINACAO,
   TIPO_ALERTA,
   TIPO_SUCESSO,
   TRUE_PHP,
@@ -40,6 +42,7 @@ import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import {
   formataMostrandoIdade,
+  formataPrimeiroNome,
   formataSexoPet,
   formataTamanhoPet,
 } from "../../utils/Mask";
@@ -74,18 +77,23 @@ export default function PetUsuarioLogado() {
   const [modoEditar, setModoEditar] = useState(false);
   const [abrirModalCadastrarPet, setAbrirModalCadastrarPet] = useState(false);
   const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
+  const [pagina, setPagina] = useState(1);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    listarPetsUsuarioLogado();
+    listarPetsUsuarioLogado(pagina);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function listarPetsUsuarioLogado() {
+  function listarPetsUsuarioLogado(numeroPagina) {
     setIsLoading(true);
-    Api.post("pets/cadastrados/user", null, {
+    setPagina(numeroPagina);
+
+    Api.post(`pets/cadastrados/user?page=${pagina}`, null, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(({ data }) => {
+        setData(data);
         setListaPets(data.pets.data);
         setListaPetTipos(data.tipos);
         setListaRacas(data.racas);
@@ -414,7 +422,8 @@ export default function PetUsuarioLogado() {
                             </Badge>
                           )}
                           <br />
-                          <AiFillIdcard /> {pet.nome} ({pet.apelido})
+                          <AiFillIdcard /> {formataPrimeiroNome(pet.nome)}{" "}
+                          {pet.apelido !== null && `(${pet.apelido})`}
                         </Card.Title>
                         <Card.Text>
                           <RxSize /> {formataTamanhoPet(pet.tamanho, pet.sexo)}{" "}
@@ -506,6 +515,70 @@ export default function PetUsuarioLogado() {
               </>
             )}
           </Row>
+
+          {!verificaLista(listaPets) &&
+            listaPets.length > REGISTROS_PAGINACAO && (
+              <Row className="mt-3">
+                <Pagination className="d-flex justify-content-center align-items-center">
+                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                  <Pagination.First
+                    onClick={() => listarPetsUsuarioLogado(data.first_page)}
+                  />
+
+                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                  <Pagination.Prev
+                    onClick={() =>
+                      listarPetsUsuarioLogado(data.current_page - 1)
+                    }
+                  />
+
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+
+                  {/* PÁGINA ATUAL MENOS UM */}
+                  {data.current_page >= 2 && (
+                    <Pagination.Item
+                      onClick={() =>
+                        listarPetsUsuarioLogado(data.current_page - 1)
+                      }
+                    >
+                      {data.current_page - 1}
+                    </Pagination.Item>
+                  )}
+
+                  {/* PÁGINA ATUAL */}
+                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+
+                  {/* PÁGINA ATUAL MAIS UM */}
+                  {data.current_page + 1 <= data.last_page && (
+                    <Pagination.Item
+                      onClick={() =>
+                        listarPetsUsuarioLogado(data.current_page + 1)
+                      }
+                    >
+                      {data.current_page + 1}
+                    </Pagination.Item>
+                  )}
+
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                  {data.current_page + 1 < data.last_page && (
+                    <Pagination.Ellipsis disabled />
+                  )}
+
+                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                  <Pagination.Next
+                    onClick={() =>
+                      listarPetsUsuarioLogado(data.current_page + 1)
+                    }
+                  />
+
+                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                  <Pagination.Last
+                    onClick={() => listarPetsUsuarioLogado(data.last_page)}
+                  />
+                </Pagination>
+              </Row>
+            )}
 
           {/* MODAL CADASTRAR EDITAR PET */}
           <Modal
@@ -660,6 +733,10 @@ export default function PetUsuarioLogado() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
+                  <p className="text-muted">
+                    Se não souber a data exata de nascimento, pode colocar uma
+                    data próxima da idade que o Pet tem.
+                  </p>
                   <Form.Label className="fw-bold" htmlFor="dataNascimento">
                     Data nascimento
                   </Form.Label>

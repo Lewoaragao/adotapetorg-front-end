@@ -4,6 +4,7 @@ import { BsCalendarEvent, BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { RxSize } from "react-icons/rx";
 import {
   formataMostrandoIdade,
+  formataPrimeiroNome,
   formataSexoPet,
   formataTamanhoPet,
 } from "../utils/Mask";
@@ -40,7 +41,8 @@ export default function CardPet({ pet }) {
               </Badge>
             )}
             <br />
-            <AiFillIdcard /> {pet.nome} ({pet.apelido})
+            <AiFillIdcard /> {formataPrimeiroNome(pet.nome)}{" "}
+            {pet.apelido !== null && `(${pet.apelido})`}
           </Card.Title>
           <Card.Text>
             <RxSize /> {formataTamanhoPet(pet.tamanho, pet.sexo)} <br />
@@ -55,15 +57,13 @@ export default function CardPet({ pet }) {
             <br />
           </Card.Text>
         </Card.Body>
-        <Card.Footer className="d-flex justify-content-between align-items-center">
-          <div>
-            <NavLinkToTop
-              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
-              to={`/informacoes/pet/${pet.id}`}
-            >
-              <AiOutlineInfoCircle /> Info
-            </NavLinkToTop>
-          </div>
+        <Card.Footer>
+          <NavLinkToTop
+            className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
+            to={`/informacoes/pet/${pet.id}`}
+          >
+            <AiOutlineInfoCircle /> Info
+          </NavLinkToTop>
         </Card.Footer>
       </Card>
     </Col>

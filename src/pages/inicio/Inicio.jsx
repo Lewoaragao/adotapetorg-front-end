@@ -105,7 +105,7 @@ function Inicio() {
           </Carousel.Item>
         </Carousel>
 
-        <h2 className="mb-3 text-center">Lista: Pets</h2>
+        <h2 className="mb-3 fw-bold text-center">Lista: Pets</h2>
         <hr />
         {isLoadingListaPet ? (
           <CarregamentoLista />
@@ -191,7 +191,7 @@ function Inicio() {
           </>
         )}
 
-        <h2 className="mb-3 text-center">Blog: Postagens</h2>
+        <h2 className="mb-3 fw-bold text-center">Blog: Postagens</h2>
         <hr />
         {isLoadingBlogPostagens ? (
           <CarregamentoLista />

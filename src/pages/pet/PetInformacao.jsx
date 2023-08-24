@@ -8,7 +8,6 @@ import {
   formataCelular,
   formataSexoPet,
   formataTamanhoPet,
-  formataTelefone,
 } from "../../utils/Mask";
 import formataData from "../../utils/Util";
 import CarregamentoTela, {
@@ -153,35 +152,43 @@ function PetInformacao() {
               <p>
                 <span className="fw-bold">Nome:</span> {pet.nome}
               </p>
+
               <p>
                 <span className="fw-bold">Sexo:</span>{" "}
                 {formataSexoPet(pet.sexo)}
               </p>
+
               <p>
                 <span className="fw-bold">Tamanho:</span>{" "}
                 {formataTamanhoPet(pet.tamanho, pet.sexo)}
               </p>
+
               <p>
                 <span className="fw-bold">Data de nascimento:</span>{" "}
                 {formataData(pet.data_nascimento)}
               </p>
+
               <p>
                 <span className="fw-bold">Responsável:</span>{" "}
                 {usuarioResponsavel.primeiro_nome}
               </p>
+
               <p>
                 <span className="fw-bold">Cidade:</span>{" "}
                 {usuarioResponsavel.endereco_cidade}
               </p>
+
               <p>
                 <span className="fw-bold">Estado:</span>{" "}
                 {usuarioResponsavel.endereco_estado}
               </p>
+
               <p>
                 <span className="fw-bold">País:</span>{" "}
                 {usuarioResponsavel.endereco_pais}
               </p>
-              {usuarioResponsavel.flg_celular_telefone ? (
+
+              {usuarioResponsavel.flg_celular_telefone && (
                 <p>
                   <span className="fw-bold">Celular:</span>{" "}
                   {formataCelular(usuarioResponsavel.celular)}
@@ -189,17 +196,13 @@ function PetInformacao() {
                     className="fw-bold btn btn-success ms-2"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://api.whatsapp.com/send?phone=${usuarioResponsavel.telefone}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
+                    href={`https://api.whatsapp.com/send?phone=55${usuarioResponsavel.telefone}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
                   >
                     <BsWhatsapp />
                   </a>
                 </p>
-              ) : (
-                <p>
-                  <span className="fw-bold">Telefone:</span>{" "}
-                  {formataTelefone(usuarioResponsavel.telefone)}
-                </p>
               )}
+
               {usuarioResponsavel.flg_celular_whatsapp ? (
                 <p>
                   <span className="fw-bold">Celular:</span>{" "}
