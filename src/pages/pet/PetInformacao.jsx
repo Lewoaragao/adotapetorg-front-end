@@ -8,12 +8,19 @@ import {
   formataCelular,
   formataSexoPet,
   formataTamanhoPet,
+  formataTelefone,
 } from "../../utils/Mask";
 import formataData from "../../utils/Util";
 import CarregamentoTela, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";
 import TituloPagina from "./../../components/TituloPagina";
+import {
+  FALSE_PHP,
+  TIPO_ALERTA,
+  TIPO_SUCESSO,
+} from "../../components/Constantes";
+import { Badge } from "react-bootstrap";
 
 function PetInformacao() {
   const { id } = useParams();
@@ -111,12 +118,26 @@ function PetInformacao() {
       ) : (
         <>
           <div className="d-flex justify-content-center align-items-center flex-wrap gap-5">
-            <img
-              className="img-thumbnail"
-              style={{ maxWidth: "350px" }}
-              src={process.env.REACT_APP_API_URL + pet.imagem}
-              alt={`foto pet ${pet.nome}`}
-            />
+            <div>
+              <img
+                className="img-thumbnail mb-3"
+                style={{ maxWidth: "350px" }}
+                src={process.env.REACT_APP_API_URL + pet.imagem}
+                alt={`foto pet ${pet.nome}`}
+              />
+
+              <div className="text-center">
+                {pet.flg_adotado === FALSE_PHP ? (
+                  <Badge pill bg={TIPO_ALERTA} className="fs-4 text-dark mb-2">
+                    Para adoção
+                  </Badge>
+                ) : (
+                  <Badge pill bg={TIPO_SUCESSO} className="fs-4 text-dark mb-2">
+                    Adotado
+                  </Badge>
+                )}
+              </div>
+            </div>
 
             <div>
               <TituloPagina titulo="Informações do Pet" />
@@ -190,8 +211,8 @@ function PetInformacao() {
 
               {usuarioResponsavel.flg_celular_telefone && (
                 <p>
-                  <span className="fw-bold">Celular:</span>{" "}
-                  {formataCelular(usuarioResponsavel.celular)}
+                  <span className="fw-bold">Telefone:</span>{" "}
+                  {formataTelefone(usuarioResponsavel.telefone)}
                   <a
                     className="fw-bold btn btn-success ms-2"
                     target="_blank"
@@ -203,7 +224,15 @@ function PetInformacao() {
                 </p>
               )}
 
-              {usuarioResponsavel.flg_celular_whatsapp ? (
+              {usuarioResponsavel.telefone != null &&
+                !usuarioResponsavel.flg_telefone_whatsapp && (
+                  <p>
+                    <span className="fw-bold">Celular:</span>{" "}
+                    {formataTelefone(usuarioResponsavel.telefone)}
+                  </p>
+                )}
+
+              {usuarioResponsavel.flg_celular_whatsapp && (
                 <p>
                   <span className="fw-bold">Celular:</span>{" "}
                   {formataCelular(usuarioResponsavel.celular)}
@@ -211,17 +240,20 @@ function PetInformacao() {
                     className="fw-bold btn btn-success ms-2"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://api.whatsapp.com/send?phone=${usuarioResponsavel.celular}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
+                    href={`https://api.whatsapp.com/send?phone=55${usuarioResponsavel.celular}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
                   >
                     <BsWhatsapp />
                   </a>
                 </p>
-              ) : (
-                <p>
-                  <span className="fw-bold">Celular:</span>{" "}
-                  {formataCelular(usuarioResponsavel.celular)}
-                </p>
               )}
+
+              {usuarioResponsavel.celular != null &&
+                !usuarioResponsavel.flg_celular_whatsapp && (
+                  <p>
+                    <span className="fw-bold">Celular:</span>{" "}
+                    {formataCelular(usuarioResponsavel.celular)}
+                  </p>
+                )}
             </div>
           </div>
         </>
