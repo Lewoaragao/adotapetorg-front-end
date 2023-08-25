@@ -47,3 +47,13 @@ a.disabled {
   height: auto;
   object-fit: cover;
 }
+
+.card-hover {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  opacity: 0.8;
+}
