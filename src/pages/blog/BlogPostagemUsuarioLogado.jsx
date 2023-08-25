@@ -9,6 +9,7 @@ import {
 } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
+  TELA_EDITAR_PERFIL_USUARIO,
   TIPO_SUCESSO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
@@ -28,7 +29,7 @@ import { GrConfigure } from "react-icons/gr";
  */
 export default function BlogPostagemUsuarioLogado() {
   const { setarMensagem } = useContext(MessageContext);
-  const { token } = useContext(AuthContext);
+  const { token, usuarioLogado } = useContext(AuthContext);
   const [listaPostagens, setListaPostagens] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
@@ -292,8 +293,22 @@ export default function BlogPostagemUsuarioLogado() {
     <>
       <TituloPagina titulo="Minhas postagens" />
 
+      {usuarioLogado.celular === null && usuarioLogado.telefone === null && (
+        <p>
+          Para começar a cadastrar, é necessário completar seu perfil,{" "}
+          <NavLinkToTop to={TELA_EDITAR_PERFIL_USUARIO}>
+            clicando aqui
+          </NavLinkToTop>
+          .
+        </p>
+      )}
+
       <button
-        className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
+        className={`btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold ${
+          usuarioLogado.celular === null && usuarioLogado.telefone === null
+            ? "disabled"
+            : ""
+        }`}
         onClick={visualizarCadastrarPostagem}
       >
         <AiOutlinePlus /> Cadastrar postagem

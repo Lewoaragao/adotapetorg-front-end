@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Card, Carousel, Col, Image, Pagination, Row } from "react-bootstrap";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import { Carousel, Image, Pagination, Row } from "react-bootstrap";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
@@ -14,8 +13,8 @@ import banner03 from "../../images/banner_pet_03.jpg";
 import Api from "../../services/Api";
 import { verificaLista } from "../../utils/Util";
 import TituloPagina from "./../../components/TituloPagina";
-import NavLinkToTop from "./../../components/navLinkToTop/NavLinkToTop";
 import CardPet from "../../components/CardPet";
+import CardPostagem from "../../components/cardPostagem/CardPostagem";
 
 function Inicio() {
   const [listaPets, setListaPets] = useState([]);
@@ -208,31 +207,7 @@ function Inicio() {
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                   <>
                     {listaPostagens.map((postagem) => (
-                      <Col key={postagem.id}>
-                        <Card>
-                          <div className="image-container">
-                            <Card.Img
-                              variant="top"
-                              src={
-                                process.env.REACT_APP_API_URL + postagem.imagem
-                              }
-                              alt={`foto principal da postagem ${postagem.titulo}`}
-                            />
-                          </div>
-                          <Card.Body>
-                            <Card.Title>{postagem.titulo}</Card.Title>
-                            <Card.Text>{postagem.subtitulo}</Card.Text>
-                          </Card.Body>
-                          <Card.Footer>
-                            <NavLinkToTop
-                              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
-                              to={`/blog/postagem/${postagem.slug}`}
-                            >
-                              <AiOutlineInfoCircle /> Ler
-                            </NavLinkToTop>
-                          </Card.Footer>
-                        </Card>
-                      </Col>
+                      <CardPostagem key={postagem.id} postagem={postagem} />
                     ))}
                   </>
                 </Row>
