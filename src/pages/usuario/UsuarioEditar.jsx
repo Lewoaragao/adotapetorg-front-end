@@ -1,5 +1,4 @@
 import { useEffect, useContext, useState } from "react";
-import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import { AuthContext } from "./../../contexts/AuthContext";
 import {
@@ -18,10 +17,10 @@ import {
   ID_PAIS_BRASIL,
   PAIS_BRASIL,
   TIPO_SUCESSO,
-  TRUE_PHP,
 } from "../../components/Constantes";
 import { formataCelular, formataTelefone } from "../../utils/Mask";
 import { obterSomenteNumeros } from "../../utils/Util";
+import Api from "../../services/Api";
 
 /**
  * Página de edição de perfil do usuário
@@ -33,7 +32,7 @@ export default function UsuarioEditar() {
   const { setarMensagem } = useContext(MessageContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSelect, setIsLoadingSelect] = useState(false);
-  const [idUser, setIdUser] = useState(0);
+  const [idUser, setIdUser] = useState(usuarioLogado.id);
   const [usuario, setUsuario] = useState(usuarioLogado.usuario);
   const [primeiroNome, setPrimeiroNome] = useState(usuarioLogado.primeiro_nome);
   const [sobrenome, setSobrenome] = useState(usuarioLogado.sobrenome);
@@ -79,10 +78,10 @@ export default function UsuarioEditar() {
     usuarioLogado.celular == null ? "" : usuarioLogado.celular
   );
   const [flgTelefoneIsWhatsapp, setFlgTelefoneIsWhatsapp] = useState(
-    usuarioLogado.flg_telefone_whatsapp === TRUE_PHP ? true : false
+    usuarioLogado.flg_telefone_whatsapp
   );
   const [flgCelularIsWhatsapp, setFlgCelularIsWhatsapp] = useState(
-    usuarioLogado.flg_celular_whatsapp === TRUE_PHP ? true : false
+    usuarioLogado.flg_celular_whatsapp
   );
   const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
 
@@ -324,34 +323,36 @@ export default function UsuarioEditar() {
       setIdPais(ID_PAIS_BRASIL);
       setPais(PAIS_BRASIL);
 
-      Api.post(
-        `users/atualizar/${idUser}`,
-        {
-          user_id: idUser,
-          usuario: usuario,
-          is_pessoa: isPessoa,
-          primeiro_nome: isPessoa ? primeiroNome : null,
-          sobrenome: isPessoa ? sobrenome : null,
-          nome_organizacao: isPessoa ? null : nomeOrganizacao,
-          sigla_organizacao: isPessoa ? null : siglaOrganizacao,
-          email: email,
-          telefone: obterSomenteNumeros(telefone),
-          flg_telefone_whatsapp: flgTelefoneIsWhatsapp,
-          celular: obterSomenteNumeros(celular),
-          flg_celular_whatsapp: flgCelularIsWhatsapp,
-          id_pais: idPais,
-          endereco_pais: pais,
-          id_estado: idEstado,
-          endereco_estado: estado,
-          id_cidade: idCidade,
-          endereco_cidade: cidade,
+      let endpoint = `users/atualizar/${idUser}`;
+
+      let request = {
+        user_id: idUser,
+        usuario: usuario,
+        is_pessoa: isPessoa,
+        primeiro_nome: isPessoa ? primeiroNome : null,
+        sobrenome: isPessoa ? sobrenome : null,
+        nome_organizacao: isPessoa ? null : nomeOrganizacao,
+        sigla_organizacao: isPessoa ? null : siglaOrganizacao,
+        email: email,
+        telefone: obterSomenteNumeros(telefone),
+        flg_telefone_whatsapp: flgTelefoneIsWhatsapp,
+        celular: obterSomenteNumeros(celular),
+        flg_celular_whatsapp: flgCelularIsWhatsapp,
+        id_pais: idPais,
+        endereco_pais: pais,
+        id_estado: idEstado,
+        endereco_estado: estado,
+        id_cidade: idCidade,
+        endereco_cidade: cidade,
+      };
+
+      let headerWithToken = {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      };
+
+      Api.post(endpoint, request, headerWithToken)
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
           setUsuarioLogado(data.user);

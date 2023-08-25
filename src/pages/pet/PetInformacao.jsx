@@ -19,6 +19,7 @@ import {
   FALSE_PHP,
   TIPO_ALERTA,
   TIPO_SUCESSO,
+  TRUE_PHP,
 } from "../../components/Constantes";
 import { Badge } from "react-bootstrap";
 
@@ -119,13 +120,6 @@ function PetInformacao() {
         <>
           <div className="d-flex justify-content-center align-items-center flex-wrap gap-5">
             <div>
-              <img
-                className="img-thumbnail mb-3"
-                style={{ maxWidth: "350px" }}
-                src={process.env.REACT_APP_API_URL + pet.imagem}
-                alt={`foto pet ${pet.nome}`}
-              />
-
               <div className="text-center">
                 {pet.flg_adotado === FALSE_PHP ? (
                   <Badge pill bg={TIPO_ALERTA} className="fs-4 text-dark mb-2">
@@ -137,6 +131,13 @@ function PetInformacao() {
                   </Badge>
                 )}
               </div>
+
+              <img
+                className="img-thumbnail mb-3"
+                style={{ maxWidth: "350px" }}
+                src={process.env.REACT_APP_API_URL + pet.imagem}
+                alt={`foto pet ${pet.nome}`}
+              />
             </div>
 
             <div>
@@ -209,7 +210,7 @@ function PetInformacao() {
                 {usuarioResponsavel.endereco_pais}
               </p>
 
-              {usuarioResponsavel.flg_celular_telefone && (
+              {usuarioResponsavel.flg_celular_telefone === TRUE_PHP && (
                 <p>
                   <span className="fw-bold">Telefone:</span>{" "}
                   {formataTelefone(usuarioResponsavel.telefone)}
@@ -225,14 +226,14 @@ function PetInformacao() {
               )}
 
               {usuarioResponsavel.telefone != null &&
-                !usuarioResponsavel.flg_telefone_whatsapp && (
+                usuarioResponsavel.flg_telefone_whatsapp === FALSE_PHP && (
                   <p>
-                    <span className="fw-bold">Celular:</span>{" "}
+                    <span className="fw-bold">Telefone:</span>{" "}
                     {formataTelefone(usuarioResponsavel.telefone)}
                   </p>
                 )}
 
-              {usuarioResponsavel.flg_celular_whatsapp && (
+              {usuarioResponsavel.flg_celular_whatsapp === TRUE_PHP && (
                 <p>
                   <span className="fw-bold">Celular:</span>{" "}
                   {formataCelular(usuarioResponsavel.celular)}
@@ -248,7 +249,7 @@ function PetInformacao() {
               )}
 
               {usuarioResponsavel.celular != null &&
-                !usuarioResponsavel.flg_celular_whatsapp && (
+                usuarioResponsavel.flg_celular_whatsapp === FALSE_PHP && (
                   <p>
                     <span className="fw-bold">Celular:</span>{" "}
                     {formataCelular(usuarioResponsavel.celular)}
