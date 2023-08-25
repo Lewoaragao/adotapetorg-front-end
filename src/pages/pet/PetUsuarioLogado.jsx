@@ -31,6 +31,7 @@ import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_CADASTRADO,
   REGISTROS_PAGINACAO,
+  TELA_EDITAR_PERFIL_USUARIO,
   TIPO_ALERTA,
   TIPO_SUCESSO,
   TRUE_PHP,
@@ -376,8 +377,22 @@ export default function PetUsuarioLogado() {
     <>
       <TituloPagina titulo="Meus Pets" />
 
+      {usuarioLogado.celular === null && usuarioLogado.telefone === null && (
+        <p>
+          Para começar a cadastrar, é necessário completar seu perfil,{" "}
+          <NavLinkToTop to={TELA_EDITAR_PERFIL_USUARIO}>
+            clicando aqui
+          </NavLinkToTop>
+          .
+        </p>
+      )}
+
       <button
-        className="btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold"
+        className={`btn btn-warning d-flex justify-content-center align-items-center gap-1 mb-3 fw-bold ${
+          usuarioLogado.celular === null && usuarioLogado.telefone === null
+            ? "disabled"
+            : ""
+        }`}
         onClick={() => setAbrirModalCadastrarPet(true)}
       >
         <AiOutlinePlus /> Cadastrar pet

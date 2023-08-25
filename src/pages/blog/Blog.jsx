@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Card, Col, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { CarregamentoLista } from "../../components/Carregamento";
 import { MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA } from "../../components/Constantes";
-import NavLinkToTop from "../../components/navLinkToTop/NavLinkToTop";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import TituloPagina from "./../../components/TituloPagina";
 import { verificaLista } from "../../utils/Util";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import CardPostagem from "../../components/cardPostagem/CardPostagem";
 
 /**
  * Aqui será a pagina geral do blog
@@ -62,31 +61,7 @@ export default function Blog() {
                 <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                   <>
                     {listaPostagens.map((postagem) => (
-                      <Col key={postagem.id}>
-                        <Card>
-                          <div className="image-container">
-                            <Card.Img
-                              variant="top"
-                              src={
-                                process.env.REACT_APP_API_URL + postagem.imagem
-                              }
-                              alt={`foto principal da postagem ${postagem.titulo}`}
-                            />
-                          </div>
-                          <Card.Body>
-                            <Card.Title>{postagem.titulo}</Card.Title>
-                            <Card.Text>{postagem.subtitulo}</Card.Text>
-                          </Card.Body>
-                          <Card.Footer>
-                            <NavLinkToTop
-                              className="btn btn-primary d-flex justify-content-center align-items-center gap-1"
-                              to={`/blog/postagem/${postagem.slug}`}
-                            >
-                              <AiOutlineInfoCircle /> Ler
-                            </NavLinkToTop>
-                          </Card.Footer>
-                        </Card>
-                      </Col>
+                      <CardPostagem key={postagem} postagem={postagem} />
                     ))}
                   </>
                 </Row>
