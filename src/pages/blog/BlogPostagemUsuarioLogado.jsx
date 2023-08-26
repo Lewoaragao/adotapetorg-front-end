@@ -55,7 +55,6 @@ export default function BlogPostagemUsuarioLogado() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const config = {
     readonly: false,
-    placeholder: "Comece a escrever sua postagem...",
     buttons: [
       "bold",
       "italic",
@@ -64,14 +63,27 @@ export default function BlogPostagemUsuarioLogado() {
       "eraser",
       "ul",
       "ol",
+      "copyformat",
       "paragraph",
       "superscript",
       "subscript",
+      "indent",
+      "outdent",
       "cut",
       "copy",
       "paste",
+      "undo",
+      "redo",
+      "table",
+      "lineHeight",
+      "hr",
+      "fullsize",
+      "find",
+      "preview",
     ],
     toolbarAdaptive: false,
+    language: "pt_br",
+    style: { font: "18px Arial" },
   };
 
   useEffect(() => {
@@ -521,6 +533,7 @@ export default function BlogPostagemUsuarioLogado() {
               ref={editor}
               value={conteudo}
               config={config}
+              style={{ font: "50px Arial" }}
               // tabIndex da área de texto
               tabIndex={1}
               // preferiu usar apenas esta opção para atualizar o conteúdo por motivos de desempenho
