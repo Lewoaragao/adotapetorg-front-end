@@ -22,12 +22,14 @@ export const AuthProvider = ({ children }) => {
   const verificaUsuarioLogado = () => {
     const tokenStorage = localStorage.getItem("token");
 
+    const header = {
+      headers: {
+        Authorization: `Bearer ${tokenStorage}`,
+      },
+    };
+
     if (tokenStorage != null) {
-      Api.get("user", {
-        headers: {
-          Authorization: `Bearer ${tokenStorage}`,
-        },
-      })
+      Api.get("user", header)
         .then(({ data }) => {
           setarUsuarioLogado(data.usuario, tokenStorage, true);
         })

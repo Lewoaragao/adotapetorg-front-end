@@ -9,7 +9,7 @@ import TituloPagina from "../../components/TituloPagina";
 import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import { verificaLista } from "../../utils/Util";
-import CardPet from "../../components/CardPet";
+import CardPet from "./../../components/cardPet/CardPet";
 
 export default function PetTodos() {
   const [isLoading, setIsLoading] = useState(false);

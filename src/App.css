@@ -48,12 +48,15 @@ a.disabled {
   object-fit: cover;
 }
 
-.card-hover {
+.card-hover div.col {
   opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-radius: 3px;
   cursor: pointer;
 }
 
-.card-hover:hover {
-  opacity: 0.8;
+.card-hover:hover div.col {
+  opacity: 0.9;
+  box-shadow: 0px 0px 3px 3px #ffc107;
+  border-radius: 3px;
 }

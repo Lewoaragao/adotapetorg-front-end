@@ -6,17 +6,18 @@ import { MessageContext } from "../../contexts/MessageContext";
 import Api from "../../services/Api";
 import {
   formataCelular,
+  formataMostrandoIdade,
   formataSexoPet,
   formataTamanhoPet,
   formataTelefone,
 } from "../../utils/Mask";
-import formataData from "../../utils/Util";
 import CarregamentoTela, {
   CarregamentoBotao,
 } from "./../../components/Carregamento";
 import TituloPagina from "./../../components/TituloPagina";
 import {
   FALSE_PHP,
+  TELA_INFORMACOES_PET,
   TIPO_ALERTA,
   TIPO_SUCESSO,
   TRUE_PHP,
@@ -26,6 +27,8 @@ import { Badge } from "react-bootstrap";
 function PetInformacao() {
   const { id } = useParams();
   const [pet, setPet] = useState([]);
+  const [raca, setRaca] = useState("");
+  const [tipo, setTipo] = useState("");
   const [usuarioResponsavel, setUsuarioResponsavel] = useState([]);
   const [petFavoritado, setPetFavoritado] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,55 +37,54 @@ function PetInformacao() {
   const { setarMensagem } = useContext(MessageContext);
 
   useEffect(() => {
-    isUsuarioLogado
-      ? verInformacaoPetUserAuth(id, token)
-      : verInformacaoPet(id);
+    verInformacaoPet(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const header = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   function verInformacaoPet(idPet) {
     setIsLoading(true);
-    Api.get(`pets/${idPet}`)
-      .then(({ data }) => {
-        setPet(data.pet);
-        setUsuarioResponsavel(data.user);
-        setPetFavoritado(data.pet_favoritado);
-      })
-      .catch(({ response }) => {
-        setarMensagem(response.data.message, null);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
 
-  function verInformacaoPetUserAuth(idPet, token) {
-    setIsLoading(true);
-    Api.post(`pets/visualizar/${idPet}`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(({ data }) => {
-        setPet(data.pet);
-        setUsuarioResponsavel(data.user);
-        setPetFavoritado(data.pet_favoritado);
-      })
-      .catch(({ response }) => {
-        setarMensagem(response.data.message, null);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    isUsuarioLogado
+      ? Api.get(`pets/visualizar/${idPet}`, header)
+          .then(({ data }) => {
+            setPet(data.pet);
+            setRaca(data.raca.raca);
+            setTipo(data.tipo.tipo);
+            setUsuarioResponsavel(data.user);
+            setPetFavoritado(data.pet_favoritado);
+          })
+          .catch(({ response }) => {
+            setarMensagem(response.data.message, null);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          })
+      : Api.get(`pets/${idPet}`)
+          .then(({ data }) => {
+            setPet(data.pet);
+            setRaca(data.raca.raca);
+            setTipo(data.tipo.tipo);
+            setUsuarioResponsavel(data.user);
+            setPetFavoritado(data.pet_favoritado);
+          })
+          .catch(({ response }) => {
+            setarMensagem(response.data.message, null);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
   }
 
   function favoritarPet(idPet) {
     setIsLoadingButton(true);
-    Api.post(`pets/${idPet}/favoritar`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+
+    Api.post(`pets/${idPet}/favoritar`, null, header)
       .then(() => {
         setPetFavoritado(true);
       })
@@ -96,11 +98,8 @@ function PetInformacao() {
 
   function desfavoritarPet(idPet) {
     setIsLoadingButton(true);
-    Api.post(`pets/${idPet}/desfavoritar`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+
+    Api.post(`pets/${idPet}/desfavoritar`, null, header)
       .then(() => {
         setPetFavoritado(false);
       })
@@ -110,6 +109,15 @@ function PetInformacao() {
       .finally(() => {
         setIsLoadingButton(false);
       });
+  }
+
+  function formataTelaSemPrimeiraBarraEId(caminhoTela) {
+    const partes = caminhoTela.split("/");
+    let partesFormatadas = partes.filter((part) => !part.startsWith(":id"));
+    partesFormatadas = partesFormatadas.join("/");
+    partesFormatadas = partesFormatadas.replace(/^\//, "");
+    partesFormatadas = partesFormatadas + "/";
+    return partesFormatadas;
   }
 
   return (
@@ -176,6 +184,13 @@ function PetInformacao() {
               </p>
 
               <p>
+                <span className="fw-bold">Tipo:</span> {tipo}
+              </p>
+              <p>
+                <span className="fw-bold">Raça:</span> {raca}
+              </p>
+
+              <p>
                 <span className="fw-bold">Sexo:</span>{" "}
                 {formataSexoPet(pet.sexo)}
               </p>
@@ -186,8 +201,8 @@ function PetInformacao() {
               </p>
 
               <p>
-                <span className="fw-bold">Data de nascimento:</span>{" "}
-                {formataData(pet.data_nascimento)}
+                <span className="fw-bold">Idade:</span>{" "}
+                {formataMostrandoIdade(pet.data_nascimento)}
               </p>
 
               <p>
@@ -218,7 +233,17 @@ function PetInformacao() {
                     className="fw-bold btn btn-success ms-2"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://api.whatsapp.com/send?phone=55${usuarioResponsavel.telefone}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
+                    href={`https://api.whatsapp.com/send?phone=55${
+                      usuarioResponsavel.telefone
+                    }&text=🐶%20Olá,%20vim%20pelo%20${
+                      process.env.REACT_APP_PUBLIC_URL
+                    }%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20com%20nome%20de%20${
+                      pet.nome
+                    }%20que%20está%20para%20adoção.%20O%20link%20dela%20é%20${
+                      process.env.REACT_APP_PUBLIC_URL +
+                      formataTelaSemPrimeiraBarraEId(TELA_INFORMACOES_PET) +
+                      pet.id
+                    }`}
                   >
                     <BsWhatsapp />
                   </a>
@@ -241,7 +266,17 @@ function PetInformacao() {
                     className="fw-bold btn btn-success ms-2"
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={`https://api.whatsapp.com/send?phone=55${usuarioResponsavel.celular}&text=Ol%C3%A1,%20vim%20pelo%20${process.env.REACT_APP_PUBLIC_URL}%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20${pet.nome}%20que%20est%C3%A1%20para%20ado%C3%A7%C3%A3o.`}
+                    href={`https://api.whatsapp.com/send?phone=55${
+                      usuarioResponsavel.celular
+                    }&text=🐶%20Olá,%20vim%20pelo%20${
+                      process.env.REACT_APP_PUBLIC_URL
+                    }%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20com%20nome%20de%20${
+                      pet.nome
+                    }%20que%20está%20para%20adoção.%20O%20link%20dela%20é%20${
+                      process.env.REACT_APP_PUBLIC_URL +
+                      formataTelaSemPrimeiraBarraEId(TELA_INFORMACOES_PET) +
+                      pet.id
+                    }`}
                   >
                     <BsWhatsapp />
                   </a>
