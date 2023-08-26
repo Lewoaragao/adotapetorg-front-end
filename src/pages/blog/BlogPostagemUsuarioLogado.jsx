@@ -39,7 +39,9 @@ export default function BlogPostagemUsuarioLogado() {
   const [conteudo, setConteudo] = useState("");
   const [imagem, setImagem] = useState("");
   const [listaTags, setListaTags] = useState([]);
-  const [listaTagsSelecionadas, setListaTagsSelecionadas] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [disabledTags, setDisabledTags] = useState([]);
+  const [selectedTagsNomes, setSelectedTagsNomes] = useState([]);
   const [tag, setTag] = useState(0);
   const [idPostagem, setIdPostagem] = useState(0);
   const [nomeBotao, setNomeBotao] = useState("");
@@ -55,7 +57,6 @@ export default function BlogPostagemUsuarioLogado() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const config = {
     readonly: false,
-    placeholder: "Comece a escrever sua postagem...",
     buttons: [
       "bold",
       "italic",
@@ -64,32 +65,33 @@ export default function BlogPostagemUsuarioLogado() {
       "eraser",
       "ul",
       "ol",
+      "copyformat",
       "paragraph",
       "superscript",
       "subscript",
+      "indent",
+      "outdent",
       "cut",
       "copy",
       "paste",
+      "undo",
+      "redo",
+      "table",
+      "lineHeight",
+      "hr",
+      "fullsize",
+      "find",
+      "preview",
     ],
     toolbarAdaptive: false,
+    language: "pt_br",
+    style: { font: "18px Arial" },
   };
 
   useEffect(() => {
     listarPostagensUsuarioLogado();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function addListaTagsSelecionadas() {
-    if (tag !== 0 && !listaTagsSelecionadas.includes(tag)) {
-      setListaTagsSelecionadas([...listaTagsSelecionadas, tag]);
-      setTag(0);
-    }
-  }
-
-  const removeListaTagsSelecionadas = (tag) => {
-    const updatedTags = listaTagsSelecionadas.filter((item) => item !== tag);
-    setListaTagsSelecionadas(updatedTags);
-  };
 
   function listarPostagensUsuarioLogado() {
     setIsLoading(true);
@@ -126,11 +128,6 @@ export default function BlogPostagemUsuarioLogado() {
       return false;
     }
 
-    if (verificaLista(listaTagsSelecionadas)) {
-      setarMensagem("Selecione pelo menos uma tag", null);
-      return false;
-    }
-
     return true;
   }
 
@@ -144,39 +141,48 @@ export default function BlogPostagemUsuarioLogado() {
   }
 
   function limparCampos() {
-    setModoEditar(false);
+    setTag(0);
+
     setTitulo("");
     setSubtitulo("");
     setConteudo("");
     setImagem("");
-    setTag(0);
-    setListaTagsSelecionadas([]);
+
+    setModoEditar(false);
     setAbrirModalCadastrarEditarPostagem(false);
     setAbrirModalEditarImagem(false);
+
+    setSelectedTags([]);
+    setDisabledTags([]);
+    setSelectedTagsNomes([]);
   }
 
   function cadastrarEditarPostagem() {
     window.scrollTo(0, 0);
 
     if (validaCampos()) {
+      let request = {
+        titulo: titulo,
+        subtitulo: subtitulo,
+        conteudo: conteudo,
+        imagem: imagem,
+        tags: selectedTagsNomes.length > 0 ? selectedTagsNomes : null,
+      };
+
+      let header = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
       setIsLoadingButton(true);
       Api.post(
         modoEditar
           ? `blog/atualizar/postagem/${idPostagem}`
           : "blog/cadastrar/postagem",
-        {
-          titulo: titulo,
-          subtitulo: subtitulo,
-          conteudo: conteudo,
-          imagem: imagem,
-          tags: listaTagsSelecionadas.length > 0 ? listaTagsSelecionadas : null,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        request,
+        header
       )
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
@@ -195,12 +201,14 @@ export default function BlogPostagemUsuarioLogado() {
   function deletarPostagem(idPostagem) {
     window.scrollTo(0, 0);
 
-    setIsLoading(true);
-    Api.post(`blog/deletar/${idPostagem}`, null, {
+    let header = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    };
+
+    setIsLoading(true);
+    Api.post(`blog/deletar/${idPostagem}`, null, header)
       .then(({ data }) => {
         setarMensagem(data.message, TIPO_SUCESSO);
         limparCampos();
@@ -222,13 +230,15 @@ export default function BlogPostagemUsuarioLogado() {
     setSubtitulo(postagem.subtitulo);
     setConteudo(postagem.conteudo);
 
-    let listaTags = [];
+    let listaTagNomes = [];
 
     if (postagem.tags != null && postagem.tags.length > 0) {
-      listaTags = postagem.tags.map((tag) => tag.tag);
+      listaTagNomes = postagem.tags.map((tag) => tag.tag);
     }
 
-    setListaTagsSelecionadas(listaTags);
+    setSelectedTagsNomes(listaTagNomes);
+    setSelectedTags(postagem.tags);
+    setDisabledTags(postagem.tags);
     setAbrirModalCadastrarEditarPostagem(true);
   }
 
@@ -288,6 +298,30 @@ export default function BlogPostagemUsuarioLogado() {
         setIsLoading(false);
       });
   }
+
+  const handleOptionSelectTag = (event) => {
+    const selectedTagId = parseInt(event.target.value, 10);
+    const selectedTag = listaTags.find((tag) => tag.id === selectedTagId);
+
+    setSelectedTags([...selectedTags, selectedTag]);
+    setDisabledTags([...disabledTags, selectedTag]);
+    setSelectedTagsNomes([...selectedTagsNomes, selectedTag.tag]);
+  };
+
+  const handleRemoveTag = (tagId) => {
+    const updatedSelectedTags = selectedTags.filter((tag) => tag.id !== tagId);
+    const updatedDisabledTags = disabledTags.filter((tag) => tag.id !== tagId);
+
+    let listaTagNomes = [];
+
+    if (updatedSelectedTags != null && updatedSelectedTags.length > 0) {
+      listaTagNomes = updatedSelectedTags.map((tag) => tag.tag);
+    }
+
+    setSelectedTags(updatedSelectedTags);
+    setDisabledTags(updatedDisabledTags);
+    setSelectedTagsNomes(listaTagNomes);
+  };
 
   return (
     <>
@@ -464,40 +498,49 @@ export default function BlogPostagemUsuarioLogado() {
               Tag
             </Form.Label>
             <Form.Select
-              onChange={(e) => setTag(e.target.value)}
+              className="mb-3"
+              onChange={handleOptionSelectTag}
               value={tag}
               id="tag"
             >
               <option value="0" className="fw-bold" disabled>
-                Selecione uma tag
+                Selecione uma ou mais tags
               </option>
 
               {listaTags.map((tag) => (
-                <option key={tag.id} value={tag.tag} name={tag.tag}>
+                <option
+                  key={tag.id}
+                  value={tag.id}
+                  disabled={disabledTags.some(
+                    (disabledTag) => disabledTag.id === tag.id
+                  )}
+                >
                   {tag.tag}
                 </option>
               ))}
             </Form.Select>
+
+            {!verificaLista(selectedTags) && (
+              <>
+                <Form.Label className="fw-bold" htmlFor="tag">
+                  Tags Selecionadas
+                </Form.Label>
+
+                <div className="mb-3">
+                  {selectedTags.map((tag) => (
+                    <button
+                      key={tag.id}
+                      type="button"
+                      className="btn btn-primary m-1"
+                      onClick={() => handleRemoveTag(tag.id)}
+                    >
+                      {tag.tag} <span className="badge">x</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </Form.Group>
-
-          <Button className="mb-3" onClick={addListaTagsSelecionadas}>
-            Adicionar Tag
-          </Button>
-
-          {listaTagsSelecionadas.length > 0 && (
-            <div className="mb-3">
-              {listaTagsSelecionadas.map((tag) => (
-                <button
-                  key={tag.id}
-                  type="button"
-                  className="btn btn-primary me-1"
-                  onClick={() => removeListaTagsSelecionadas(tag)}
-                >
-                  {tag} <span className="badge">x</span>
-                </button>
-              ))}
-            </div>
-          )}
 
           {!modoEditar && (
             <Form.Group className="mb-3">
@@ -521,6 +564,7 @@ export default function BlogPostagemUsuarioLogado() {
               ref={editor}
               value={conteudo}
               config={config}
+              style={{ font: "50px Arial" }}
               // tabIndex da área de texto
               tabIndex={1}
               // preferiu usar apenas esta opção para atualizar o conteúdo por motivos de desempenho

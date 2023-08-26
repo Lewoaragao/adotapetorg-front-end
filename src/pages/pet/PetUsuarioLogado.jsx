@@ -60,7 +60,9 @@ export default function PetUsuarioLogado() {
   const [carregandoRacas, setCarregandoRacas] = useState(true);
   const [listaRacas, setListaRacas] = useState([]);
   const [listaCores, setListaCores] = useState([]);
-  const [listaCoresSelecionadas, setListaCoresSelecionadas] = useState([]);
+  const [selectedCores, setSelectedCores] = useState([]);
+  const [disabledCores, setDisabledCores] = useState([]);
+  const [selectedCoresNomes, setSelectedCoresNomes] = useState([]);
   const [idPet, setIdPet] = useState(0);
   const [tipo, setTipo] = useState(0);
   const [raca, setRaca] = useState(0);
@@ -86,13 +88,24 @@ export default function PetUsuarioLogado() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const header = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  let headerMultipart = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
   function listarPetsUsuarioLogado(numeroPagina) {
     setIsLoading(true);
     setPagina(numeroPagina);
 
-    Api.post(`pets/cadastrados/user?page=${pagina}`, null, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    Api.get(`pets/cadastrados/user?page=${pagina}`, header)
       .then(({ data }) => {
         setData(data);
         setListaPets(data.pets.data);
@@ -116,6 +129,7 @@ export default function PetUsuarioLogado() {
     setTipo(0);
     setRaca(0);
     setCor(0);
+
     setNome("");
     setSexo("0");
     setImagem("");
@@ -123,12 +137,16 @@ export default function PetUsuarioLogado() {
     setTamanho("0");
     setDataNascimento("");
     setNecessidadesEspeciais("");
+
     setFlgAdotado(false);
     setFlgNecessidadesEspeciais(false);
-    setListaCoresSelecionadas([]);
     setAbrirModalCadastrarPet(false);
     setAbrirModalEditarImagem(false);
     setModoEditar(false);
+
+    setSelectedCoresNomes([]);
+    setSelectedCores([]);
+    setDisabledCores([]);
   }
 
   function validaCampos() {
@@ -142,7 +160,7 @@ export default function PetUsuarioLogado() {
       return false;
     }
 
-    if (verificaLista(listaCoresSelecionadas)) {
+    if (verificaLista(selectedCores)) {
       setarMensagem("Selecione pelo menos uma cor", null);
       return false;
     }
@@ -192,33 +210,25 @@ export default function PetUsuarioLogado() {
       let flgNecessidadesEspeciaisValidado =
         flgNecessidadesEspeciais === true ? TRUE_PHP : FALSE_PHP;
 
-      Api.post(
-        modoEditar ? `pets/${idPet}` : "pets",
-        {
-          user_id: usuarioLogado.id,
-          pet_tipos_id: tipo,
-          nome: nome,
-          apelido: apelido,
-          raca_id: raca,
-          data_nascimento: dataNascimento,
-          cores:
-            listaCoresSelecionadas.length > 0 ? listaCoresSelecionadas : null,
-          imagem: imagem,
-          tamanho: tamanho,
-          flg_necessidades_especiais: flgNecessidadesEspeciaisValidado,
-          necessidades_especiais:
-            flgNecessidadesEspeciais === true ? necessidadesEspeciais : null,
-          sexo: sexo,
-          flg_adotado: modoEditar ? flgAdotadoValidado : null,
-          flg_ativo: modoEditar ? TRUE_PHP : null,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      let request = {
+        user_id: usuarioLogado.id,
+        pet_tipos_id: tipo,
+        nome: nome,
+        apelido: apelido,
+        raca_id: raca,
+        data_nascimento: dataNascimento,
+        cores: selectedCoresNomes.length > 0 ? selectedCoresNomes : null,
+        imagem: imagem,
+        tamanho: tamanho,
+        flg_necessidades_especiais: flgNecessidadesEspeciaisValidado,
+        necessidades_especiais:
+          flgNecessidadesEspeciais === true ? necessidadesEspeciais : null,
+        sexo: sexo,
+        flg_adotado: modoEditar ? flgAdotadoValidado : null,
+        flg_ativo: modoEditar ? TRUE_PHP : null,
+      };
+
+      Api.post(modoEditar ? `pets/${idPet}` : "pets", request, headerMultipart)
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
         })
@@ -233,9 +243,7 @@ export default function PetUsuarioLogado() {
 
   function deletarPet(idPet) {
     setIsLoading(true);
-    Api.post(`pets/deletar/${idPet}`, null, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    Api.post(`pets/deletar/${idPet}`, null, header)
       .then(({ data }) => {
         setarMensagem(data.message, TIPO_SUCESSO);
       })
@@ -249,9 +257,7 @@ export default function PetUsuarioLogado() {
 
   function listarRacas(idPetTipo) {
     setCarregandoRacas(true);
-    Api.post(`pets/racas/${idPetTipo}`, null, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    Api.post(`pets/racas/${idPetTipo}`, null, header)
       .then(({ data }) => {
         setListaRacas(data);
       })
@@ -270,18 +276,6 @@ export default function PetUsuarioLogado() {
     listarRacas(valueSelectedInteger);
   };
 
-  function addListaCoresSelecionadas() {
-    if (cor !== 0 && !listaCoresSelecionadas.includes(cor)) {
-      setListaCoresSelecionadas([...listaCoresSelecionadas, cor]);
-      setCor(0);
-    }
-  }
-
-  const removeListaCoresSelecionadas = (cor) => {
-    const updatedCores = listaCoresSelecionadas.filter((item) => item !== cor);
-    setListaCoresSelecionadas(updatedCores);
-  };
-
   function visualizarEditarPet(pet) {
     setModoEditar(true);
     listarRacas(pet.pet_tipos_id);
@@ -296,13 +290,15 @@ export default function PetUsuarioLogado() {
     setApelido(pet.apelido);
     setDataNascimento(pet.data_nascimento);
 
-    let listaCores = [];
+    let listaCoresNomes = [];
 
     if (pet.cores != null && pet.cores.length > 0) {
-      listaCores = pet.cores.map((cor) => cor.cor);
+      listaCoresNomes = pet.cores.map((cor) => cor.cor);
     }
 
-    setListaCoresSelecionadas(listaCores);
+    setSelectedCoresNomes(listaCoresNomes);
+    setSelectedCores(pet.cores);
+    setDisabledCores(pet.cores);
 
     setFlgNecessidadesEspeciais(
       pet.flg_necessidades_especiais === TRUE_PHP ? true : false
@@ -315,11 +311,7 @@ export default function PetUsuarioLogado() {
 
   function removerImagemPet(idPet) {
     setIsLoading(true);
-    Api.post(`pets/deletar/imagem/${idPet}`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    Api.post(`pets/deletar/imagem/${idPet}`, null, header)
       .then(({ data }) => {
         setarMensagem(data.message, TIPO_SUCESSO);
         limparCampos();
@@ -347,18 +339,12 @@ export default function PetUsuarioLogado() {
 
     if (validaCamposAtualizaImagem()) {
       setIsLoadingButton(true);
-      Api.post(
-        `pets/atualizar/imagem/${idPet}`,
-        {
-          imagem: imagem,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+
+      let request = {
+        imagem: imagem,
+      };
+
+      Api.post(`pets/atualizar/imagem/${idPet}`, request, headerMultipart)
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
           limparCampos();
@@ -372,6 +358,34 @@ export default function PetUsuarioLogado() {
         });
     }
   }
+
+  const handleOptionSelectCor = (event) => {
+    const selectedCorId = parseInt(event.target.value, 10);
+    const selectedCor = listaCores.find((cor) => cor.id === selectedCorId);
+
+    setSelectedCores([...selectedCores, selectedCor]);
+    setDisabledCores([...disabledCores, selectedCor]);
+    setSelectedCoresNomes([...selectedCoresNomes, selectedCor.cor]);
+  };
+
+  const handleRemoveCor = (corId) => {
+    const updatedSelectedCores = selectedCores.filter(
+      (cor) => cor.id !== corId
+    );
+    const updatedDisabledCores = disabledCores.filter(
+      (cor) => cor.id !== corId
+    );
+
+    let listaCoresNomes = [];
+
+    if (updatedSelectedCores != null && updatedSelectedCores.length > 0) {
+      listaCoresNomes = updatedSelectedCores.map((cor) => cor.cor);
+    }
+
+    setSelectedCores(updatedSelectedCores);
+    setDisabledCores(updatedDisabledCores);
+    setSelectedCoresNomes(listaCoresNomes);
+  };
 
   return (
     <>
@@ -674,51 +688,62 @@ export default function PetUsuarioLogado() {
                     Cor
                   </Form.Label>
                   <Form.Select
-                    onChange={(e) => setCor(e.target.value)}
+                    className="mb-3"
+                    onChange={handleOptionSelectCor}
                     value={cor}
                     id="cor"
                   >
                     <option value="0" className="fw-bold" disabled>
-                      Selecione uma cor
+                      Selecione uma ou mais cores
                     </option>
 
                     {listaCores.map((cor) => (
-                      <option key={cor.id} value={cor.cor} name={cor.cor}>
+                      <option
+                        key={cor.id}
+                        value={cor.id}
+                        disabled={disabledCores.some(
+                          (disabledTag) => disabledTag.id === cor.id
+                        )}
+                      >
                         {cor.cor}
                       </option>
                     ))}
                   </Form.Select>
+
+                  {!verificaLista(selectedCores) && (
+                    <>
+                      <Form.Label className="fw-bold" htmlFor="cor">
+                        Cores Selecionadas
+                      </Form.Label>
+
+                      <div className="mb-3">
+                        {selectedCores.map((cor) => (
+                          <button
+                            key={cor.id}
+                            type="button"
+                            className="btn btn-primary m-1"
+                            onClick={() => handleRemoveCor(cor.id)}
+                          >
+                            {cor.cor} <span className="badge">x</span>
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </Form.Group>
 
-                <Button className="mb-3" onClick={addListaCoresSelecionadas}>
-                  Adicionar Cor
-                </Button>
-
-                {listaCoresSelecionadas.length > 0 && (
-                  <div className="mb-3">
-                    {listaCoresSelecionadas.map((cor) => (
-                      <button
-                        key={cor.id}
-                        type="button"
-                        className="btn btn-primary me-1"
-                        onClick={() => removeListaCoresSelecionadas(cor)}
-                      >
-                        {cor} <span className="badge">x</span>
-                      </button>
-                    ))}
-                  </div>
+                {!modoEditar && (
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold" htmlFor="imagem">
+                      Imagem
+                    </Form.Label>
+                    <Form.Control
+                      id="imagem"
+                      type="file"
+                      onChange={(e) => setImagem(e.target.files[0])}
+                    />
+                  </Form.Group>
                 )}
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold" htmlFor="imagem">
-                    Imagem
-                  </Form.Label>
-                  <Form.Control
-                    id="imagem"
-                    type="file"
-                    onChange={(e) => setImagem(e.target.files[0])}
-                  />
-                </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label className="fw-bold" htmlFor="nome">

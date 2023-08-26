@@ -46,13 +46,17 @@ export default function PetUsuarioLogadoFavoritos() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const authHeader = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   function listarPetsUsuarioLogadoFavoritos(numeroPagina) {
     setIsLoading(true);
     setPagina(numeroPagina);
 
-    Api.post(`pets/favoritos/user?page=${pagina}`, null, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    Api.get(`pets/favoritos/user?page=${pagina}`, authHeader)
       .then(({ data }) => {
         setData(data);
         setListaPets(data.data);

@@ -2,14 +2,14 @@ import { Badge, Card, Col } from "react-bootstrap";
 import { AiFillIdcard, AiOutlineInfoCircle } from "react-icons/ai";
 import { BsCalendarEvent, BsGenderFemale, BsGenderMale } from "react-icons/bs";
 import { RxSize } from "react-icons/rx";
+import { FALSE_PHP, TIPO_ALERTA, TIPO_SUCESSO } from "../Constantes";
+import NavLinkToTop from "../navLinkToTop/NavLinkToTop";
 import {
   formataMostrandoIdade,
   formataPrimeiroNome,
   formataSexoPet,
   formataTamanhoPet,
-} from "../utils/Mask";
-import { FALSE_PHP, TIPO_ALERTA, TIPO_SUCESSO } from "./Constantes";
-import NavLinkToTop from "./navLinkToTop/NavLinkToTop";
+} from "../../utils/Mask";
 
 /**
  * Utilizado para mostrar

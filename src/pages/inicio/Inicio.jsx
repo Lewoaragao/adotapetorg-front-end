@@ -13,7 +13,7 @@ import banner03 from "../../images/banner_pet_03.jpg";
 import Api from "../../services/Api";
 import { verificaLista } from "../../utils/Util";
 import TituloPagina from "./../../components/TituloPagina";
-import CardPet from "../../components/CardPet";
+import CardPet from "./../../components/cardPet/CardPet";
 import CardPostagem from "../../components/cardPostagem/CardPostagem";
 
 function Inicio() {
