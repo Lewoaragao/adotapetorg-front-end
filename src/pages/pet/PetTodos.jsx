@@ -3,6 +3,7 @@ import { Pagination, Row } from "react-bootstrap";
 import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUM_PET_CADASTRADO,
+  PRIMEIRA_PAGINA,
   REGISTROS_PAGINACAO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
@@ -14,7 +15,7 @@ import CardPet from "./../../components/cardPet/CardPet";
 export default function PetTodos() {
   const [isLoading, setIsLoading] = useState(false);
   const [listaPets, setListaPets] = useState([]);
-  const [data, setData] = useState([]);
+  const [dataPet, setDataPet] = useState([]);
   const { setarMensagem } = useContext(MessageContext);
   const [pagina, setPagina] = useState(1);
 
@@ -29,7 +30,7 @@ export default function PetTodos() {
 
     Api.get(`pets?page=${pagina}`)
       .then(({ data }) => {
-        setData(data);
+        setDataPet(data);
         setListaPets(data.data);
       })
       .catch(({ response }) => {
@@ -63,56 +64,61 @@ export default function PetTodos() {
           )}
 
           {!verificaLista(listaPets) &&
-            listaPets.length > REGISTROS_PAGINACAO && (
+            dataPet.total >= REGISTROS_PAGINACAO && (
               <Row className="mt-3">
                 <Pagination className="d-flex justify-content-center align-items-center">
                   {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
                   <Pagination.First
-                    onClick={() => listarTodosPets(data.first_page)}
+                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                    onClick={() => listarTodosPets(dataPet.first_page)}
                   />
 
                   {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
                   <Pagination.Prev
-                    onClick={() => listarTodosPets(data.current_page - 1)}
+                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                    onClick={() => listarTodosPets(dataPet.current_page - 1)}
                   />
 
                   {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+                  {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
                   {/* PÁGINA ATUAL MENOS UM */}
-                  {data.current_page >= 2 && (
+                  {dataPet.current_page >= 2 && (
                     <Pagination.Item
-                      onClick={() => listarTodosPets(data.current_page - 1)}
+                      onClick={() => listarTodosPets(dataPet.current_page - 1)}
                     >
-                      {data.current_page - 1}
+                      {dataPet.current_page - 1}
                     </Pagination.Item>
                   )}
 
                   {/* PÁGINA ATUAL */}
-                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+                  <Pagination.Item active>
+                    {dataPet.current_page}
+                  </Pagination.Item>
 
                   {/* PÁGINA ATUAL MAIS UM */}
-                  {data.current_page + 1 <= data.last_page && (
+                  {dataPet.current_page + 1 <= dataPet.last_page && (
                     <Pagination.Item
-                      onClick={() => listarTodosPets(data.current_page + 1)}
+                      onClick={() => listarTodosPets(dataPet.current_page + 1)}
                     >
-                      {data.current_page + 1}
+                      {dataPet.current_page + 1}
                     </Pagination.Item>
                   )}
 
                   {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                  {data.current_page + 1 < data.last_page && (
+                  {dataPet.current_page + 1 < dataPet.last_page && (
                     <Pagination.Ellipsis disabled />
                   )}
 
                   {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
                   <Pagination.Next
-                    onClick={() => listarTodosPets(data.current_page + 1)}
+                    onClick={() => listarTodosPets(dataPet.current_page + 1)}
                   />
 
                   {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
                   <Pagination.Last
-                    onClick={() => listarTodosPets(data.last_page)}
+                    disabled={dataPet.current_page === dataPet.last_page}
+                    onClick={() => listarTodosPets(dataPet.last_page)}
                   />
                 </Pagination>
               </Row>

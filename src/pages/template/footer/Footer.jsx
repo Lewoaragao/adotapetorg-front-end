@@ -11,11 +11,11 @@ import {
 } from "react-icons/fa";
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import {
-  TELA_BLOG,
   TELA_INICIAL,
   TELA_MEUS_LINKS,
   TELA_POLITICA_PRIVACIDADE,
   TELA_SOBRE,
+  TELA_BLOG_TODAS_POSTAGENS,
 } from "./../../../components/Constantes";
 
 function Footer({ logo }) {
@@ -147,7 +147,7 @@ function Footer({ logo }) {
               </p>
               <p>
                 <NavLinkToTop
-                  to={TELA_BLOG}
+                  to={TELA_BLOG_TODAS_POSTAGENS}
                   className="text-reset text-underline-hover"
                 >
                   Blog

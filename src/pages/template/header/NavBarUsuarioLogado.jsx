@@ -3,7 +3,7 @@ import { AiOutlineLink } from "react-icons/ai";
 import { FaDog } from "react-icons/fa";
 import { IoMdBook } from "react-icons/io";
 import {
-  TELA_BLOG,
+  TELA_BLOG_TODAS_POSTAGENS,
   TELA_BLOG_POSTAGEM_USUARIO_LOGADO,
   TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS,
   TELA_EDITAR_PERFIL_USUARIO,
@@ -24,7 +24,10 @@ function NavBarUsuarioLogado({ usuarioLogado, logout }) {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <NavLinkToTop className="dropdown-item" to={TELA_BLOG}>
+            <NavLinkToTop
+              className="dropdown-item"
+              to={TELA_BLOG_TODAS_POSTAGENS}
+            >
               Todas as Postagens
             </NavLinkToTop>
 
