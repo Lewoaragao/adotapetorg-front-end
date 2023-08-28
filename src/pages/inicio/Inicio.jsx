@@ -4,6 +4,7 @@ import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
   MENSAGEM_NENHUM_PET_CADASTRADO,
+  PRIMEIRA_PAGINA,
   REGISTROS_PAGINACAO,
 } from "../../components/Constantes";
 import { MessageContext } from "../../contexts/MessageContext";
@@ -24,17 +25,14 @@ function Inicio() {
   const { setarMensagem } = useContext(MessageContext);
   const [dataPet, setDataPet] = useState([]);
   const [dataPostagem, setDataPostagem] = useState([]);
-  const [paginaPet, setPaginaPet] = useState(1);
-  const [paginaPostagem, setPaginaPostagem] = useState(1);
 
   useEffect(() => {
-    listarTodosPets(paginaPet);
-    listarTodasPostagens(paginaPostagem);
+    listarTodosPets(PRIMEIRA_PAGINA);
+    listarTodasPostagens(PRIMEIRA_PAGINA);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function listarTodosPets(numeroPaginaPet) {
-    setPaginaPet(numeroPaginaPet);
     setIsLoadingListaPet(true);
 
     Api.get(`pets?page=${numeroPaginaPet}`)
@@ -51,7 +49,6 @@ function Inicio() {
   }
 
   function listarTodasPostagens(numeroPaginaPostagem) {
-    setPaginaPostagem(numeroPaginaPostagem);
     setIsLoadingBlogPostagens(true);
 
     Api.get(`blog/todas/postagens?page=${numeroPaginaPostagem}`)
@@ -127,16 +124,18 @@ function Inicio() {
             )}
 
             {!verificaLista(listaPets) &&
-              listaPets.length > REGISTROS_PAGINACAO && (
+              dataPet.total >= REGISTROS_PAGINACAO && (
                 <Row className="my-3">
                   <Pagination className="d-flex justify-content-center align-items-center">
                     {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
                     <Pagination.First
+                      disabled={dataPet.current_page === PRIMEIRA_PAGINA}
                       onClick={() => listarTodosPets(dataPet.first_page)}
                     />
 
                     {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
                     <Pagination.Prev
+                      disabled={dataPet.current_page === PRIMEIRA_PAGINA}
                       onClick={() => listarTodosPets(dataPet.current_page - 1)}
                     />
 
@@ -184,6 +183,7 @@ function Inicio() {
 
                     {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
                     <Pagination.Last
+                      disabled={dataPet.current_page === dataPet.last_page}
                       onClick={() => listarTodosPets(dataPet.last_page)}
                     />
                   </Pagination>
@@ -217,16 +217,18 @@ function Inicio() {
         )}
 
         {!verificaLista(listaPostagens) &&
-          listaPostagens.length > REGISTROS_PAGINACAO && (
+          dataPostagem.total >= REGISTROS_PAGINACAO && (
             <Row className="my-3">
               <Pagination className="d-flex justify-content-center align-items-center">
                 {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
                 <Pagination.First
+                  disabled={dataPostagem.current_page === PRIMEIRA_PAGINA}
                   onClick={() => listarTodasPostagens(dataPostagem.first_page)}
                 />
 
                 {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
                 <Pagination.Prev
+                  disabled={dataPostagem.current_page === PRIMEIRA_PAGINA}
                   onClick={() =>
                     listarTodasPostagens(dataPostagem.current_page - 1)
                   }
@@ -271,6 +273,9 @@ function Inicio() {
 
                 {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
                 <Pagination.Next
+                  disabled={
+                    dataPostagem.current_page === dataPostagem.last_page
+                  }
                   onClick={() =>
                     listarTodasPostagens(dataPostagem.current_page + 1)
                   }
@@ -278,6 +283,9 @@ function Inicio() {
 
                 {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
                 <Pagination.Last
+                  disabled={
+                    dataPostagem.current_page === dataPostagem.last_page
+                  }
                   onClick={() => listarTodasPostagens(dataPostagem.last_page)}
                 />
               </Pagination>

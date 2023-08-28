@@ -25,7 +25,7 @@ export const TELA_PETS_USUARIO_LOGADO_FAVORITOS = "/pets/favoritos";
 export const TELA_MEUS_LINKS = "/meus/links";
 export const TELA_LINKS = "/link/:nomeUsuario";
 // ROTAS BLOG
-export const TELA_BLOG = "/blog";
+export const TELA_BLOG_TODAS_POSTAGENS = "/blog";
 export const TELA_BLOG_POSTAGEM = "/blog/postagem/:slug";
 export const TELA_BLOG_POSTAGEM_USUARIO_LOGADO = "/minhas/postagens";
 export const TELA_BLOG_POSTAGEM_USUARIO_LOGADO_FAVORITOS =
@@ -93,4 +93,5 @@ export const ID_PAIS_BRASIL = "23";
 export const PAIS_BRASIL = "Brasil";
 
 // PAGINAÇÃO
+export const PRIMEIRA_PAGINA = 1;
 export const REGISTROS_PAGINACAO = 12;
