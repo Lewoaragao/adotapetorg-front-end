@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# Olá 👋
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🌐 **Nosso site**
+- [Adota Pet Org](https://adotapet.org)
 
-## Available Scripts
+## 🐶 **Nossa história**
 
-In the project directory, you can run:
+Tudo começou comigo e minha esposa, com um amor muito grande pelos pets, em especial nossa cadelinha chamada Chandelly (sim sim, o nome faz referência aquele iogurte) e ela faz jus ao nome, pois ela é um docinho, com esse amor pelos pets crescendo, acabou que resolvi desenvolver um sistema no qual ONGs, empresas privadas ou pessoas que tenham interesse em doar animais, onde possam facilmente cadastrá-los no sistema e divulgar com facilidade a adoção através do contato pela internet.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🏡 **A organização**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Nós somos uma organização sem fins lucrativos, onde desenvolvemos um sistema para ajudar nossos amados Pets a encontrar um lar através da adoção ou reencontrar o lar através do nosso sistema de busca de animais.
 
-### `npm test`
+## 📆 **Data de criação**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+17/03/2023
 
-### `npm run build`
+## 💛 **Adota Pet Org**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Um amor sem fronteiras
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ♯ **Hashtags**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#sistema #adota #pet #adocao #gato #org #pets #cachorro #adote #dog #cute #cat #foco #gatos #love #instadog #dogs #resiliencia #adoteumgato #petstagram #cats #dicas #saude #adotapet #adotapetorg
 
-### `npm run eject`
+## 🗂 **Nossos repositórios**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- [Front-end](https://github.com/codingw3/adotapetorg-front-end)
+- [Back-end](https://github.com/codingw3/adotapetorg-back-end)
+- [Desing](https://github.com/codingw3/adotapetorg-design)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🗂 **Nossas tarefas**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Trello - Gerenciador de Tarefas](https://trello.com/b/EN1OEeiA/sistema-de-ado%C3%A7%C3%A3o-de-pet)
