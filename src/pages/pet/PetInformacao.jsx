@@ -23,6 +23,7 @@ import {
   TRUE_PHP,
 } from "../../components/Constantes";
 import { Badge } from "react-bootstrap";
+import { FaWhatsapp } from "react-icons/fa";
 
 function PetInformacao() {
   const { id } = useParams();
@@ -50,35 +51,26 @@ function PetInformacao() {
   function verInformacaoPet(idPet) {
     setIsLoading(true);
 
-    isUsuarioLogado
-      ? Api.get(`pets/visualizar/${idPet}`, header)
-          .then(({ data }) => {
-            setPet(data.pet);
-            setRaca(data.raca.raca);
-            setTipo(data.tipo.tipo);
-            setUsuarioResponsavel(data.user);
-            setPetFavoritado(data.pet_favoritado);
-          })
-          .catch(({ response }) => {
-            setarMensagem(response.data.message, null);
-          })
-          .finally(() => {
-            setIsLoading(false);
-          })
-      : Api.get(`pets/${idPet}`)
-          .then(({ data }) => {
-            setPet(data.pet);
-            setRaca(data.raca.raca);
-            setTipo(data.tipo.tipo);
-            setUsuarioResponsavel(data.user);
-            setPetFavoritado(data.pet_favoritado);
-          })
-          .catch(({ response }) => {
-            setarMensagem(response.data.message, null);
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
+    const endpoint = isUsuarioLogado
+      ? `pets/visualizar/${idPet}`
+      : `pets/${idPet}`;
+
+    const headerVerificado = isUsuarioLogado ? header : null;
+
+    Api.get(endpoint, headerVerificado)
+      .then(({ data }) => {
+        setPet(data.pet);
+        setRaca(data.raca.raca);
+        setTipo(data.tipo.tipo);
+        setUsuarioResponsavel(data.user);
+        setPetFavoritado(data.pet_favoritado);
+      })
+      .catch(({ response }) => {
+        setarMensagem(response.data.message, null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function favoritarPet(idPet) {
@@ -146,6 +138,18 @@ function PetInformacao() {
                 src={process.env.REACT_APP_API_URL + pet.imagem}
                 alt={`foto pet ${pet.nome}`}
               />
+
+              <p>Compartilhar</p>
+              <a
+                className="btn btn-secondary"
+                href={`https://wa.me/?text=Olha que pet incrível: ${
+                  process.env.REACT_APP_PUBLIC_URL +
+                  formataTelaSemPrimeiraBarraEId(TELA_INFORMACOES_PET) +
+                  pet.id
+                }`}
+              >
+                <FaWhatsapp />
+              </a>
             </div>
 
             <div>
@@ -235,17 +239,17 @@ function PetInformacao() {
                     rel="noopener noreferrer"
                     href={`https://api.whatsapp.com/send?phone=55${
                       usuarioResponsavel.telefone
-                    }&text=🐶%20Olá,%20vim%20pelo%20${
+                    }&text=🐶 Olá, vim pelo ${
                       process.env.REACT_APP_PUBLIC_URL
-                    }%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20com%20nome%20de%20${
+                    } gostaria de saber mais sobre o pet com nome de ${
                       pet.nome
-                    }%20que%20está%20para%20adoção.%20O%20link%20dela%20é%20${
+                    } que está para adoção. O link é ${
                       process.env.REACT_APP_PUBLIC_URL +
                       formataTelaSemPrimeiraBarraEId(TELA_INFORMACOES_PET) +
                       pet.id
                     }`}
                   >
-                    <BsWhatsapp />
+                    <FaWhatsapp />
                   </a>
                 </p>
               )}
@@ -268,11 +272,11 @@ function PetInformacao() {
                     rel="noopener noreferrer"
                     href={`https://api.whatsapp.com/send?phone=55${
                       usuarioResponsavel.celular
-                    }&text=🐶%20Olá,%20vim%20pelo%20${
+                    }&text=🐶 Olá, vim pelo ${
                       process.env.REACT_APP_PUBLIC_URL
-                    }%20gostaria%20de%20saber%20mais%20sobre%20o%20pet%20com%20nome%20de%20${
+                    } gostaria de saber mais sobre o pet com nome de ${
                       pet.nome
-                    }%20que%20está%20para%20adoção.%20O%20link%20dela%20é%20${
+                    } que está para adoção. O link é ${
                       process.env.REACT_APP_PUBLIC_URL +
                       formataTelaSemPrimeiraBarraEId(TELA_INFORMACOES_PET) +
                       pet.id

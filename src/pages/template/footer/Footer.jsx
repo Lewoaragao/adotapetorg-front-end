@@ -5,9 +5,7 @@ import {
   FaGithub,
   FaHome,
   FaInstagram,
-  FaTwitter,
   FaWhatsapp,
-  FaYoutube,
 } from "react-icons/fa";
 import NavLinkToTop from "../../../components/navLinkToTop/NavLinkToTop";
 import {
@@ -43,17 +41,17 @@ function Footer({ logo }) {
             className="btn btn-warning mx-1"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://instagram.com/adotapetorg"
+            href="https://github.com/lewoaragao"
           >
-            <FaInstagram />
+            <FaGithub />
           </a>
           <a
             className="btn btn-warning mx-1"
             target="_blank"
             rel="noopener noreferrer"
-            href="https://github.com/adotapetorg"
+            href="https://instagram.com/adotapetorg"
           >
-            <FaGithub />
+            <FaInstagram />
           </a>
           {/* <a
             className="btn btn-warning mx-1"
@@ -63,14 +61,14 @@ function Footer({ logo }) {
           >
             <FaLinkedin />
           </a> */}
-          <a
+          {/* <a
             className="btn btn-warning mx-1"
             target="_blank"
             rel="noopener noreferrer"
             href="https://twitter.com/adotapetorg"
           >
             <FaTwitter />
-          </a>
+          </a> */}
           <a
             className="btn btn-warning mx-1"
             target="_blank"
@@ -79,14 +77,14 @@ function Footer({ logo }) {
           >
             <FaFacebook />
           </a>
-          <a
+          {/* <a
             className="btn btn-warning mx-1"
             target="_blank"
             rel="noopener noreferrer"
             href="https://youtube.com/@adotapetorg"
           >
             <FaYoutube />
-          </a>
+          </a> */}
         </div>
       </section>
 
@@ -195,7 +193,7 @@ function Footer({ logo }) {
             target="_blank"
             rel="noopener noreferrer"
             className="text-reset text-underline-hover fw-bold"
-            href={process.env.REACT_APP_GITHUB_ORGANIZATION_URL}
+            href="https://github.com/lewoaragao"
           >
             Adota Pet Org
           </a>

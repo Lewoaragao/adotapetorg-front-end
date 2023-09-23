@@ -4,7 +4,6 @@ import { CarregamentoLista } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUM_PET_CADASTRADO,
   PRIMEIRA_PAGINA,
-  REGISTROS_PAGINACAO,
 } from "../../components/Constantes";
 import TituloPagina from "../../components/TituloPagina";
 import { MessageContext } from "../../contexts/MessageContext";
@@ -63,66 +62,62 @@ export default function PetTodos() {
             </>
           )}
 
-          {!verificaLista(listaPets) &&
-            dataPet.total >= REGISTROS_PAGINACAO && (
-              <Row className="mt-3">
-                <Pagination className="d-flex justify-content-center align-items-center">
-                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-                  <Pagination.First
-                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
-                    onClick={() => listarTodosPets(dataPet.first_page)}
-                  />
+          <Row className="my-3">
+            <Pagination className="d-flex justify-content-center align-items-center">
+              {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+              <Pagination.First
+                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                onClick={() => listarTodosPets(dataPet.first_page)}
+              />
 
-                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-                  <Pagination.Prev
-                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
-                    onClick={() => listarTodosPets(dataPet.current_page - 1)}
-                  />
+              {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+              <Pagination.Prev
+                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                onClick={() => listarTodosPets(dataPet.current_page - 1)}
+              />
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                  {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
+              {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+              {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
-                  {/* PÁGINA ATUAL MENOS UM */}
-                  {dataPet.current_page >= 2 && (
-                    <Pagination.Item
-                      onClick={() => listarTodosPets(dataPet.current_page - 1)}
-                    >
-                      {dataPet.current_page - 1}
-                    </Pagination.Item>
-                  )}
+              {/* PÁGINA ATUAL MENOS UM */}
+              {dataPet.current_page >= 2 && (
+                <Pagination.Item
+                  onClick={() => listarTodosPets(dataPet.current_page - 1)}
+                >
+                  {dataPet.current_page - 1}
+                </Pagination.Item>
+              )}
 
-                  {/* PÁGINA ATUAL */}
-                  <Pagination.Item active>
-                    {dataPet.current_page}
-                  </Pagination.Item>
+              {/* PÁGINA ATUAL */}
+              <Pagination.Item active>{dataPet.current_page}</Pagination.Item>
 
-                  {/* PÁGINA ATUAL MAIS UM */}
-                  {dataPet.current_page + 1 <= dataPet.last_page && (
-                    <Pagination.Item
-                      onClick={() => listarTodosPets(dataPet.current_page + 1)}
-                    >
-                      {dataPet.current_page + 1}
-                    </Pagination.Item>
-                  )}
+              {/* PÁGINA ATUAL MAIS UM */}
+              {dataPet.current_page + 1 <= dataPet.last_page && (
+                <Pagination.Item
+                  onClick={() => listarTodosPets(dataPet.current_page + 1)}
+                >
+                  {dataPet.current_page + 1}
+                </Pagination.Item>
+              )}
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                  {dataPet.current_page + 1 < dataPet.last_page && (
-                    <Pagination.Ellipsis disabled />
-                  )}
+              {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+              {dataPet.current_page + 1 < dataPet.last_page && (
+                <Pagination.Ellipsis disabled />
+              )}
 
-                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-                  <Pagination.Next
-                    onClick={() => listarTodosPets(dataPet.current_page + 1)}
-                  />
+              {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+              <Pagination.Next
+                disabled={dataPet.current_page === dataPet.last_page}
+                onClick={() => listarTodosPets(dataPet.current_page + 1)}
+              />
 
-                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-                  <Pagination.Last
-                    disabled={dataPet.current_page === dataPet.last_page}
-                    onClick={() => listarTodosPets(dataPet.last_page)}
-                  />
-                </Pagination>
-              </Row>
-            )}
+              {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+              <Pagination.Last
+                disabled={dataPet.current_page === dataPet.last_page}
+                onClick={() => listarTodosPets(dataPet.last_page)}
+              />
+            </Pagination>
+          </Row>
         </>
       )}
     </>

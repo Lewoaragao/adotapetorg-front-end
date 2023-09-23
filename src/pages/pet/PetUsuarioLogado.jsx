@@ -30,7 +30,7 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_CADASTRADO,
-  REGISTROS_PAGINACAO,
+  PRIMEIRA_PAGINA,
   TELA_EDITAR_PERFIL_USUARIO,
   TIPO_ALERTA,
   TIPO_SUCESSO,
@@ -81,7 +81,7 @@ export default function PetUsuarioLogado() {
   const [abrirModalCadastrarPet, setAbrirModalCadastrarPet] = useState(false);
   const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
   const [pagina, setPagina] = useState(1);
-  const [data, setData] = useState([]);
+  const [dataPet, setDataPet] = useState([]);
 
   useEffect(() => {
     listarPetsUsuarioLogado(pagina);
@@ -94,7 +94,7 @@ export default function PetUsuarioLogado() {
     },
   };
 
-  let headerMultipart = {
+  const headerMultipart = {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
@@ -107,7 +107,7 @@ export default function PetUsuarioLogado() {
 
     Api.get(`pets/cadastrados/user?page=${pagina}`, header)
       .then(({ data }) => {
-        setData(data);
+        setDataPet(data.pets);
         setListaPets(data.pets.data);
         setListaPetTipos(data.tipos);
         setListaRacas(data.racas);
@@ -289,6 +289,7 @@ export default function PetUsuarioLogado() {
     setTipo(pet.pet_tipos_id);
     setApelido(pet.apelido);
     setDataNascimento(pet.data_nascimento);
+    setFlgAdotado(pet.flg_adotado);
 
     let listaCoresNomes = [];
 
@@ -545,69 +546,70 @@ export default function PetUsuarioLogado() {
             )}
           </Row>
 
-          {!verificaLista(listaPets) &&
-            listaPets.length > REGISTROS_PAGINACAO && (
-              <Row className="mt-3">
-                <Pagination className="d-flex justify-content-center align-items-center">
-                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-                  <Pagination.First
-                    onClick={() => listarPetsUsuarioLogado(data.first_page)}
-                  />
+          <Row className="my-3">
+            <Pagination className="d-flex justify-content-center align-items-center">
+              {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+              <Pagination.First
+                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                onClick={() => listarPetsUsuarioLogado(dataPet.first_page)}
+              />
 
-                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-                  <Pagination.Prev
-                    onClick={() =>
-                      listarPetsUsuarioLogado(data.current_page - 1)
-                    }
-                  />
+              {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+              <Pagination.Prev
+                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                onClick={() =>
+                  listarPetsUsuarioLogado(dataPet.current_page - 1)
+                }
+              />
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+              {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+              {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
-                  {/* PÁGINA ATUAL MENOS UM */}
-                  {data.current_page >= 2 && (
-                    <Pagination.Item
-                      onClick={() =>
-                        listarPetsUsuarioLogado(data.current_page - 1)
-                      }
-                    >
-                      {data.current_page - 1}
-                    </Pagination.Item>
-                  )}
+              {/* PÁGINA ATUAL MENOS UM */}
+              {dataPet.current_page >= 2 && (
+                <Pagination.Item
+                  onClick={() =>
+                    listarPetsUsuarioLogado(dataPet.current_page - 1)
+                  }
+                >
+                  {dataPet.current_page - 1}
+                </Pagination.Item>
+              )}
 
-                  {/* PÁGINA ATUAL */}
-                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+              {/* PÁGINA ATUAL */}
+              <Pagination.Item active>{dataPet.current_page}</Pagination.Item>
 
-                  {/* PÁGINA ATUAL MAIS UM */}
-                  {data.current_page + 1 <= data.last_page && (
-                    <Pagination.Item
-                      onClick={() =>
-                        listarPetsUsuarioLogado(data.current_page + 1)
-                      }
-                    >
-                      {data.current_page + 1}
-                    </Pagination.Item>
-                  )}
+              {/* PÁGINA ATUAL MAIS UM */}
+              {dataPet.current_page + 1 <= dataPet.last_page && (
+                <Pagination.Item
+                  onClick={() =>
+                    listarPetsUsuarioLogado(dataPet.current_page + 1)
+                  }
+                >
+                  {dataPet.current_page + 1}
+                </Pagination.Item>
+              )}
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                  {data.current_page + 1 < data.last_page && (
-                    <Pagination.Ellipsis disabled />
-                  )}
+              {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+              {dataPet.current_page + 1 < dataPet.last_page && (
+                <Pagination.Ellipsis disabled />
+              )}
 
-                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-                  <Pagination.Next
-                    onClick={() =>
-                      listarPetsUsuarioLogado(data.current_page + 1)
-                    }
-                  />
+              {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+              <Pagination.Next
+                disabled={dataPet.current_page === dataPet.last_page}
+                onClick={() =>
+                  listarPetsUsuarioLogado(dataPet.current_page + 1)
+                }
+              />
 
-                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-                  <Pagination.Last
-                    onClick={() => listarPetsUsuarioLogado(data.last_page)}
-                  />
-                </Pagination>
-              </Row>
-            )}
+              {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+              <Pagination.Last
+                disabled={dataPet.current_page === dataPet.last_page}
+                onClick={() => listarPetsUsuarioLogado(dataPet.last_page)}
+              />
+            </Pagination>
+          </Row>
 
           {/* MODAL CADASTRAR EDITAR PET */}
           <Modal
