@@ -1,6 +1,15 @@
 import JoditEditor from "jodit-react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Button, Card, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  Form,
+  Modal,
+  Pagination,
+  Row,
+} from "react-bootstrap";
 import { AiOutlineInfoCircle, AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import {
@@ -9,6 +18,7 @@ import {
 } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
+  PRIMEIRA_PAGINA,
   TELA_EDITAR_PERFIL_USUARIO,
   TIPO_SUCESSO,
 } from "../../components/Constantes";
@@ -45,11 +55,25 @@ export default function BlogPostagemUsuarioLogado() {
   const [tag, setTag] = useState(0);
   const [idPostagem, setIdPostagem] = useState(0);
   const [nomeBotao, setNomeBotao] = useState("");
+  const [dataPostagem, setDataPostagem] = useState([]);
   const [
     abrirModalCadastrarEditarPostagem,
     setAbrirModalCadastrarEditarPostagem,
   ] = useState(false);
   const [abrirModalEditarImagem, setAbrirModalEditarImagem] = useState(false);
+
+  const header = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const headerMultipart = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
 
   // config editor de texto
   const editor = useRef(null);
@@ -93,12 +117,14 @@ export default function BlogPostagemUsuarioLogado() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function listarPostagensUsuarioLogado() {
+  function listarPostagensUsuarioLogado(numeroPaginaPostagem) {
     setIsLoading(true);
-    Api.post("blog/postagens/cadastradas/user", null, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+
+    const endpoint = `blog/postagens/cadastradas/user?page=${numeroPaginaPostagem}`;
+
+    Api.get(endpoint, header)
       .then(({ data }) => {
+        setDataPostagem(data.postagens);
         setListaPostagens(data.postagens.data);
         setListaTags(data.tags);
       })
@@ -169,20 +195,13 @@ export default function BlogPostagemUsuarioLogado() {
         tags: selectedTagsNomes.length > 0 ? selectedTagsNomes : null,
       };
 
-      let header = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
       setIsLoadingButton(true);
       Api.post(
         modoEditar
           ? `blog/atualizar/postagem/${idPostagem}`
           : "blog/cadastrar/postagem",
         request,
-        header
+        headerMultipart
       )
         .then(({ data }) => {
           setarMensagem(data.message, TIPO_SUCESSO);
@@ -200,12 +219,6 @@ export default function BlogPostagemUsuarioLogado() {
 
   function deletarPostagem(idPostagem) {
     window.scrollTo(0, 0);
-
-    let header = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
 
     setIsLoading(true);
     Api.post(`blog/deletar/${idPostagem}`, null, header)
@@ -443,6 +456,92 @@ export default function BlogPostagemUsuarioLogado() {
                       </Col>
                     ))}
                   </>
+                </Row>
+
+                <Row className="my-3">
+                  <Pagination className="d-flex justify-content-center align-items-center">
+                    {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                    <Pagination.First
+                      disabled={dataPostagem.current_page === PRIMEIRA_PAGINA}
+                      onClick={() =>
+                        listarPostagensUsuarioLogado(dataPostagem.first_page)
+                      }
+                    />
+
+                    {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                    <Pagination.Prev
+                      disabled={dataPostagem.current_page === PRIMEIRA_PAGINA}
+                      onClick={() =>
+                        listarPostagensUsuarioLogado(
+                          dataPostagem.current_page - 1
+                        )
+                      }
+                    />
+
+                    {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                    {dataPostagem.current_page > 2 && (
+                      <Pagination.Ellipsis disabled />
+                    )}
+
+                    {/* PÁGINA ATUAL MENOS UM */}
+                    {dataPostagem.current_page >= 2 && (
+                      <Pagination.Item
+                        onClick={() =>
+                          listarPostagensUsuarioLogado(
+                            dataPostagem.current_page - 1
+                          )
+                        }
+                      >
+                        {dataPostagem.current_page - 1}
+                      </Pagination.Item>
+                    )}
+
+                    {/* PÁGINA ATUAL */}
+                    <Pagination.Item active>
+                      {dataPostagem.current_page}
+                    </Pagination.Item>
+
+                    {/* PÁGINA ATUAL MAIS UM */}
+                    {dataPostagem.current_page + 1 <=
+                      dataPostagem.last_page && (
+                      <Pagination.Item
+                        onClick={() =>
+                          listarPostagensUsuarioLogado(
+                            dataPostagem.current_page + 1
+                          )
+                        }
+                      >
+                        {dataPostagem.current_page + 1}
+                      </Pagination.Item>
+                    )}
+
+                    {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                    {dataPostagem.current_page + 1 < dataPostagem.last_page && (
+                      <Pagination.Ellipsis disabled />
+                    )}
+
+                    {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                    <Pagination.Next
+                      disabled={
+                        dataPostagem.current_page === dataPostagem.last_page
+                      }
+                      onClick={() =>
+                        listarPostagensUsuarioLogado(
+                          dataPostagem.current_page + 1
+                        )
+                      }
+                    />
+
+                    {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                    <Pagination.Last
+                      disabled={
+                        dataPostagem.current_page === dataPostagem.last_page
+                      }
+                      onClick={() =>
+                        listarPostagensUsuarioLogado(dataPostagem.last_page)
+                      }
+                    />
+                  </Pagination>
                 </Row>
               </>
             )}

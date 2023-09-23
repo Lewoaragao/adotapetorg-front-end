@@ -133,6 +133,9 @@ export default function BlogTodasPostagens() {
 
                       {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
                       <Pagination.Next
+                        disabled={
+                          dataPostagem.current_page === dataPostagem.last_page
+                        }
                         onClick={() =>
                           listarTodasPostagens(dataPostagem.current_page + 1)
                         }
@@ -140,6 +143,9 @@ export default function BlogTodasPostagens() {
 
                       {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
                       <Pagination.Last
+                        disabled={
+                          dataPostagem.current_page === dataPostagem.last_page
+                        }
                         onClick={() =>
                           listarTodasPostagens(dataPostagem.last_page)
                         }

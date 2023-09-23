@@ -13,7 +13,7 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_FAVORITADO,
-  REGISTROS_PAGINACAO,
+  PRIMEIRA_PAGINA,
   TIPO_ALERTA,
   TIPO_SUCESSO,
 } from "../../components/Constantes";
@@ -39,14 +39,14 @@ export default function PetUsuarioLogadoFavoritos() {
   const [listaPets, setListaPets] = useState([]);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [pagina, setPagina] = useState(1);
-  const [data, setData] = useState([]);
+  const [dataPet, setDataPet] = useState([]);
 
   useEffect(() => {
     listarPetsUsuarioLogadoFavoritos(pagina);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const authHeader = {
+  const header = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -56,9 +56,9 @@ export default function PetUsuarioLogadoFavoritos() {
     setIsLoading(true);
     setPagina(numeroPagina);
 
-    Api.get(`pets/favoritos/user?page=${pagina}`, authHeader)
+    Api.get(`pets/favoritos/user?page=${pagina}`, header)
       .then(({ data }) => {
-        setData(data);
+        setDataPet(data);
         setListaPets(data.data);
       })
       .catch(({ response }) => {
@@ -72,11 +72,7 @@ export default function PetUsuarioLogadoFavoritos() {
 
   function desfavoritarPet(idPet) {
     setIsLoadingButton(true);
-    Api.post(`pets/${idPet}/desfavoritar`, null, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    Api.post(`pets/${idPet}/desfavoritar`, null, header)
       .then(() => {
         listarPetsUsuarioLogadoFavoritos();
       })
@@ -184,73 +180,74 @@ export default function PetUsuarioLogadoFavoritos() {
             )}
           </Row>
 
-          {!verificaLista(listaPets) &&
-            listaPets.length > REGISTROS_PAGINACAO && (
-              <Row className="mt-3">
-                <Pagination className="d-flex justify-content-center align-items-center">
-                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-                  <Pagination.First
-                    onClick={() =>
-                      listarPetsUsuarioLogadoFavoritos(data.first_page)
-                    }
-                  />
+          <Row className="my-3">
+            <Pagination className="d-flex justify-content-center align-items-center">
+              {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+              <Pagination.First
+                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                onClick={() =>
+                  listarPetsUsuarioLogadoFavoritos(dataPet.first_page)
+                }
+              />
 
-                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-                  <Pagination.Prev
-                    onClick={() =>
-                      listarPetsUsuarioLogadoFavoritos(data.current_page - 1)
-                    }
-                  />
+              {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+              <Pagination.Prev
+                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                onClick={() =>
+                  listarPetsUsuarioLogadoFavoritos(dataPet.current_page - 1)
+                }
+              />
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-                  {data.current_page > 2 && <Pagination.Ellipsis disabled />}
+              {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+              {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
-                  {/* PÁGINA ATUAL MENOS UM */}
-                  {data.current_page >= 2 && (
-                    <Pagination.Item
-                      onClick={() =>
-                        listarPetsUsuarioLogadoFavoritos(data.current_page - 1)
-                      }
-                    >
-                      {data.current_page - 1}
-                    </Pagination.Item>
-                  )}
+              {/* PÁGINA ATUAL MENOS UM */}
+              {dataPet.current_page >= 2 && (
+                <Pagination.Item
+                  onClick={() =>
+                    listarPetsUsuarioLogadoFavoritos(dataPet.current_page - 1)
+                  }
+                >
+                  {dataPet.current_page - 1}
+                </Pagination.Item>
+              )}
 
-                  {/* PÁGINA ATUAL */}
-                  <Pagination.Item active>{data.current_page}</Pagination.Item>
+              {/* PÁGINA ATUAL */}
+              <Pagination.Item active>{dataPet.current_page}</Pagination.Item>
 
-                  {/* PÁGINA ATUAL MAIS UM */}
-                  {data.current_page + 1 <= data.last_page && (
-                    <Pagination.Item
-                      onClick={() =>
-                        listarPetsUsuarioLogadoFavoritos(data.current_page + 1)
-                      }
-                    >
-                      {data.current_page + 1}
-                    </Pagination.Item>
-                  )}
+              {/* PÁGINA ATUAL MAIS UM */}
+              {dataPet.current_page + 1 <= dataPet.last_page && (
+                <Pagination.Item
+                  onClick={() =>
+                    listarPetsUsuarioLogadoFavoritos(dataPet.current_page + 1)
+                  }
+                >
+                  {dataPet.current_page + 1}
+                </Pagination.Item>
+              )}
 
-                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-                  {data.current_page + 1 < data.last_page && (
-                    <Pagination.Ellipsis disabled />
-                  )}
+              {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+              {dataPet.current_page + 1 < dataPet.last_page && (
+                <Pagination.Ellipsis disabled />
+              )}
 
-                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-                  <Pagination.Next
-                    onClick={() =>
-                      listarPetsUsuarioLogadoFavoritos(data.current_page + 1)
-                    }
-                  />
+              {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+              <Pagination.Next
+                disabled={dataPet.current_page === dataPet.last_page}
+                onClick={() =>
+                  listarPetsUsuarioLogadoFavoritos(dataPet.current_page + 1)
+                }
+              />
 
-                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-                  <Pagination.Last
-                    onClick={() =>
-                      listarPetsUsuarioLogadoFavoritos(data.last_page)
-                    }
-                  />
-                </Pagination>
-              </Row>
-            )}
+              {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+              <Pagination.Last
+                disabled={dataPet.current_page === dataPet.last_page}
+                onClick={() =>
+                  listarPetsUsuarioLogadoFavoritos(dataPet.last_page)
+                }
+              />
+            </Pagination>
+          </Row>
         </>
       )}
     </>
