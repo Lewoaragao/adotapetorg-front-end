@@ -153,13 +153,16 @@ export default function Links() {
               href={process.env.REACT_APP_PUBLIC_URL}
             >
               <img
-                className="rounded"
+                className="rounded me-1"
                 width="25px"
                 height="25px"
                 src={logo}
                 alt="logo adota pet org"
               />
-              <span className="fw-bold"> Adota Pet Org</span>
+              <p>
+                Crie seu Link na Bio <br />
+                <span className="fw-bold">Adota Pet Org</span>
+              </p>
             </a>
           </div>
         </div>
