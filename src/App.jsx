@@ -6,6 +6,7 @@ import { AuthContext, AuthProvider } from "./contexts/AuthContext";
 import logo from "./images/logo-adotapetorg.jpg";
 import Footer from "./pages/template/footer/Footer";
 import Header from "./pages/template/header/Header";
+import { AnuncioInArticle } from "./components/adsense/Anuncio";
 
 export default function App() {
   const location = useLocation();
@@ -36,10 +37,10 @@ export default function App() {
             logo={logo}
             usuarioLogadoVerificado={usuarioLogadoVerificado}
           />
+          <AnuncioInArticle />
           <Container className="my-3">
             <Outlet />
           </Container>
-          {/* <h2 className="text-center">Patrocinadores</h2> */}
           <BtnVoltarTopo />
           <Footer logo={logo} />
         </>

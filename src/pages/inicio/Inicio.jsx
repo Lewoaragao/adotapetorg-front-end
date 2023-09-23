@@ -16,7 +16,7 @@ import { verificaLista } from "../../utils/Util";
 import TituloPagina from "./../../components/TituloPagina";
 import CardPet from "./../../components/cardPet/CardPet";
 import CardPostagem from "../../components/cardPostagem/CardPostagem";
-import { AnuncioQuadrado } from "../../components/adsense/Anuncio";
+import { AnuncioInArticle } from "../../components/adsense/Anuncio";
 
 function Inicio() {
   const [listaPets, setListaPets] = useState([]);
@@ -193,7 +193,7 @@ function Inicio() {
           </>
         )}
 
-        <AnuncioQuadrado />
+        <AnuncioInArticle />
 
         <h2 className="mb-3 fw-bold text-center bg-warning p-3 rounded">
           Blog: Postagens
