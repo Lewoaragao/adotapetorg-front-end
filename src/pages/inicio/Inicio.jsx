@@ -5,7 +5,7 @@ import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
   MENSAGEM_NENHUM_PET_CADASTRADO,
   PRIMEIRA_PAGINA,
-  REGISTROS_PAGINACAO,
+  REGISTROS_PAGINACAO
 } from "../../components/Constantes";
 import { MessageContext } from "../../contexts/MessageContext";
 import banner01 from "../../images/banner_pet_01.jpg";
@@ -16,7 +16,6 @@ import { verificaLista } from "../../utils/Util";
 import TituloPagina from "./../../components/TituloPagina";
 import CardPet from "./../../components/cardPet/CardPet";
 import CardPostagem from "../../components/cardPostagem/CardPostagem";
-import { AnuncioQuadrado } from "../../components/adsense/Anuncio";
 
 function Inicio() {
   const [listaPets, setListaPets] = useState([]);
@@ -193,7 +192,7 @@ function Inicio() {
           </>
         )}
 
-        <AnuncioQuadrado />
+        {/* <AnuncioQuadrado /> */}
 
         <h2 className="mb-3 fw-bold text-center bg-warning p-3 rounded">
           Blog: Postagens
