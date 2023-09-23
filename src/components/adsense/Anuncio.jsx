@@ -15,7 +15,7 @@ export function AnuncioQuadrado() {
         // eslint-disable-next-line
         class="adsbygoogle"
         // eslint-disable-next-line
-        style="display:block"
+        style={{ display: "block" }}
         data-ad-client="ca-pub-4429653220259188"
         data-ad-slot="2595851164"
         data-ad-format="auto"
