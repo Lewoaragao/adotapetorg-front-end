@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Badge, Card, Col, Pagination, Row } from "react-bootstrap";
+import { Badge, Card, Col, Row } from "react-bootstrap";
 import {
   BsCalendarEvent,
   BsGenderFemale,
@@ -13,7 +13,6 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_FAVORITADO,
-  PRIMEIRA_PAGINA,
   TIPO_ALERTA,
   TIPO_SUCESSO,
 } from "../../components/Constantes";
@@ -180,74 +179,83 @@ export default function PetUsuarioLogadoFavoritos() {
             )}
           </Row>
 
-          <Row className="my-3">
-            <Pagination className="d-flex justify-content-center align-items-center">
-              {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-              <Pagination.First
-                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
-                onClick={() =>
-                  listarPetsUsuarioLogadoFavoritos(dataPet.first_page)
-                }
-              />
+          {!verificaLista(listaPets) &&
+            dataPet.total >= REGISTROS_PAGINACAO && (
+              <Row className="my-3">
+                <Pagination className="d-flex justify-content-center align-items-center">
+                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                  <Pagination.First
+                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                    onClick={() =>
+                      listarPetsUsuarioLogadoFavoritos(dataPet.first_page)
+                    }
+                  />
 
-              {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-              <Pagination.Prev
-                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
-                onClick={() =>
-                  listarPetsUsuarioLogadoFavoritos(dataPet.current_page - 1)
-                }
-              />
+                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                  <Pagination.Prev
+                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                    onClick={() =>
+                      listarPetsUsuarioLogadoFavoritos(dataPet.current_page - 1)
+                    }
+                  />
 
-              {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-              {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                  {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
-              {/* PÁGINA ATUAL MENOS UM */}
-              {dataPet.current_page >= 2 && (
-                <Pagination.Item
-                  onClick={() =>
-                    listarPetsUsuarioLogadoFavoritos(dataPet.current_page - 1)
-                  }
-                >
-                  {dataPet.current_page - 1}
-                </Pagination.Item>
-              )}
+                  {/* PÁGINA ATUAL MENOS UM */}
+                  {dataPet.current_page >= 2 && (
+                    <Pagination.Item
+                      onClick={() =>
+                        listarPetsUsuarioLogadoFavoritos(
+                          dataPet.current_page - 1
+                        )
+                      }
+                    >
+                      {dataPet.current_page - 1}
+                    </Pagination.Item>
+                  )}
 
-              {/* PÁGINA ATUAL */}
-              <Pagination.Item active>{dataPet.current_page}</Pagination.Item>
+                  {/* PÁGINA ATUAL */}
+                  <Pagination.Item active>
+                    {dataPet.current_page}
+                  </Pagination.Item>
 
-              {/* PÁGINA ATUAL MAIS UM */}
-              {dataPet.current_page + 1 <= dataPet.last_page && (
-                <Pagination.Item
-                  onClick={() =>
-                    listarPetsUsuarioLogadoFavoritos(dataPet.current_page + 1)
-                  }
-                >
-                  {dataPet.current_page + 1}
-                </Pagination.Item>
-              )}
+                  {/* PÁGINA ATUAL MAIS UM */}
+                  {dataPet.current_page + 1 <= dataPet.last_page && (
+                    <Pagination.Item
+                      onClick={() =>
+                        listarPetsUsuarioLogadoFavoritos(
+                          dataPet.current_page + 1
+                        )
+                      }
+                    >
+                      {dataPet.current_page + 1}
+                    </Pagination.Item>
+                  )}
 
-              {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-              {dataPet.current_page + 1 < dataPet.last_page && (
-                <Pagination.Ellipsis disabled />
-              )}
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                  {dataPet.current_page + 1 < dataPet.last_page && (
+                    <Pagination.Ellipsis disabled />
+                  )}
 
-              {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-              <Pagination.Next
-                disabled={dataPet.current_page === dataPet.last_page}
-                onClick={() =>
-                  listarPetsUsuarioLogadoFavoritos(dataPet.current_page + 1)
-                }
-              />
+                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                  <Pagination.Next
+                    disabled={dataPet.current_page === dataPet.last_page}
+                    onClick={() =>
+                      listarPetsUsuarioLogadoFavoritos(dataPet.current_page + 1)
+                    }
+                  />
 
-              {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-              <Pagination.Last
-                disabled={dataPet.current_page === dataPet.last_page}
-                onClick={() =>
-                  listarPetsUsuarioLogadoFavoritos(dataPet.last_page)
-                }
-              />
-            </Pagination>
-          </Row>
+                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                  <Pagination.Last
+                    disabled={dataPet.current_page === dataPet.last_page}
+                    onClick={() =>
+                      listarPetsUsuarioLogadoFavoritos(dataPet.last_page)
+                    }
+                  />
+                </Pagination>
+              </Row>
+            )}
         </>
       )}
     </>

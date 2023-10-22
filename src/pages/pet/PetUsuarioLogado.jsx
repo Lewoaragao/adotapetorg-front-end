@@ -7,7 +7,6 @@ import {
   Dropdown,
   Form,
   Modal,
-  Pagination,
   Row,
 } from "react-bootstrap";
 import {
@@ -30,7 +29,6 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_CADASTRADO,
-  PRIMEIRA_PAGINA,
   TELA_EDITAR_PERFIL_USUARIO,
   TIPO_ALERTA,
   TIPO_SUCESSO,
@@ -546,70 +544,75 @@ export default function PetUsuarioLogado() {
             )}
           </Row>
 
-          <Row className="my-3">
-            <Pagination className="d-flex justify-content-center align-items-center">
-              {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
-              <Pagination.First
-                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
-                onClick={() => listarPetsUsuarioLogado(dataPet.first_page)}
-              />
+          {!verificaLista(listaPets) &&
+            dataPet.total >= REGISTROS_PAGINACAO && (
+              <Row className="my-3">
+                <Pagination className="d-flex justify-content-center align-items-center">
+                  {/* BOTÃO DE VOLTAR PARA A PRIMEIRA PÁGINA */}
+                  <Pagination.First
+                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                    onClick={() => listarPetsUsuarioLogado(dataPet.first_page)}
+                  />
 
-              {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
-              <Pagination.Prev
-                disabled={dataPet.current_page === PRIMEIRA_PAGINA}
-                onClick={() =>
-                  listarPetsUsuarioLogado(dataPet.current_page - 1)
-                }
-              />
+                  {/* BOTÃO DE VOLTAR PARA A PÁGINA */}
+                  <Pagination.Prev
+                    disabled={dataPet.current_page === PRIMEIRA_PAGINA}
+                    onClick={() =>
+                      listarPetsUsuarioLogado(dataPet.current_page - 1)
+                    }
+                  />
 
-              {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
-              {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PÁGINA ANTERIORES */}
+                  {dataPet.current_page > 2 && <Pagination.Ellipsis disabled />}
 
-              {/* PÁGINA ATUAL MENOS UM */}
-              {dataPet.current_page >= 2 && (
-                <Pagination.Item
-                  onClick={() =>
-                    listarPetsUsuarioLogado(dataPet.current_page - 1)
-                  }
-                >
-                  {dataPet.current_page - 1}
-                </Pagination.Item>
-              )}
+                  {/* PÁGINA ATUAL MENOS UM */}
+                  {dataPet.current_page >= 2 && (
+                    <Pagination.Item
+                      onClick={() =>
+                        listarPetsUsuarioLogado(dataPet.current_page - 1)
+                      }
+                    >
+                      {dataPet.current_page - 1}
+                    </Pagination.Item>
+                  )}
 
-              {/* PÁGINA ATUAL */}
-              <Pagination.Item active>{dataPet.current_page}</Pagination.Item>
+                  {/* PÁGINA ATUAL */}
+                  <Pagination.Item active>
+                    {dataPet.current_page}
+                  </Pagination.Item>
 
-              {/* PÁGINA ATUAL MAIS UM */}
-              {dataPet.current_page + 1 <= dataPet.last_page && (
-                <Pagination.Item
-                  onClick={() =>
-                    listarPetsUsuarioLogado(dataPet.current_page + 1)
-                  }
-                >
-                  {dataPet.current_page + 1}
-                </Pagination.Item>
-              )}
+                  {/* PÁGINA ATUAL MAIS UM */}
+                  {dataPet.current_page + 1 <= dataPet.last_page && (
+                    <Pagination.Item
+                      onClick={() =>
+                        listarPetsUsuarioLogado(dataPet.current_page + 1)
+                      }
+                    >
+                      {dataPet.current_page + 1}
+                    </Pagination.Item>
+                  )}
 
-              {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
-              {dataPet.current_page + 1 < dataPet.last_page && (
-                <Pagination.Ellipsis disabled />
-              )}
+                  {/* PARA MOSTRAR QUE EXISTE MAIS PRÓXIMAS PÁGINAS */}
+                  {dataPet.current_page + 1 < dataPet.last_page && (
+                    <Pagination.Ellipsis disabled />
+                  )}
 
-              {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
-              <Pagination.Next
-                disabled={dataPet.current_page === dataPet.last_page}
-                onClick={() =>
-                  listarPetsUsuarioLogado(dataPet.current_page + 1)
-                }
-              />
+                  {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
+                  <Pagination.Next
+                    disabled={dataPet.current_page === dataPet.last_page}
+                    onClick={() =>
+                      listarPetsUsuarioLogado(dataPet.current_page + 1)
+                    }
+                  />
 
-              {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
-              <Pagination.Last
-                disabled={dataPet.current_page === dataPet.last_page}
-                onClick={() => listarPetsUsuarioLogado(dataPet.last_page)}
-              />
-            </Pagination>
-          </Row>
+                  {/* BOTÃO DE IR PARA A ÚLTIMA PÁGINA */}
+                  <Pagination.Last
+                    disabled={dataPet.current_page === dataPet.last_page}
+                    onClick={() => listarPetsUsuarioLogado(dataPet.last_page)}
+                  />
+                </Pagination>
+              </Row>
+            )}
 
           {/* MODAL CADASTRAR EDITAR PET */}
           <Modal show={abrirModalCadastrarPet} onHide={limparCampos}>
