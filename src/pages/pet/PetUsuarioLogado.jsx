@@ -7,6 +7,7 @@ import {
   Dropdown,
   Form,
   Modal,
+  Pagination,
   Row,
 } from "react-bootstrap";
 import {
@@ -29,6 +30,8 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_CADASTRADO,
+  PRIMEIRA_PAGINA,
+  REGISTROS_PAGINACAO,
   TELA_EDITAR_PERFIL_USUARIO,
   TIPO_ALERTA,
   TIPO_SUCESSO,
