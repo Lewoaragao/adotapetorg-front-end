@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Badge, Card, Col, Row } from "react-bootstrap";
+import { Badge, Card, Col, Pagination, Row } from "react-bootstrap";
 import {
   BsCalendarEvent,
   BsGenderFemale,
@@ -13,6 +13,8 @@ import {
 import {
   FALSE_PHP,
   MENSAGEM_NENHUM_PET_FAVORITADO,
+  PRIMEIRA_PAGINA,
+  REGISTROS_PAGINACAO,
   TIPO_ALERTA,
   TIPO_SUCESSO,
 } from "../../components/Constantes";

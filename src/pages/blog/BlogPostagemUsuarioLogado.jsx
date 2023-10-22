@@ -1,6 +1,15 @@
 import JoditEditor from "jodit-react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Button, Card, Col, Dropdown, Form, Modal, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Dropdown,
+  Form,
+  Modal,
+  Pagination,
+  Row,
+} from "react-bootstrap";
 import { AiOutlineInfoCircle, AiOutlinePlus } from "react-icons/ai";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import {
@@ -9,6 +18,8 @@ import {
 } from "../../components/Carregamento";
 import {
   MENSAGEM_NENHUMA_POSTAGEM_CADASTRADA,
+  PRIMEIRA_PAGINA,
+  REGISTROS_PAGINACAO,
   TELA_EDITAR_PERFIL_USUARIO,
   TIPO_SUCESSO,
 } from "../../components/Constantes";
