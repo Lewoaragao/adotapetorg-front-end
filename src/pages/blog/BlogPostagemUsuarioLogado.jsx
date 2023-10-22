@@ -550,11 +550,7 @@ export default function BlogPostagemUsuarioLogado() {
       </>
 
       {/* MODAL CADASTRAR EDITAR POSTAGEM */}
-      <Modal
-        show={abrirModalCadastrarEditarPostagem}
-        onHide={limparCampos}
-        fullscreen={true}
-      >
+      <Modal show={abrirModalCadastrarEditarPostagem} onHide={limparCampos}>
         <Modal.Header closeButton>
           <Modal.Title className="fw-bold text-primary">
             Cadastro de Postagem

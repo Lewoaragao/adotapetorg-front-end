@@ -612,11 +612,7 @@ export default function PetUsuarioLogado() {
           </Row>
 
           {/* MODAL CADASTRAR EDITAR PET */}
-          <Modal
-            show={abrirModalCadastrarPet}
-            onHide={limparCampos}
-            fullscreen={true}
-          >
+          <Modal show={abrirModalCadastrarPet} onHide={limparCampos}>
             <Modal.Header closeButton>
               <Modal.Title className="fw-bold text-primary">
                 {modoEditar ? "Editar" : "Cadastrar"} Pet
