@@ -179,6 +179,7 @@ function Inicio() {
 
                     {/* BOTÃO DE IR PARA A PRÓXIMA PÁGINA */}
                     <Pagination.Next
+                      disabled={dataPet.current_page === dataPet.last_page}
                       onClick={() => listarTodosPets(dataPet.current_page + 1)}
                     />
 
