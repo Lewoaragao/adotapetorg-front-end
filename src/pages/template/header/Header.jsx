@@ -51,7 +51,10 @@ function Header({ logo }) {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-          <Navbar.Collapse className="justify-content-end">
+          <Navbar.Collapse
+            className="justify-content-end"
+            id="basic-navbar-nav"
+          >
             <Nav className="gap-2">
               <NavLinkToTop
                 className="nav nav-link text-secondary d-flex justify-content-center align-items-center gap-1"
