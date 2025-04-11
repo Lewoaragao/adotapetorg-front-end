@@ -1,7 +1,7 @@
 # Olá 👋
 
 ## 🌐 **Nosso site**
-- [Adota Pet Org](https://adotapet.org)
+- Adota Pet Org
 
 ## 🐶 **Nossa história**
 
